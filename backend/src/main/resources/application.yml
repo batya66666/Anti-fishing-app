@@ -1,0 +1,71 @@
+spring:
+  application:
+    name: koeder
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: ${KOEDER_DB_URL:jdbc:postgresql://localhost:5432/koeder}
+    username: ${KOEDER_DB_USER:koeder}
+    password: ${KOEDER_DB_PASSWORD:koeder}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=20s
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: framework
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+  api-docs:
+    path: /v3/api-docs
+
+koeder:
+  jwt:
+    # Must be at least 32 bytes. Set a real secret in production (.env → KOEDER_JWT_SECRET).
+    secret: ${KOEDER_JWT_SECRET:dev-only-secret-change-me-dev-only-secret-change-me}
+    ttl-hours: 24
+  cors:
+    allowed-origins: ${KOEDER_CORS_ORIGINS:http://localhost:*,http://127.0.0.1:*}
+  ai:
+    # Without a key the AI features answer through the local rule engine and say so in the response.
+    api-key: ${ANTHROPIC_API_KEY:}
+    generation-model: claude-sonnet-5-5
+    check-model: claude-haiku-5-5
+  duel:
+    bot-fallback-seconds: ${KOEDER_BOT_FALLBACK_SECONDS:20}
+    round-seconds: 15
+    # Pauses between phases, shortened in tests.
+    countdown-ms: 3000
+    result-pause-ms: 3500
+  demo:
+    # Demo company for the pitch: seed data, guests join it automatically, /api/me/demo-reset is open.
+    enabled: ${KOEDER_DEMO_ENABLED:true}
+    auto-join: ${KOEDER_DEMO_AUTO_JOIN:true}
+    manager-email: thomas@muster-automotive.example
+    manager-password: ${KOEDER_DEMO_PASSWORD:koeder-demo}

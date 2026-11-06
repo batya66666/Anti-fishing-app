@@ -1,0 +1,675 @@
+[
+  {
+    "id": "mail-invoice-exe",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "malicious_attachment",
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [
+        {
+          "name": "Rechnung_2026-1147.pdf.exe",
+          "size_kb": 412
+        }
+      ],
+      "from_name": "Buchhaltung Müller Logistik GmbH",
+      "from_email": "rechnung@mueller-logistlk.test",
+      "time": "08:12",
+      "subject": "Urgent: open invoice no. 2026-1147 – reminder",
+      "body_md": "Dear Sir or Madam,\n\nunfortunately we have not yet received your payment. Please settle the amount **within 24 hours** to avoid late fees.\n\nYou will find the invoice attached.\n\nKind regards\nAccounts"
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "The domain says \"logistlk\" instead of \"logistik\": one letter is swapped."
+      },
+      {
+        "target": "body:within 24 hours",
+        "hint": "Artificial urgency: you are meant to act before you think."
+      },
+      {
+        "target": "attachment:0",
+        "hint": "Double extension: this is an .exe, a program, not a PDF."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "open_attachment"
+    ],
+    "explanation": "Fake invoice. An .exe attachment is never an invoice. Check with the supplier on their known phone number and tap \"Report\".",
+    "tags": [
+      "attachments",
+      "lookalike-domain",
+      "urgency"
+    ]
+  },
+  {
+    "id": "mail-ceo-transfer",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "ceo_fraud",
+    "module": 5,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Dr. Stefan Müller (Geschäftsführung)",
+      "from_email": "stefan.mueller.gf@freemail.test",
+      "time": "09:41",
+      "subject": "Confidential – quick request",
+      "body_md": "Hello,\n\nI am about to go into a meeting with the notary and cannot be reached. For an acquisition, a down payment of €48,500 has to go out today. I will send the account details shortly.\n\nPlease treat this as strictly confidential and do not talk to anyone about it, not even in your department.\n\nS. Müller"
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "Management does not write from a free mail account. The display name proves nothing."
+      },
+      {
+        "target": "body:cannot be reached",
+        "hint": "Being unreachable stops you from checking back."
+      },
+      {
+        "target": "body:talk to anyone",
+        "hint": "Secrecy is meant to bypass the four-eyes principle."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "reply"
+    ],
+    "explanation": "CEO fraud. Authority + urgency + secrecy is the classic pattern. Check back through a known channel; payments always follow the four-eyes principle.",
+    "tags": []
+  },
+  {
+    "id": "mail-password-expiry",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "credential_phishing",
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "links": [
+        {
+          "text": "Keep password",
+          "href": "https://officecloud-security.test/keep-password"
+        }
+      ],
+      "attachments": [],
+      "from_name": "OfficeCloud Support",
+      "from_email": "no-reply@officecloud-security.test",
+      "time": "10:03",
+      "subject": "Your password expires today",
+      "body_md": "Dear user,\n\nyour password expires in 3 hours. After that your mailbox will be locked and all emails will be lost.\n\nKeep your current password now:"
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "This is neither your company domain nor the real OfficeCloud domain."
+      },
+      {
+        "target": "body:Dear user",
+        "hint": "A generic greeting: your own IT knows your name."
+      },
+      {
+        "target": "body:all emails will be lost",
+        "hint": "Fear of loss is a strong lever and here completely unrealistic."
+      },
+      {
+        "target": "link:0",
+        "hint": "Long-press the link: it leads to a foreign domain."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Password phishing. Only change passwords through the known portal, never through a link in an email.",
+    "tags": []
+  },
+  {
+    "id": "mail-shared-doc",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "credential_phishing",
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "links": [
+        {
+          "text": "Open document",
+          "href": "https://databox.example/s/8f2k/login-firma"
+        }
+      ],
+      "attachments": [],
+      "from_name": "Julia Brandt via DataBox",
+      "from_email": "share@databox.example",
+      "time": "11:20",
+      "subject": "Julia Brandt shared \"Offer_Q4_final.pdf\" with you",
+      "body_md": "Julia Brandt shared a document with you.\n\nNote: sign in with your company password to view the document."
+    },
+    "red_flags": [
+      {
+        "target": "body:company password",
+        "hint": "A third-party service never needs your company password. That is exactly what the attackers want."
+      },
+      {
+        "target": "subject",
+        "hint": "You do not know any Julia Brandt and expect no offer. Unexpected means: check first."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Real service, wrong intent: the link really is on DataBox, the file behind it is the trap. That is why a clean sender does not help here. Ask the person another way.",
+    "tags": []
+  },
+  {
+    "id": "mail-bonus-xlsm",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "macro",
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [
+        {
+          "name": "Bonus_2026_Staff.xlsm",
+          "size_kb": 88
+        }
+      ],
+      "from_name": "Personalabteilung",
+      "from_email": "personal@muster-automotive.test",
+      "time": "13:05",
+      "subject": "Bonus payout 2026 – please review",
+      "body_md": "Dear colleagues,\n\nattached is the list of bonus payments. To display the amounts, please click \"Enable content\" when opening the file."
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "Nearly right: .test instead of .example. Your real domain is muster-automotive.example."
+      },
+      {
+        "target": "attachment:0",
+        "hint": ".xlsm means Excel with macros, and macros are program code."
+      },
+      {
+        "target": "body:Enable content",
+        "hint": "\"Enable content\" starts the macros. That is the classic trap."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "open_attachment"
+    ],
+    "explanation": "Macro attachment baited with \"salaries\". Curiosity is the lever. Nobody sends real salary data as a list to everyone.",
+    "tags": []
+  },
+  {
+    "id": "mail-bank-change",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "invoice_fraud",
+    "module": 5,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Petra Vogel, Kessler Stahl GmbH",
+      "from_email": "p.vogel@kessler-stahl-gmbh.test",
+      "time": "14:22",
+      "subject": "Change of our bank details",
+      "body_md": "Hello,\n\nbecause we are switching banks, please transfer open and future invoices to the following account effective immediately:\n\nIBAN DE00 1234 5678 9012 3456 78\n\nPlease confirm briefly by replying to this email.\n\nKind regards\nPetra Vogel"
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "The real domain is kessler-stahl.example. Here \"-gmbh\" was added and the ending changed."
+      },
+      {
+        "target": "body:to the following account",
+        "hint": "Changed bank details are the heart of this fraud. Always verify them by phone."
+      },
+      {
+        "target": "body:replying to this email",
+        "hint": "The confirmation is meant to stay in the fraudster's channel. Call the known number instead."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "reply"
+    ],
+    "explanation": "Invoice fraud (BEC). No attachment, no link, no typo: that is why it is dangerous. Always verify bank changes via the known phone number, never using details from the email.",
+    "tags": []
+  },
+  {
+    "id": "mail-prince",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": true,
+    "attack_type": "advance_fee",
+    "module": 1,
+    "consumer": true,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Mr. Benjamin Okoro",
+      "from_email": "b.okoro1962@freemail.test",
+      "time": "07:30",
+      "subject": "STRICTLY CONFIDENTIAL BUSINESS 14.5 MILLION USD",
+      "body_md": "Dear friend,\n\nI am the lawyer of a deceased client. You will receive 30% of 14.5 million dollars if you help me transfer the money. Just send your bank details and a small handling fee."
+    },
+    "red_flags": [
+      {
+        "target": "body:14.5 million",
+        "hint": "Too good to be true. It is."
+      },
+      {
+        "target": "body:handling fee",
+        "hint": "Advance-fee fraud: you pay small fees for money that never exists."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "reply"
+    ],
+    "explanation": "The classic. Hardly anyone falls for it any more, but it shows the principle: exploiting greed.",
+    "tags": []
+  },
+  {
+    "id": "mail-thread-hijack",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "invoice_fraud",
+    "module": 5,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [
+        {
+          "name": "Invoice_week46.zip",
+          "size_kb": 214
+        }
+      ],
+      "from_name": "Markus Thiel",
+      "from_email": "m.thiel@bauer-elektrik.example",
+      "time": "15:47",
+      "subject": "RE: RE: Delivery of switch cabinets week 46",
+      "body_md": "Hello,\n\nas just discussed, the updated invoice for the delivery. The attachment is encrypted for data protection reasons, the password is: 4471.\n\n> On 28 Oct you wrote: Please confirm the delivery date for week 46."
+    },
+    "red_flags": [
+      {
+        "target": "body:the password is",
+        "hint": "No virus scanner can inspect a password-protected archive. That is exactly why it is used."
+      },
+      {
+        "target": "attachment:0",
+        "hint": "The invoice normally comes as a PDF. A sudden change is a warning sign."
+      },
+      {
+        "target": "body:as just discussed",
+        "hint": "There was no conversation. Mr Thiel's account was hijacked; the thread is real."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "open_attachment"
+    ],
+    "explanation": "Thread hijacking: the sender and the thread are real, the account was taken over. If the details fit but the behaviour does not, make a quick call. This trick made Emotet so successful.",
+    "tags": []
+  },
+  {
+    "id": "mail-lookalike-colleague",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "lookalike_domain",
+    "module": 2,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Sabine Krüger",
+      "from_email": "sabine.krueger@muster-autornotive.example",
+      "time": "09:15",
+      "subject": "Quick question about the login details",
+      "body_md": "Hi, I cannot get into the supplier portal right now. Could you quickly send me your password? It is really urgent, the meeting is in ten minutes."
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "Look closely: \"autornotive\". The \"m\" became \"rn\". In many fonts these look the same."
+      },
+      {
+        "target": "body:send me your password",
+        "hint": "Passwords are never shared, not even among colleagues. That is always a warning sign."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "reply"
+    ],
+    "explanation": "Homoglyph domain: \"rn\" looks like \"m\". Never pass on passwords, no matter who asks.",
+    "tags": []
+  },
+  {
+    "id": "mail-tax-refund",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": true,
+    "attack_type": "credential_phishing",
+    "module": 1,
+    "consumer": true,
+    "content": {
+      "links": [
+        {
+          "text": "Claim refund",
+          "href": "https://finanzamt-online.test/erstattung"
+        }
+      ],
+      "attachments": [],
+      "from_name": "Finanzamt Online",
+      "from_email": "erstattung@finanzamt-online.test",
+      "time": "18:02",
+      "subject": "Your tax refund: €468.23",
+      "body_md": "Dear customer,\n\nyou are entitled to a refund. Enter your card details within 48 hours so that we can transfer the amount."
+    },
+    "red_flags": [
+      {
+        "target": "body:card details",
+        "hint": "The tax office never asks for card details by email and does not call you a \"customer\"."
+      },
+      {
+        "target": "from_email",
+        "hint": "Authorities do not use a domain like this."
+      },
+      {
+        "target": "link:0",
+        "hint": "The link does not lead to an authority."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Greed and authority: money from the tax office. Authorities write by post or through their official portal.",
+    "tags": []
+  },
+  {
+    "id": "mail-team-lunch",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 1,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Lena Hoffmann",
+      "from_email": "lena.hoffmann@muster-automotive.example",
+      "time": "08:05",
+      "subject": "Lunch on Friday?",
+      "body_md": "Hi all,\n\nwe would like to go to the canteen together on Friday at 12:30. Who is in? Just drop me a line.\n\nCheers, Lena"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open",
+      "reply"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: internal address, no link, no attachment, no pressure. Not everything is an attack.",
+    "tags": []
+  },
+  {
+    "id": "mail-supplier-legit",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 5,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [
+        {
+          "name": "Rechnung_88213.pdf",
+          "size_kb": 96
+        }
+      ],
+      "from_name": "Kessler Stahl GmbH",
+      "from_email": "rechnung@kessler-stahl.example",
+      "time": "09:30",
+      "subject": "Invoice 88213 for your order 4500127",
+      "body_md": "Hello Ms Schneider,\n\nplease find attached the invoice for your order 4500127 of 21 Oct. Payment is due in 30 days as agreed; the bank details are unchanged.\n\nKind regards\nKessler Stahl GmbH, Accounts"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open_attachment",
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine invoice: known domain, your order number, your name, a normal PDF, no pressure. Right to process it.",
+    "tags": []
+  },
+  {
+    "id": "mail-it-maintenance",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 2,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "IT-Service",
+      "from_email": "it-service@muster-automotive.example",
+      "time": "16:10",
+      "subject": "Maintenance on Saturday, 8 to 12",
+      "body_md": "Hi all,\n\non Saturday the ERP system will be unavailable from 8 to 12. You do not need to do anything. The service team answers questions on extension 400."
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine info: internal address, nothing asked of you, no link. Nothing speaks against it.",
+    "tags": []
+  },
+  {
+    "id": "mail-payroll-legit",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 2,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Personalabteilung",
+      "from_email": "personal@muster-automotive.example",
+      "time": "11:00",
+      "subject": "Your payslip is ready",
+      "body_md": "Hello,\n\nas every month, your October payslip is ready in the HR portal. You can find it as usual through your bookmark on the intranet."
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: the message has no link and sends you to the portal your usual way. This is what good emails look like.",
+    "tags": []
+  },
+  {
+    "id": "mail-training-legit",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "links": [
+        {
+          "text": "Go to the training",
+          "href": "https://lernen.muster-automotive.example/brandschutz"
+        }
+      ],
+      "attachments": [],
+      "from_name": "Lernplattform",
+      "from_email": "lernen@muster-automotive.example",
+      "time": "10:30",
+      "subject": "Reminder: fire safety training by 30 Nov",
+      "body_md": "Hello,\n\nplease complete the annual fire safety training by 30 Nov. It takes about 15 minutes."
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "click_link",
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: internal domain, the link stays on your domain as well, the deadline is realistic.",
+    "tags": []
+  },
+  {
+    "id": "mail-reset-legit",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 9,
+    "consumer": false,
+    "content": {
+      "links": [
+        {
+          "text": "Set a new password",
+          "href": "https://portal.kessler-stahl.example/reset/9f31"
+        }
+      ],
+      "attachments": [],
+      "from_name": "Lieferantenportal",
+      "from_email": "no-reply@portal.kessler-stahl.example",
+      "time": "just now",
+      "subject": "Your password reset link",
+      "body_md": "You just clicked \"Forgot password\" (1 minute ago, from your location Zwickau). If this was not you, ignore this email."
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "click_link",
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine, because you just requested it yourself: expected + right domain + no pressure. The decisive factor is that YOU started the process.",
+    "tags": []
+  },
+  {
+    "id": "mail-shop-order-legit",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 2,
+    "consumer": true,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Bücher Sonnenschein",
+      "from_email": "bestellung@buecher-sonnenschein.example",
+      "time": "19:12",
+      "subject": "Order confirmation no. 20419",
+      "body_md": "Hello Helga,\n\nthank you for your order from yesterday: \"The Garden in Autumn\", €18.90. You chose to pay by invoice, the book will arrive in 2 to 3 days."
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: you really did order, the order is correct, nobody wants data or a click from you.",
+    "tags": []
+  },
+  {
+    "id": "mail-newsletter-legit",
+    "type": "email",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 1,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Werksnews",
+      "from_email": "news@muster-automotive.example",
+      "time": "12:00",
+      "subject": "Plant news: new canteen from January",
+      "body_md": "From January, the new canteen opens in hall 3. As always, the menu will be posted at the entrance."
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: just information, no action required.",
+    "tags": []
+  }
+]

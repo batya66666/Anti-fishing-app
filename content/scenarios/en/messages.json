@@ -1,0 +1,359 @@
+[
+  {
+    "id": "sms-parcel",
+    "type": "sms",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": true,
+    "attack_type": "smishing",
+    "module": 6,
+    "consumer": true,
+    "content": {
+      "links": [
+        {
+          "text": "paketblitz-delivery.test/x7",
+          "href": "https://paketblitz-delivery.test/x7"
+        }
+      ],
+      "sender": "Paketblitz",
+      "number": "+49 1577 3920114",
+      "messages": [
+        {
+          "text": "Your parcel could not be delivered. Please confirm your address and pay a €1.99 fee: paketblitz-delivery.test/x7",
+          "time": "10:42"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "number",
+        "hint": "An ordinary mobile number: delivery services do not text from private numbers."
+      },
+      {
+        "target": "link:0",
+        "hint": "That is not the domain of the delivery service."
+      },
+      {
+        "target": "body:€1.99",
+        "hint": "The small fee is the bait: they are after your card details, not €1.99."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "One of the most common scam texts in Germany. Check your parcel directly in the carrier's app or website, never through the link in the text.",
+    "tags": []
+  },
+  {
+    "id": "sms-bank-tan",
+    "type": "sms",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "smishing",
+    "module": 6,
+    "consumer": true,
+    "content": {
+      "links": [
+        {
+          "text": "stadtbank-zwickau.account-check.test",
+          "href": "https://stadtbank-zwickau.account-check.test"
+        }
+      ],
+      "sender": "Stadtbank",
+      "number": "Stadtbank",
+      "messages": [
+        {
+          "text": "Your online banking will be locked tomorrow. Renew your TAN app now: stadtbank-zwickau.account-check.test",
+          "time": "17:03"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "link:0",
+        "hint": "What counts is the part before the ending: account-check.test. \"stadtbank-zwickau\" is only a subdomain."
+      },
+      {
+        "target": "body:locked",
+        "hint": "A threat of being locked so that you click at once."
+      },
+      {
+        "target": "sender",
+        "hint": "Sender names can be faked. The text can even land in the same thread as real messages."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Banks never send links to \"renew\" anything. If in doubt, open the banking app yourself or call the number on your card.",
+    "tags": []
+  },
+  {
+    "id": "chat-new-number",
+    "type": "chat",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "family_scam",
+    "module": 6,
+    "consumer": true,
+    "content": {
+      "links": [],
+      "sender": "+49 176 44120987",
+      "number": "+49 176 44120987",
+      "messages": [
+        {
+          "text": "Hi Mum, this is my new number. My phone is broken.",
+          "time": "11:02"
+        },
+        {
+          "text": "Can you please help me quickly? I have to transfer €1,340 today and my banking does not work on the new phone yet. I will pay you back tomorrow.",
+          "time": "11:03"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "number",
+        "hint": "An unknown number claiming to be your child. Call the old number."
+      },
+      {
+        "target": "body:new number",
+        "hint": "The new number explains why you do not see the name. That is how the scam begins."
+      },
+      {
+        "target": "body:transfer",
+        "hint": "Money, today, and an excuse why your child cannot do it themselves."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "reply"
+    ],
+    "explanation": "The \"Hi Mum\" scam. Always call back on the old, known number or ask a question only your child can answer.",
+    "tags": []
+  },
+  {
+    "id": "chat-kleinmarkt",
+    "type": "chat",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "marketplace_scam",
+    "module": 6,
+    "consumer": true,
+    "content": {
+      "links": [
+        {
+          "text": "kleinmarkt-safe-pay.test/receive",
+          "href": "https://kleinmarkt-safe-pay.test/receive"
+        }
+      ],
+      "sender": "Buyer \"Marco_87\"",
+      "number": "+49 152 90411207",
+      "messages": [
+        {
+          "text": "Hello, I am buying your sofa from Kleinmarkt. I will pay safely and send a courier.",
+          "time": "14:20"
+        },
+        {
+          "text": "To receive your money, enter your card details here: kleinmarkt-safe-pay.test/receive",
+          "time": "14:21"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "link:0",
+        "hint": "Not the marketplace's domain, it only contains the word."
+      },
+      {
+        "target": "body:card details",
+        "hint": "Nobody needs your card number and security code for you to RECEIVE money."
+      },
+      {
+        "target": "body:courier",
+        "hint": "Buying unseen plus a courier: that is how it is moved off the platform."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Marketplace scam. Stay on the platform, hand things over in person if you can, never enter card details to receive money.",
+    "tags": []
+  },
+  {
+    "id": "sms-voicemail-apk",
+    "type": "sms",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "smishing",
+    "module": 4,
+    "consumer": true,
+    "content": {
+      "links": [
+        {
+          "text": "mobilbox-voicemail.test/app.apk",
+          "href": "https://mobilbox-voicemail.test/app.apk"
+        }
+      ],
+      "sender": "+49 1521 0098123",
+      "number": "+49 1521 0098123",
+      "messages": [
+        {
+          "text": "You have 1 new voice message. To listen, install: mobilbox-voicemail.test/app.apk",
+          "time": "20:14"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "link:0",
+        "hint": "An .apk is an Android app. It would be installed past the store's security checks."
+      },
+      {
+        "target": "body:install",
+        "hint": "You never install anything for a voice message. This kind of malware can read your texts and spread itself."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Malware by text: apps like this read your codes and send themselves to your contacts. Install apps only from the official store.",
+    "tags": []
+  },
+  {
+    "id": "sms-dentist-legit",
+    "type": "sms",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 6,
+    "consumer": true,
+    "content": {
+      "links": [],
+      "sender": "Dr Lang Practice",
+      "number": "Lang Practice",
+      "messages": [
+        {
+          "text": "Reminder: your appointment is tomorrow at 9:30. If you cannot make it, please call us. Your Dr Lang practice",
+          "time": "16:00"
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: no link, no demand, an appointment you know about. For changes you call them yourself.",
+    "tags": []
+  },
+  {
+    "id": "sms-code-legit",
+    "type": "sms",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 9,
+    "consumer": true,
+    "content": {
+      "links": [],
+      "sender": "OfficeCloud",
+      "number": "OfficeCloud",
+      "messages": [
+        {
+          "text": "Your sign-in code: 482913. You just started a sign-in. Never give this code to anyone.",
+          "time": "just now"
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: you just signed in yourself and the code even warns you. Only enter it on the page you are signing in to.",
+    "tags": []
+  },
+  {
+    "id": "sms-parcel-legit",
+    "type": "sms",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 6,
+    "consumer": true,
+    "content": {
+      "links": [],
+      "sender": "Paketblitz",
+      "number": "Paketblitz",
+      "messages": [
+        {
+          "text": "Your order is at the Hauptstrasse 12 branch. Pickup code: 7741. Please bring ID.",
+          "time": "13:32"
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: you are expecting a parcel, the message has no link and asks for no money. A pickup code and ID are normal.",
+    "tags": []
+  },
+  {
+    "id": "chat-colleague-legit",
+    "type": "chat",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 6,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "sender": "Lena Hoffmann",
+      "number": "Contact",
+      "messages": [
+        {
+          "text": "Stuck in traffic, I will be about 10 minutes late for the meeting. Feel free to start!",
+          "time": "08:52"
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open",
+      "reply"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: a known contact, nothing asked of you, no link, no money.",
+    "tags": []
+  }
+]

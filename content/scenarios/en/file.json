@@ -1,0 +1,150 @@
+[
+  {
+    "id": "file-iso-invoice",
+    "type": "file",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "malicious_attachment",
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "context": "In your downloads folder, from an email by \"Supplier Schulze\": an invoice to download.",
+      "name": "Invoice_October.iso",
+      "size_kb": 1824,
+      "shown_type": "Disc image"
+    },
+    "red_flags": [
+      {
+        "target": "name",
+        "hint": "An invoice is not a disc image. .iso has long been used to bypass protection marks on downloads."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "open_attachment"
+    ],
+    "explanation": ".iso, .img and .vhd mount like a drive when opened and often bring hidden programs with them.",
+    "tags": []
+  },
+  {
+    "id": "file-rlo",
+    "type": "file",
+    "locale": "en",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "malicious_attachment",
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "context": "Attachment to an email from an applicant to HR. The name looks almost like a PDF.",
+      "name": "CV_fdp.exe",
+      "display_name": "CV_exe.pdf",
+      "size_kb": 633,
+      "shown_type": "Application"
+    },
+    "red_flags": [
+      {
+        "target": "name",
+        "hint": "An invisible control character (RLO) reverses the text: the file really ends in .exe."
+      },
+      {
+        "target": "note:type",
+        "hint": "The file type says \"Application\", not \"PDF\". This glance exposes the trick."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "open_attachment"
+    ],
+    "explanation": "Right-to-left override. Show file extensions and check the type in the details. Applications arrive as a PDF or through the portal.",
+    "tags": []
+  },
+  {
+    "id": "file-lnk",
+    "type": "file",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "malicious_attachment",
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "context": "From a ZIP sent by a \"colleague\". The icon looks like a Word document.",
+      "name": "Meeting_minutes.docx.lnk",
+      "size_kb": 3,
+      "shown_type": "Shortcut"
+    },
+    "red_flags": [
+      {
+        "target": "name",
+        "hint": ".lnk is a shortcut that can quietly launch PowerShell commands."
+      },
+      {
+        "target": "note:size",
+        "hint": "3 KB for meeting minutes? It holds nothing but a command."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "open_attachment"
+    ],
+    "explanation": "The Word icon can be chosen freely. The extension and file type are what matter.",
+    "tags": []
+  },
+  {
+    "id": "file-pdf-legit",
+    "type": "file",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "context": "You just asked HR for this form yourself; it came from personal@muster-automotive.example.",
+      "name": "Leave_request_2027.pdf",
+      "size_kb": 118,
+      "shown_type": "PDF document"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open_attachment"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: requested by you, known sender, matching extension and size.",
+    "tags": []
+  },
+  {
+    "id": "file-xlsx-legit",
+    "type": "file",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "context": "The monthly plan comes from your team lead as it does every month. You talked about it today.",
+      "name": "Planning_November.xlsx",
+      "size_kb": 54,
+      "shown_type": "Excel spreadsheet"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open_attachment"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: expected, known person, .xlsx without macros. The \"m\" in .xlsm would be the difference.",
+    "tags": []
+  }
+]

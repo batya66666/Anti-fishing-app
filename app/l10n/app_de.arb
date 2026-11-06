@@ -1,0 +1,533 @@
+{
+  "@@locale": "de",
+  "next": "Weiter",
+  "finish": "Fertig",
+  "back": "Zurück",
+  "close": "Schließen",
+  "cancel": "Abbrechen",
+  "save": "Speichern",
+  "backHome": "Zur Startseite",
+  "errorGeneric": "Das hat nicht geklappt. Versuch es gleich noch einmal.",
+  "offlineBanner": "Offline-Modus: Du spielst lokal, Fortschritt bleibt auf diesem Gerät.",
+  "hackedTitle": "GEHACKT",
+  "hackedSubtitle": "Ihre Dateien wurden verschlüsselt.",
+  "hackedPay": "Zahlen Sie innerhalb von 72 Stunden, sonst werden alle Daten gelöscht.",
+  "calmTitle": "Keine Sorge: Das war eine Übung.",
+  "calmBody": "Im Ernstfall wäre jetzt die ganze Firma betroffen. Genau deshalb üben wir hier, wo es nichts kostet. Schauen wir, was dich hätte warnen können.",
+  "calmButton": "Zeig mir, was ich übersehen habe",
+  "simToMe": "an mich",
+  "actOk": "In Ordnung",
+  "actReply": "Antworten",
+  "actDelete": "Löschen",
+  "actReport": "Melden",
+  "actLeave": "Verlassen",
+  "actOpen": "Öffnen",
+  "linkPeekTitle": "Dieser Link führt wirklich zu:",
+  "openLink": "Trotzdem öffnen",
+  "simLoginTitle": "Bitte melden Sie sich an",
+  "simUser": "E-Mail oder Benutzername",
+  "simPassword": "Passwort",
+  "simSignIn": "Anmelden",
+  "callIncoming": "Eingehender Anruf",
+  "callDecline": "Ablehnen",
+  "callAccept": "Annehmen",
+  "callYourAnswer": "Deine Antwort:",
+  "qrLeadsTo": "Der Code führt zu:",
+  "qrScan": "Code scannen",
+  "qrOpen": "Öffnen",
+  "qrIgnore": "Nicht öffnen",
+  "pushApprove": "Bestätigen",
+  "pushDeny": "Ablehnen",
+  "fileDownloads": "Downloads",
+  "fileDetails": "Details anzeigen",
+  "fileRealName": "Echter Dateiname",
+  "fileType": "Typ",
+  "resultReported": "Gemeldet! Angriff gestoppt.",
+  "resultWellDone": "Gut erkannt!",
+  "resultGenuine": "Richtig: Das war echt.",
+  "resultSafe": "Nicht reingefallen, aber...",
+  "resultHacked": "Du bist darauf reingefallen.",
+  "resultFalseAlarm": "Fehlalarm: Das war echt.",
+  "resultMissed": "Das war nicht die beste Reaktion.",
+  "redFlagsTitle": "{count} Warnzeichen",
+  "@redFlagsTitle": {
+    "placeholders": {
+      "count": {
+        "type": "Object"
+      }
+    }
+  },
+  "lessonStart": "Los geht's",
+  "reviewEmpty": "Gerade ist nichts zu wiederholen. Stark!",
+  "runDone": "{correct} von {total} richtig",
+  "@runDone": {
+    "placeholders": {
+      "correct": {
+        "type": "Object"
+      },
+      "total": {
+        "type": "Object"
+      }
+    }
+  },
+  "onbTitle1": "Fünf Minuten am Tag",
+  "onbBody1": "Du arbeitest im Büro und dein Postfach läuft voll. Welche Nachricht ist echt, welche ein Angriff?",
+  "onbTitle2": "Fehler sind erlaubt",
+  "onbBody2": "Fällst du auf einen Köder herein, wirst du hier \"gehackt\". Das bleibt im Kopf, kostet aber nichts. Im echten Leben wäre es anders.",
+  "onbTitle3": "Melden gewinnt",
+  "onbBody3": "Nicht klicken ist gut. Melden ist besser. Tritt im Duell gegen andere an und werde vom Praktikanten zum CISO.",
+  "onbStart": "Schicht beginnen",
+  "onbLanguage": "Sprache",
+  "onbMode": "Wie möchtest du üben?",
+  "modeOffice": "Büro",
+  "modeOfficeBody": "Ganze Schichten, Duelle, Ligen und Abzeichen",
+  "modeSimple": "Einfacher Modus",
+  "modeSimpleBody": "Große Schrift, kein Zeitdruck, keine Ranglisten: Betrug im Alltag erkennen",
+  "onbPrivacy": "Kein Konto nötig. Du spielst anonym, deine Fehler sieht nur du.",
+  "tabWork": "Arbeit",
+  "tabDuel": "Duell",
+  "tabLeague": "Liga",
+  "tabProfile": "Profil",
+  "levelLine": "Level {level} · {title}",
+  "@levelLine": {
+    "placeholders": {
+      "level": {
+        "type": "Object"
+      },
+      "title": {
+        "type": "Object"
+      }
+    }
+  },
+  "xpLine": "{xp} / {ceil} XP",
+  "@xpLine": {
+    "placeholders": {
+      "xp": {
+        "type": "Object"
+      },
+      "ceil": {
+        "type": "Object"
+      }
+    }
+  },
+  "shiftCardTitle": "Deine Schicht beginnt",
+  "shiftCardBody": "Im Postfach warten neue Nachrichten. Schütze die Firma.",
+  "shiftStart": "Schicht starten",
+  "shiftDoneTitle": "Feierabend!",
+  "shiftDoneBody": "Gute Arbeit. Dein Kopf braucht jetzt eine Pause, morgen wartet ein neuer Fall. Heute geht noch ein Duell.",
+  "reviewDue": "{count, plural, =1{1 Fehler wartet auf eine Wiederholung} other{{count} Fehler warten auf eine Wiederholung}}",
+  "@reviewDue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "modeSwipe": "Swipe",
+  "swipeLeft": "{count, plural, =1{Heute noch 1 Runde} other{Heute noch {count} Runden}}",
+  "@swipeLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "modeFlags": "Warnzeichen finden",
+  "modeFlagsSub": "Tippe auf alles Verdächtige",
+  "modeCases": "Case Files",
+  "modeCasesSub": "Echte Angriffe nachspielen",
+  "modeRedTeam": "Werde zum Hacker",
+  "modeRedTeamSub": "Baue selbst einen Köder",
+  "checkTitle": "Nachricht prüfen",
+  "checkTileSub": "Hast du etwas Verdächtiges bekommen? Hier prüfen.",
+  "skillTree": "Dein Lernpfad",
+  "skillTreeSub": "Alle 13 Themen sind offen: Grundwissen ist immer kostenlos.",
+  "module1": "Grundlagen",
+  "module2": "Absender",
+  "module3": "Links & URLs",
+  "module4": "Anhänge",
+  "module5": "Rechnungen & CEO-Fraud",
+  "module6": "SMS & Messenger",
+  "module7": "Anrufe & Deepfakes",
+  "module8": "QR-Codes",
+  "module9": "Konten & Passwörter",
+  "module10": "Firmenlaptop",
+  "module11": "Soziale Netze",
+  "module12": "Vor Ort",
+  "module13": "Was tun, wenn geklickt?",
+  "tip1": "Betrüger greifen deine Gefühle an: Eile, Angst, Autorität, Neugier und Gier. Spürst du plötzlich Druck, ist genau das der Moment für eine Pause.",
+  "tip2": "Der angezeigte Name beweist nichts. Tippe auf den Absender und lies die echte Adresse. Achte auf vertauschte Buchstaben und fremde Domains.",
+  "tip3": "Lies eine Adresse von rechts nach links: Der Teil direkt vor dem ersten Schrägstrich entscheidet, wem die Seite gehört. Das Schloss heißt nur \"verschlüsselt\", nicht \"sicher\". Halte Links gedrückt, um das Ziel zu sehen.",
+  "tip4": "Rechnungen sind keine Programme. Vorsicht bei .exe, .lnk, .iso und Makro-Dateien wie .xlsm, außerdem bei doppelten Endungen und Archiven mit Passwort.",
+  "tip5": "Bankdaten ändern sich selten per E-Mail. Prüfe jede Änderung telefonisch unter der bekannten Nummer. Auch der Chef muss sich an das Vier-Augen-Prinzip halten.",
+  "tip6": "Paket, Bank, \"Hallo Mama\": Solche Nachrichten sollen dich zum Klicken oder Zahlen bringen. Öffne die App selbst oder ruf die bekannte Nummer an.",
+  "tip7": "Stimmen lassen sich mit wenigen Sekunden Audio klonen und Nummern im Display fälschen. Leg auf und ruf selbst über die bekannte Nummer zurück.",
+  "tip8": "Einem QR-Code siehst du das Ziel nicht an. Prüfe nach dem Scannen die Adresse und achte auf Aufkleber über dem Original.",
+  "tip9": "Für jeden Dienst ein eigenes Passwort, am besten aus einem Passwortmanager. Bestätige nie eine Anmeldung, die du nicht selbst gestartet hast.",
+  "tip10": "Der Firmenlaptop ist nur für die Arbeit da: keine Spiele, keine Mods, keine privaten Downloads. Öffentliches WLAN nur mit VPN. Beim Weggehen immer sperren.",
+  "tip11": "Angreifer lesen mit: Name, Abteilung und Systeme reichen für die perfekte Mail. Teile Erfolge, aber keine Details zu internen Abläufen.",
+  "tip12": "Warnweste und volle Hände öffnen viele Türen. Begleite Unbekannte freundlich zum Empfang. Fundstücke wie USB-Sticks gehören zur IT, nicht in den Rechner.",
+  "tip13": "Es kann jedem passieren. Trenne das Netzwerk und ruf sofort die IT an. Jede Minute zählt und niemand wird dich dafür verurteilen.",
+  "simpleWelcome": "Schön, dass du da bist",
+  "simplePractice": "Heute üben",
+  "simplePracticeBody": "Ein paar Nachrichten in Ruhe ansehen",
+  "simplePracticeDone": "Für heute geschafft. Bis morgen!",
+  "simpleReview": "Wiederholen",
+  "simpleLearn": "Betrug per SMS und Anruf",
+  "simpleLearnBody": "Die häufigsten Maschen kennenlernen",
+  "simpleLeave": "Zum Büro-Modus wechseln",
+  "shiftTitle": "Heutige Schicht",
+  "shiftHint": "Antworte auf alles, was reinkommt. Tipp: Absender antippen, Links gedrückt halten.",
+  "backToInbox": "Zurück zum Postfach",
+  "shiftFinish": "Schicht beenden",
+  "inboxCall": "Eingehender Anruf",
+  "reportTitle": "Schicht beendet",
+  "reportProtected": "Du hast die Firma {good} von {total} Mal richtig geschützt.",
+  "@reportProtected": {
+    "placeholders": {
+      "good": {
+        "type": "Object"
+      },
+      "total": {
+        "type": "Object"
+      }
+    }
+  },
+  "promotion": "Beförderung! Du bist jetzt: {title}",
+  "@promotion": {
+    "placeholders": {
+      "title": {
+        "type": "Object"
+      }
+    }
+  },
+  "streak": "Serie",
+  "reportedShort": "Gemeldet",
+  "reportMissed": "Das nimmst du mit",
+  "reportWillReturn": "Diese Fälle kommen in 1, 3 und 7 Tagen wieder, bis sie sitzen.",
+  "reportRest": "Gute Schicht! Dein Kopf braucht jetzt Ruhe, morgen wartet ein neuer Fall.",
+  "swipeLimit": "Für heute sind deine Swipe-Runden vorbei. Das Wiederholen deiner Fehler bleibt immer kostenlos.",
+  "swipePhishing": "Phishing",
+  "swipeGenuine": "Echt",
+  "swipeResult": "{correct} von {total} richtig",
+  "@swipeResult": {
+    "placeholders": {
+      "correct": {
+        "type": "Object"
+      },
+      "total": {
+        "type": "Object"
+      }
+    }
+  },
+  "flagsDone": "Punkte für deine Spürnase",
+  "flagsHint": "Tippe auf alles, was verdächtig wirkt, und prüfe dann.",
+  "flagsSubmit": "Prüfen ({count} markiert)",
+  "@flagsSubmit": {
+    "placeholders": {
+      "count": {
+        "type": "Object"
+      }
+    }
+  },
+  "flagsResult": "{found} von {total} gefunden, {wrong} falsch markiert",
+  "@flagsResult": {
+    "placeholders": {
+      "found": {
+        "type": "Object"
+      },
+      "total": {
+        "type": "Object"
+      },
+      "wrong": {
+        "type": "Object"
+      }
+    }
+  },
+  "reviewTitle": "Fehler wiederholen",
+  "duelTitle": "PvP-Duell",
+  "duelSub": "Gleiche Aufgaben, gleiche Zeit: Wer erkennt mehr?",
+  "duelRecord": "{wins} Siege · {losses} Niederlagen",
+  "@duelRecord": {
+    "placeholders": {
+      "wins": {
+        "type": "Object"
+      },
+      "losses": {
+        "type": "Object"
+      }
+    }
+  },
+  "duelFind": "Gegner suchen",
+  "duelSearching": "Suche Gegner...",
+  "duelFriendly": "Gegen Freunde spielen",
+  "duelCreateCode": "Code und QR erstellen",
+  "duelCodeHint": "Code",
+  "duelJoin": "Beitreten",
+  "duelVsBot": "Gegen den Bot üben",
+  "duelBotShort": "Gegen Bot",
+  "duelScanMe": "Scannen und mitspielen",
+  "duelWaiting": "Warte auf Gegner...",
+  "duelNeedsServer": "Duelle mit Code brauchen eine Verbindung zum Server. Der Bot ist offline verfügbar.",
+  "duelBadCode": "Diesen Code gibt es nicht oder das Duell läuft schon.",
+  "duelConnecting": "Verbinde...",
+  "duelWaitingOpponent": "Warte auf den Gegner...",
+  "duelRound": "Runde {round}/{total}",
+  "@duelRound": {
+    "placeholders": {
+      "round": {
+        "type": "Object"
+      },
+      "total": {
+        "type": "Object"
+      }
+    }
+  },
+  "duelBothDone": "Beide haben geantwortet",
+  "duelWaitOther": "Warte auf den Gegner",
+  "duelWrong": "Daneben!",
+  "duelWasAttack": "Das war ein Angriff.",
+  "duelWasGenuine": "Das war echt.",
+  "duelWon": "Gewonnen!",
+  "duelLost": "Knapp daneben",
+  "duelDraw": "Unentschieden",
+  "duelReview": "Das nimmst du mit",
+  "casesIntro": "Echte Vorfälle zum Nachspielen. An jedem Punkt kannst du den Angriff stoppen. Schaffst du, was damals niemand geschafft hat?",
+  "caseStopped": "Angriff gestoppt!",
+  "caseContinues": "Der Angriff läuft weiter...",
+  "caseWinTitle": "Du hättest es verhindert.",
+  "caseLoseTitle": "So ist es wirklich passiert.",
+  "caseReality": "Was wirklich geschah",
+  "caseSources": "Quellen",
+  "rtIntro": "Du bist Pentester für eine fiktive Firma. Baue eine Mail und finde heraus, warum Köder funktionieren. Wer die Hebel kennt, erkennt sie.",
+  "rtSender": "Absender",
+  "rtSenderUnknown": "Unbekannt",
+  "rtSenderColleague": "Kollegin",
+  "rtSenderIt": "IT-Abteilung",
+  "rtSenderBoss": "Chef",
+  "rtPretext": "Anlass",
+  "rtPretextParcel": "Paket",
+  "rtPretextPassword": "Passwort läuft ab",
+  "rtPretextInvoice": "Rechnung",
+  "rtPretextBonus": "Bonus",
+  "rtUrgency": "Dringlichkeit",
+  "rtUrgencyNone": "Keine",
+  "rtUrgencyToday": "Heute",
+  "rtUrgencyHour": "1 Stunde",
+  "rtPersonal": "Persönlich",
+  "rtPersonalNone": "Allgemein",
+  "rtPersonalName": "Name",
+  "rtPersonalProject": "Name + Projekt",
+  "rtBait": "Köder",
+  "rtBaitLink": "Link",
+  "rtBaitAttachment": "Anhang",
+  "rtBaitQr": "QR-Code",
+  "rtEthics": "Alles bleibt im Spiel: feste Bausteine, fiktive Firma und Domains, kein Export. Diese Übung zeigt, wie Angriffe funktionieren, damit du sie erkennst.",
+  "rtLaunch": "An 100 Kollegen senden",
+  "rtRunning": "Die Kampagne läuft...",
+  "rtDone": "Ergebnis der Kampagne",
+  "rtClicked": "Geklickt",
+  "rtReported": "Gemeldet",
+  "rtIgnored": "Ignoriert",
+  "rtVerdictHigh": "Erschreckend wirksam.",
+  "rtVerdictMid": "Beachtlich: Das reicht für einen Einbruch.",
+  "rtVerdictLow": "Die meisten durchschauen das.",
+  "rtLesson": "Ein einziger Klick reicht Angreifern. Autorität, Zeitdruck und persönliche Details machen den Unterschied. Genau daran erkennst du Köder ab jetzt selbst. Und jede Meldung hilft: Die IT kann alle warnen, bevor der Nächste klickt.",
+  "rtAgain": "Neue Kampagne",
+  "checkIntro": "Füge den Text einer verdächtigen Nachricht ein oder lade einen Screenshot hoch.",
+  "checkHint": "Text der Nachricht...",
+  "checkScreenshot": "Screenshot",
+  "checkSample1": "Beispiel: Paket",
+  "checkSample1Text": "Ihr Paket konnte nicht zugestellt werden. Zahlen Sie sofort 1,99 € Gebühr: paket-zustellung.xyz/x7",
+  "checkSample2": "Beispiel: Neue Nummer",
+  "checkSample2Text": "Hallo Mama, das ist meine neue Nummer. Kannst du mir schnell Geld überweisen? Sag es niemandem!",
+  "checkButton": "Jetzt prüfen",
+  "checkDangerous": "Gefährlich",
+  "checkSuspicious": "Verdächtig",
+  "checkUnclear": "Keine klaren Warnzeichen",
+  "checkRisk": "Risiko {score} von 100",
+  "@checkRisk": {
+    "placeholders": {
+      "score": {
+        "type": "Object"
+      }
+    }
+  },
+  "checkSourceAi": "Analyse durch KI (Claude).",
+  "checkSourceRules": "Analyse durch die lokale Regel-Prüfung, ohne KI.",
+  "checkDisclaimer": "Eine Einschätzung, keine Garantie, und kein Ersatz für einen Virenscanner. Nachrichten werden nicht gespeichert. Entferne vor dem Hochladen persönliche Daten.",
+  "leagueTitle": "Liga",
+  "leagueTier": "{tier}-Liga",
+  "@leagueTier": {
+    "placeholders": {
+      "tier": {
+        "type": "Object"
+      }
+    }
+  },
+  "leagueSub": "{xp} XP diese Woche. Die Top 7 steigen am Sonntag auf.",
+  "@leagueSub": {
+    "placeholders": {
+      "xp": {
+        "type": "Object"
+      }
+    }
+  },
+  "tierBronze": "Bronze",
+  "tierSilver": "Silber",
+  "tierGold": "Gold",
+  "tierDiamond": "Diamant",
+  "boardWeek": "Woche",
+  "boardGlobal": "Gesamt",
+  "boardCompany": "Firma",
+  "boardEmpty": "Noch niemand hier. Sei die erste Person!",
+  "boardPrivacy": "Ranglisten zeigen nur Spitznamen. In den Einstellungen kannst du dich ausblenden.",
+  "statReporting": "Melderate",
+  "statAccuracy": "Trefferquote",
+  "statBestStreak": "Beste Serie",
+  "statReported": "Gemeldet",
+  "statHacked": "Gehackt",
+  "statFalseAlarms": "Fehlalarme",
+  "badges": "Abzeichen",
+  "settings": "Einstellungen",
+  "badgeFirstShift": "Erste Schicht",
+  "badgePerfectShift": "Perfekte Schicht",
+  "badgeFirstReport": "Erste Meldung",
+  "badgeReporter": "25 Meldungen",
+  "badgeCeo": "Chef-resistent",
+  "badgeMfa": "Eiserne Nerven",
+  "badgeMacro": "Makrojäger",
+  "badgeHomoglyph": "Adlerauge",
+  "badgeQr": "QR-Skeptiker",
+  "badgeFirstDuel": "Erstes Duell",
+  "badgeDuelWinner": "Duellsieger",
+  "badgeStreak3": "3 Tage Serie",
+  "badgeStreak7": "7 Tage Serie",
+  "badgeHardWay": "Daraus gelernt",
+  "renameTitle": "Spitzname ändern",
+  "settingLanguage": "Sprache",
+  "settingSound": "Ton und Sprache",
+  "settingPublicBoard": "In öffentlichen Ranglisten zeigen",
+  "settingExport": "Meine Daten kopieren",
+  "settingExportSub": "Alles, was wir über dich speichern, als JSON (DSGVO)",
+  "settingExportDone": "Deine Daten liegen in der Zwischenablage.",
+  "settingDelete": "Konto löschen",
+  "settingDeleteBody": "Dein Fortschritt und alle Daten werden endgültig gelöscht.",
+  "settingDeleteConfirm": "Endgültig löschen",
+  "settingDemoReset": "Demo: Tag zurücksetzen",
+  "settingDemoResetSub": "Heutige Schicht neu spielen, alle Wiederholungen fällig",
+  "settingDemoResetDone": "Der Tag wurde zurückgesetzt.",
+  "premiumTitle": "Tarife",
+  "premiumIntro": "Der Schutz vor Betrug bleibt kostenlos. Unternehmen finanzieren die soziale Seite mit.",
+  "premiumB2bTitle": "Für Unternehmen",
+  "premiumNote": "Vorschau: In dieser Hackathon-Version ist noch keine Zahlung möglich. Preise sind Richtwerte.",
+  "pricePremium": "3,99 € / Monat",
+  "priceFamily": "5,99 € / Monat",
+  "priceTeam": "2–3 € pro Person / Monat",
+  "priceBusiness": "4–5 € pro Person / Monat",
+  "priceEnterprise": "Individuell",
+  "planFree": "1 Schicht pro Tag, Grundlagen, Fehler wiederholen, 1 Duell pro Tag, einfacher Modus",
+  "planPremium": "Ohne Limits, alle Module, Case Files, Red Team, Nachrichten-Check ohne Limit, Serien einfrieren",
+  "planFamily": "Bis zu 6 Personen: Schütze deine Eltern",
+  "planTeam": "Firmenliga, Admin-Panel, Berichte nach Abteilung, keine Limits",
+  "planBusiness": "Dazu eigene Szenarien, KI-Generator, SSO, Berichte für NIS2, ISO 27001 und TISAX",
+  "planEnterprise": "Dazu Phishing-Übungen auf die echte Mail, Integrationen, SLA, EU-Hosting nach Wahl",
+  "adminTitle": "KÖDER für Unternehmen",
+  "adminSubtitle": "Human Risk Dashboard",
+  "adminEmail": "E-Mail",
+  "adminPassword": "Passwort",
+  "adminSignIn": "Anmelden",
+  "adminBadLogin": "E-Mail oder Passwort stimmen nicht.",
+  "adminLive": "Live",
+  "adminTabDashboard": "Dashboard",
+  "adminTabScenarios": "Szenarien",
+  "adminTabJury": "QR für alle",
+  "adminDemoData": "Demo-Unternehmen: Der Verlauf ist synthetisch. Antworten aus der App kommen live dazu.",
+  "adminReport": "Bericht für Audit (PDF)",
+  "adminRisk": "Human Risk Score",
+  "riskLow": "Gering",
+  "riskMedium": "Mittel",
+  "riskHigh": "Hoch",
+  "adminReportingRate": "Melderate",
+  "adminReportingHint": "Angriffe, die an die IT gingen",
+  "adminClickRate": "Klickrate",
+  "adminClickHint": "Angriffe, die erfolgreich waren",
+  "adminDecisions": "Entscheidungen",
+  "adminDecisionsHint": "In den letzten 10 Wochen",
+  "adminHeatmap": "Wo braucht es Training?",
+  "adminHeatmapSub": "Risiko nach Abteilung und Angriffsart, 0 bis 100",
+  "adminLegendLow": "geringes Risiko",
+  "adminLegendHigh": "hohes Risiko",
+  "adminHidden": "Nicht ausgewiesen, weil zu klein: {names}",
+  "@adminHidden": {
+    "placeholders": {
+      "names": {
+        "type": "Object"
+      }
+    }
+  },
+  "adminDepartments": "Abteilungen",
+  "adminColDepartment": "Abteilung",
+  "adminColSize": "Größe",
+  "adminColRisk": "Risiko",
+  "adminColReporting": "Melderate",
+  "adminTooSmall": "zu klein zum Anzeigen",
+  "adminTrendRisk": "Risiko im Verlauf",
+  "adminTrendRiskSub": "Human Risk Score pro Woche",
+  "adminTrendReporting": "Melderate im Verlauf",
+  "adminTrendReportingSub": "Prozent der Angriffe pro Woche",
+  "adminFeed": "Gerade passiert",
+  "adminFeedSub": "Nur Abteilungen, niemals Namen",
+  "adminFeedEmpty": "Sobald jemand spielt, erscheint es hier.",
+  "adminFeedLine": "{department}: {event} ({attack})",
+  "@adminFeedLine": {
+    "placeholders": {
+      "department": {
+        "type": "Object"
+      },
+      "event": {
+        "type": "Object"
+      },
+      "attack": {
+        "type": "Object"
+      }
+    }
+  },
+  "feedReported": "Angriff gemeldet",
+  "feedHacked": "auf Angriff hereingefallen",
+  "feedHandled": "richtig reagiert",
+  "feedMissed": "nicht optimal reagiert",
+  "adminPrivacy": "Datenschutz: Die Statistik wird ohne Personenbezug gespeichert. Abteilungen unter {min} Personen werden nicht ausgewiesen. So wird das Training zum Lernen und nicht zur Überwachung.",
+  "@adminPrivacy": {
+    "placeholders": {
+      "min": {
+        "type": "Object"
+      }
+    }
+  },
+  "attackInvoice": "Rechnungs-betrug",
+  "attackCredentials": "Passwort-Phishing",
+  "attackCeo": "CEO-Fraud",
+  "attackAttachment": "Anhänge",
+  "attackSmishing": "SMS",
+  "attackVishing": "Anrufe",
+  "attackQuishing": "QR-Codes",
+  "attackMfa": "MFA-Fatigue",
+  "attackLegit": "echte Nachricht",
+  "attackOther": "weitere Angriffe",
+  "genTitle": "Szenarien für Ihre Firma",
+  "genIntro": "Beschreiben Sie Ihr Unternehmen und erhalten Sie passende Übungen. Alles bleibt Entwurf, bis Sie es freigeben.",
+  "genCompany": "Firma",
+  "genIndustry": "Branche",
+  "genTools": "Eingesetzte Systeme",
+  "genPartners": "Lieferanten und Partner",
+  "genButton": "Szenarien erzeugen",
+  "genSourceAi": "Erzeugt von KI (Claude). Bitte vor der Freigabe prüfen.",
+  "genSourceTemplate": "Aus Vorlagen erzeugt: Für KI-Texte muss ein API-Schlüssel gesetzt sein.",
+  "genAttack": "Angriff",
+  "genGenuine": "Echt",
+  "genPublish": "Freigeben",
+  "genPublished": "Freigegeben",
+  "juryTitle": "Spielen Sie gegen uns!",
+  "jurySub": "Scannen, und in Sekunden sind Sie im Duell. Ohne App und ohne Konto."
+}

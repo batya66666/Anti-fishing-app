@@ -1,0 +1,65 @@
+# docker compose up --build
+# Build the web apps first: scripts/build_web.ps1 (Windows) or scripts/build_web.sh
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: koeder
+      POSTGRES_USER: koeder
+      POSTGRES_PASSWORD: ${KOEDER_DB_PASSWORD:-koeder}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U koeder -d koeder"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    # Not published: only the backend can reach the database, through the compose network.
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      KOEDER_DB_URL: jdbc:postgresql://postgres:5432/koeder
+      KOEDER_DB_USER: koeder
+      KOEDER_DB_PASSWORD: ${KOEDER_DB_PASSWORD:-koeder}
+      KOEDER_JWT_SECRET: ${KOEDER_JWT_SECRET:?Set KOEDER_JWT_SECRET in .env - see .env.example}
+      KOEDER_DEMO_PASSWORD: ${KOEDER_DEMO_PASSWORD:?Set KOEDER_DEMO_PASSWORD in .env - see .env.example}
+      KOEDER_DEMO_ENABLED: ${KOEDER_DEMO_ENABLED:-true}
+      KOEDER_DEMO_AUTO_JOIN: ${KOEDER_DEMO_AUTO_JOIN:-true}
+      KOEDER_CORS_ORIGINS: ${KOEDER_CORS_ORIGINS:-http://localhost:*,http://127.0.0.1:*,http://192.168.*:*,http://172.*:*,http://10.*:*}
+      KOEDER_BOT_FALLBACK_SECONDS: ${KOEDER_BOT_FALLBACK_SECONDS:-8}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health | grep -q UP"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 20s
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2-alpine
+    environment:
+      # A real domain gets HTTPS automatically. Empty means plain http on port 80: laptop on a hotspot.
+      KOEDER_SITE: ${KOEDER_DOMAIN:-:80}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./app/build/web:/srv/web:ro
+      - ./app/build/admin:/srv/admin:ro
+      - caddy_data:/data
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  caddy_data:

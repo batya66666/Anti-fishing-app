@@ -1,0 +1,348 @@
+[
+  {
+    "id": "scene-usb-drop",
+    "type": "scene",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "usb_drop",
+    "module": 12,
+    "consumer": false,
+    "content": {
+      "icon": "usb",
+      "title": "Fund auf dem Parkplatz",
+      "text": "Auf dem Firmenparkplatz liegt ein USB-Stick mit der Aufschrift \"Gehälter 2026 – vertraulich\". Was tust du?",
+      "options": [
+        {
+          "id": "plug_in",
+          "label": "Am Arbeitsrechner nachsehen, wem er gehört"
+        },
+        {
+          "id": "give_it",
+          "label": "Ungeöffnet bei der IT abgeben"
+        },
+        {
+          "id": "home_pc",
+          "label": "Zu Hause am Privat-PC ansehen"
+        },
+        {
+          "id": "trash",
+          "label": "In den Müll werfen"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:bait",
+        "hint": "\"Gehälter – vertraulich\": Die Neugier soll dich dazu bringen, ihn einzustecken."
+      }
+    ],
+    "correct_actions": [
+      "give_it",
+      "trash"
+    ],
+    "dangerous_actions": [
+      "plug_in",
+      "home_pc"
+    ],
+    "explanation": "USB-Drop. Ein Stick kann sich beim Einstecken als Tastatur ausgeben und in Sekunden Befehle tippen. Auch am Privat-PC. Ab zur IT damit.",
+    "tags": []
+  },
+  {
+    "id": "scene-wifi",
+    "type": "scene",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "evil_twin",
+    "module": 10,
+    "consumer": false,
+    "content": {
+      "icon": "wifi",
+      "title": "Im Café",
+      "text": "Du musst dringend eine Datei hochladen. Am Handy siehst du: \"Cafe_Muenz\" (mit Passwort von der Karte) und \"Cafe_Muenz_FREE\" (offen, stärkeres Signal). Dein Laptop hat VPN.",
+      "options": [
+        {
+          "id": "free",
+          "label": "Das offene Netz, es ist schneller"
+        },
+        {
+          "id": "vpn",
+          "label": "Hotspot vom Firmenhandy oder bekanntes Netz, nur mit VPN"
+        },
+        {
+          "id": "no_vpn",
+          "label": "Das Netz mit Passwort, VPN brauche ich dann nicht"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:twin",
+        "hint": "Ein offenes Zweitnetz mit fast gleichem Namen ist ein typischer \"Evil Twin\"."
+      }
+    ],
+    "correct_actions": [
+      "vpn"
+    ],
+    "dangerous_actions": [
+      "free"
+    ],
+    "explanation": "Evil Twin: Angreifer spannen ein gleich benanntes Netz auf und lesen mit. Nutze den Handy-Hotspot oder immer VPN.",
+    "tags": []
+  },
+  {
+    "id": "scene-private-laptop",
+    "type": "scene",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "shadow_it",
+    "module": 10,
+    "consumer": false,
+    "content": {
+      "icon": "laptop",
+      "title": "Der Firmenlaptop am Wochenende",
+      "text": "Dein Kind will auf deinem Firmenlaptop kurz ein Spiel mit Mods installieren, die es im Netz gefunden hat. \"Nur dieses Wochenende!\"",
+      "options": [
+        {
+          "id": "allow",
+          "label": "Ach komm, einmal ist keinmal"
+        },
+        {
+          "id": "private",
+          "label": "Nein. Firmengerät nur für die Arbeit, das Spiel kommt auf den Privat-PC"
+        },
+        {
+          "id": "antivirus",
+          "label": "Erlauben, der Virenscanner ist ja an"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:mods",
+        "hint": "Mods und Cracks gehören zu den häufigsten Trägern von Schadsoftware, die Passwörter stiehlt."
+      }
+    ],
+    "correct_actions": [
+      "private"
+    ],
+    "dangerous_actions": [
+      "allow",
+      "antivirus"
+    ],
+    "explanation": "Ein einziger privater Download kann gespeicherte Firmen-Anmeldungen stehlen. Viele große Vorfälle begannen mit genau so einem Infostealer.",
+    "tags": []
+  },
+  {
+    "id": "scene-tailgating",
+    "type": "scene",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "tailgating",
+    "module": 12,
+    "consumer": false,
+    "content": {
+      "icon": "door",
+      "title": "An der Sicherheitstür",
+      "text": "Ein Mann in Warnweste mit vollen Händen bittet dich: \"Halten Sie mal kurz die Tür auf? Mein Ausweis ist in der Tasche.\" Du kennst ihn nicht.",
+      "options": [
+        {
+          "id": "hold",
+          "label": "Tür aufhalten, das wäre sonst unhöflich"
+        },
+        {
+          "id": "escort",
+          "label": "Freundlich zum Empfang begleiten oder dort anrufen"
+        },
+        {
+          "id": "ignore",
+          "label": "Tür zugehen lassen und nichts sagen"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:polite",
+        "hint": "Angreifer nutzen deine Höflichkeit und volle Hände sind ein bewährter Trick."
+      }
+    ],
+    "correct_actions": [
+      "escort",
+      "ignore"
+    ],
+    "dangerous_actions": [
+      "hold"
+    ],
+    "explanation": "Tailgating: Eine Warnweste öffnet viele Türen. Freundlich bleiben und zum Empfang begleiten ist genau richtig.",
+    "tags": []
+  },
+  {
+    "id": "scene-clicked",
+    "type": "scene",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": true,
+    "attack_type": "incident_response",
+    "module": 13,
+    "consumer": true,
+    "content": {
+      "icon": "alert",
+      "title": "Oh nein, geklickt!",
+      "text": "Du hast gerade einen Anhang geöffnet und merkst: Das war wohl keine Rechnung. Was tust du zuerst?",
+      "options": [
+        {
+          "id": "hide",
+          "label": "Nichts sagen, sonst gibt es Ärger"
+        },
+        {
+          "id": "report_now",
+          "label": "Netzwerk trennen und sofort die IT anrufen"
+        },
+        {
+          "id": "restart",
+          "label": "Rechner neu starten und abwarten"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:speed",
+        "hint": "Bei einem Vorfall zählt jede Minute. Sofort melden kann den Schaden begrenzen."
+      }
+    ],
+    "correct_actions": [
+      "report_now"
+    ],
+    "dangerous_actions": [
+      "hide"
+    ],
+    "explanation": "Fehler passieren jedem. Das Schlimme ist das Verschweigen: Je schneller die IT Bescheid weiß, desto kleiner der Schaden. Kein Grund, dich zu schämen.",
+    "tags": []
+  },
+  {
+    "id": "scene-oversharing",
+    "type": "scene",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "osint",
+    "module": 11,
+    "consumer": false,
+    "content": {
+      "icon": "people",
+      "title": "Dein Berufsnetzwerk",
+      "text": "Du willst posten: Foto vom ersten Tag am Schreibtisch, mit Firmenausweis um den Hals, Bildschirm im Hintergrund, und \"Endlich in der Buchhaltung bei Muster Automotive, zuständig für SAP-Rechnungen!\"",
+      "options": [
+        {
+          "id": "post",
+          "label": "Genau so posten, ich freue mich doch"
+        },
+        {
+          "id": "edit",
+          "label": "Foto ohne Ausweis und Bildschirm, keine Details zu Systemen"
+        },
+        {
+          "id": "never",
+          "label": "Nie wieder etwas posten"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:recon",
+        "hint": "Name, Abteilung, System, Ausweis: alles, was Angreifer für die perfekte Spear-Phishing-Mail brauchen."
+      }
+    ],
+    "correct_actions": [
+      "edit"
+    ],
+    "dangerous_actions": [
+      "post"
+    ],
+    "explanation": "Du darfst dich freuen. Lass nur die Details weg, die eine perfekte, auf dich zugeschnittene Angriffsmail ermöglichen.",
+    "tags": []
+  },
+  {
+    "id": "scene-password-manager",
+    "type": "scene",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 9,
+    "consumer": true,
+    "content": {
+      "icon": "key",
+      "title": "Neues Passwort",
+      "text": "Du brauchst ein Passwort für ein neues Portal. Was ist am sinnvollsten?",
+      "options": [
+        {
+          "id": "manager",
+          "label": "Vom Passwortmanager ein zufälliges Passwort erzeugen lassen"
+        },
+        {
+          "id": "same",
+          "label": "Mein bewährtes Passwort wiederverwenden"
+        },
+        {
+          "id": "note",
+          "label": "Etwas Neues ausdenken und auf einen Zettel schreiben"
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "manager"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Einzigartig für jeden Dienst: Wird ein Dienst gehackt, bleibt der Rest sicher. Ein Manager füllt Passwörter auch nur auf der echten Seite aus.",
+    "tags": []
+  },
+  {
+    "id": "scene-recon-call",
+    "type": "scene",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "osint",
+    "module": 11,
+    "consumer": false,
+    "content": {
+      "icon": "people",
+      "title": "Eine harmlose Umfrage?",
+      "text": "Eine freundliche Studentin schreibt dir online: Für ihre Bachelorarbeit möchte sie wissen, welche Software ihr nutzt, wer eure Rechnungen freigibt und wann euer Chef im Urlaub ist.",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Ich helfe gern und antworte auf alles"
+        },
+        {
+          "id": "decline",
+          "label": "Freundlich ablehnen und an die Kommunikationsabteilung verweisen"
+        },
+        {
+          "id": "report",
+          "label": "Ablehnen und der IT melden"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:details",
+        "hint": "Software, Freigabe, Urlaub des Chefs: genau die Zutaten für CEO-Fraud."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "decline"
+    ],
+    "dangerous_actions": [
+      "answer"
+    ],
+    "explanation": "Social Engineering beginnt oft harmlos. Einzeln wirken diese Infos belanglos, zusammen ergeben sie den Plan für den nächsten Betrug.",
+    "tags": []
+  }
+]

@@ -1,0 +1,150 @@
+[
+  {
+    "id": "file-iso-invoice",
+    "type": "file",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "malicious_attachment",
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "context": "Im Download-Ordner, aus einer E-Mail von \"Lieferant Schulze\": Rechnung als Download.",
+      "name": "Rechnung_Oktober.iso",
+      "size_kb": 1824,
+      "shown_type": "Datenträgerabbild"
+    },
+    "red_flags": [
+      {
+        "target": "name",
+        "hint": "Eine Rechnung ist kein Disk-Image. .iso wurde lange genutzt, um Schutzmarkierungen für Downloads zu umgehen."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "open_attachment"
+    ],
+    "explanation": ".iso, .img und .vhd werden beim Öffnen wie ein Laufwerk eingebunden und bringen oft versteckte Programme mit.",
+    "tags": []
+  },
+  {
+    "id": "file-rlo",
+    "type": "file",
+    "locale": "de",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "malicious_attachment",
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "context": "Anhang einer E-Mail eines Bewerbers an die Personalabteilung. Der Name sieht fast wie ein PDF aus.",
+      "name": "Lebenslauf_fdp.exe",
+      "display_name": "Lebenslauf_exe.pdf",
+      "size_kb": 633,
+      "shown_type": "Anwendung"
+    },
+    "red_flags": [
+      {
+        "target": "name",
+        "hint": "Ein unsichtbares Steuerzeichen (RLO) dreht die Schrift um: In Wahrheit endet die Datei auf .exe."
+      },
+      {
+        "target": "note:type",
+        "hint": "Der Dateityp sagt \"Anwendung\" und nicht \"PDF\". Dieser Blick entlarvt die Täuschung."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "open_attachment"
+    ],
+    "explanation": "Right-to-Left Override. Blende Dateiendungen ein und prüfe den Typ in den Details. Bewerbungen kommen als PDF oder über das Portal.",
+    "tags": []
+  },
+  {
+    "id": "file-lnk",
+    "type": "file",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "malicious_attachment",
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "context": "Aus einem ZIP eines \"Kollegen\". Das Symbol sieht aus wie ein Word-Dokument.",
+      "name": "Protokoll_Besprechung.docx.lnk",
+      "size_kb": 3,
+      "shown_type": "Verknüpfung"
+    },
+    "red_flags": [
+      {
+        "target": "name",
+        "hint": ".lnk ist eine Verknüpfung, die unbemerkt PowerShell-Befehle starten kann."
+      },
+      {
+        "target": "note:size",
+        "hint": "3 KB für ein Protokoll? Darin steckt nur ein Befehl."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "open_attachment"
+    ],
+    "explanation": "Das Word-Symbol ist frei wählbar. Entscheidend sind Endung und Dateityp.",
+    "tags": []
+  },
+  {
+    "id": "file-pdf-legit",
+    "type": "file",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "context": "Du hast das Formular gerade selbst von der Personalabteilung angefordert, es kam von personal@muster-automotive.example.",
+      "name": "Urlaubsantrag_2027.pdf",
+      "size_kb": 118,
+      "shown_type": "PDF-Dokument"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open_attachment"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: selbst angefordert, bekannter Absender, passende Endung und passende Größe.",
+    "tags": []
+  },
+  {
+    "id": "file-xlsx-legit",
+    "type": "file",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "context": "Die Monatsplanung kommt wie jeden Monat von deiner Teamleiterin. Ihr habt heute darüber gesprochen.",
+      "name": "Planung_November.xlsx",
+      "size_kb": 54,
+      "shown_type": "Excel-Tabelle"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open_attachment"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: erwartet, bekannte Person, .xlsx ohne Makros. Das \"m\" in .xlsm wäre der Unterschied.",
+    "tags": []
+  }
+]

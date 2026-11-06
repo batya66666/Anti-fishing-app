@@ -1,0 +1,217 @@
+[
+  {
+    "id": "url-subdomain",
+    "type": "url",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "lookalike_domain",
+    "module": 3,
+    "consumer": true,
+    "content": {
+      "context": "Du bist einem Link aus einer E-Mail gefolgt: \"Dein PayFriend-Konto wurde eingeschränkt.\"",
+      "url": "https://payfriend.example.secure-login.test/signin",
+      "secure": true,
+      "page_title": "PayFriend",
+      "page_kind": "login",
+      "brand": "PayFriend"
+    },
+    "red_flags": [
+      {
+        "target": "url",
+        "hint": "Die echte Domain steht direkt vor dem ersten Schrägstrich: secure-login.test. \"payfriend.example\" ist hier nur eine Subdomain."
+      },
+      {
+        "target": "secure",
+        "hint": "Das Schloss heißt nur \"verschlüsselt\", nicht \"vertrauenswürdig\". Betrüger bekommen genauso ein Zertifikat."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "leave"
+    ],
+    "dangerous_actions": [
+      "enter_credentials"
+    ],
+    "explanation": "Lies Adressen von rechts nach links: Was vor der Endung und dem ersten \"/\" steht, ist der Eigentümer.",
+    "tags": []
+  },
+  {
+    "id": "url-homoglyph",
+    "type": "url",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "homoglyph",
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "context": "Du wolltest dich schnell bei deinem Webmailer anmelden und hast auf einen Link im Chat geklickt.",
+      "url": "https://rnailbox.example/login",
+      "secure": true,
+      "page_title": "Mailbox",
+      "page_kind": "login",
+      "brand": "Mailbox"
+    },
+    "red_flags": [
+      {
+        "target": "url",
+        "hint": "\"rnailbox\": Aus dem \"m\" wurde \"r\" + \"n\". Die echte Seite heißt mailbox.example."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "leave"
+    ],
+    "dangerous_actions": [
+      "enter_credentials"
+    ],
+    "explanation": "Homoglyphen sind fast unsichtbar. Darum: Lesezeichen nutzen oder die Adresse selbst eintippen. Ein Passwortmanager füllt hier auch nichts aus: das ist ein gutes Warnzeichen.",
+    "tags": []
+  },
+  {
+    "id": "url-https-myth",
+    "type": "url",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "lookalike_domain",
+    "module": 3,
+    "consumer": true,
+    "content": {
+      "context": "Eine SMS deiner \"Bank\" hat dich hierher geführt. Oben siehst du ein Schloss.",
+      "url": "https://stadtbank-zwlckau.test/online-banking",
+      "secure": true,
+      "page_title": "Stadtbank Zwickau",
+      "page_kind": "login",
+      "brand": "Stadtbank Zwickau"
+    },
+    "red_flags": [
+      {
+        "target": "url",
+        "hint": "\"zwlckau\" statt \"zwickau\" und auch die Endung ist falsch."
+      },
+      {
+        "target": "secure",
+        "hint": "HTTPS bedeutet nicht \"sicher\". Fast alle Phishing-Seiten haben heute ein Schloss."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "leave"
+    ],
+    "dangerous_actions": [
+      "enter_credentials"
+    ],
+    "explanation": "Das Schloss schützt nur die Verbindung: Du kannst sehr gut verschlüsselt mit einem Betrüger sprechen.",
+    "tags": []
+  },
+  {
+    "id": "url-punycode",
+    "type": "url",
+    "locale": "de",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "homoglyph",
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "context": "Link aus einer Lieferanten-E-Mail. Im Browser sah es zuerst völlig richtig aus.",
+      "url": "https://xn--kessler-stahl-7ib.example/portal",
+      "secure": true,
+      "page_title": "Kessler Stahl Portal",
+      "page_kind": "login",
+      "brand": "Kessler Stahl"
+    },
+    "red_flags": [
+      {
+        "target": "url",
+        "hint": "\"xn--\" ist Punycode: Die Domain enthält Sonderzeichen, die wie normale Buchstaben aussehen. Das ist nicht kessler-stahl.example."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "leave"
+    ],
+    "dangerous_actions": [
+      "enter_credentials"
+    ],
+    "explanation": "Mit Zeichen aus anderen Alphabeten lassen sich Domains täuschend echt nachbauen. \"xn--\" am Anfang ist ein deutlicher Hinweis.",
+    "tags": []
+  },
+  {
+    "id": "url-legit-bank",
+    "type": "url",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 3,
+    "consumer": true,
+    "content": {
+      "context": "Du hast dein Lesezeichen für das Online-Banking geöffnet.",
+      "url": "https://login.stadtbank-zwickau.example/banking",
+      "secure": true,
+      "page_title": "Stadtbank Zwickau",
+      "page_kind": "login",
+      "brand": "Stadtbank Zwickau"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "enter_credentials"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: dein eigenes Lesezeichen und die richtige Domain. \"login.\" ist hier eine normale Subdomain der Bank.",
+    "tags": []
+  },
+  {
+    "id": "url-legit-intranet",
+    "type": "url",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "context": "Du öffnest wie jeden Morgen das Intranet über den Link auf dem Desktop.",
+      "url": "https://intranet.muster-automotive.example/start",
+      "secure": true,
+      "page_title": "Intranet",
+      "page_kind": "login",
+      "brand": "Muster Automotive"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "enter_credentials"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: eure eigene Domain auf dem gewohnten Weg.",
+    "tags": []
+  },
+  {
+    "id": "url-legit-shop",
+    "type": "url",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 3,
+    "consumer": true,
+    "content": {
+      "context": "Du hast die Adresse deines Lieblings-Buchladens selbst eingetippt und möchtest dich anmelden.",
+      "url": "https://www.buecher-sonnenschein.example/konto",
+      "secure": true,
+      "page_title": "Bücher Sonnenschein",
+      "page_kind": "login",
+      "brand": "Bücher Sonnenschein"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "enter_credentials"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: selbst eingetippt ist der sicherste Weg, und die Domain stimmt.",
+    "tags": []
+  }
+]

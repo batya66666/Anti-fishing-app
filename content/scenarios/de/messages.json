@@ -1,0 +1,359 @@
+[
+  {
+    "id": "sms-parcel",
+    "type": "sms",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": true,
+    "attack_type": "smishing",
+    "module": 6,
+    "consumer": true,
+    "content": {
+      "links": [
+        {
+          "text": "paketblitz-zustellung.test/x7",
+          "href": "https://paketblitz-zustellung.test/x7"
+        }
+      ],
+      "sender": "Paketblitz",
+      "number": "+49 1577 3920114",
+      "messages": [
+        {
+          "text": "Ihr Paket konnte nicht zugestellt werden. Bitte bestätigen Sie Ihre Adresse und zahlen Sie 1,99 € Gebühr: paketblitz-zustellung.test/x7",
+          "time": "10:42"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "number",
+        "hint": "Eine normale Handynummer: Zustelldienste schreiben nicht von privaten Nummern."
+      },
+      {
+        "target": "link:0",
+        "hint": "Das ist nicht die Domain des Paketdienstes."
+      },
+      {
+        "target": "body:1,99 €",
+        "hint": "Die kleine Gebühr ist der Köder: Es geht um deine Kartendaten, nicht um 1,99 €."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Eine der häufigsten Betrugs-SMS in Deutschland. Prüfe deine Sendung direkt in der App des Paketdienstes oder auf dessen Website, nie über den SMS-Link.",
+    "tags": []
+  },
+  {
+    "id": "sms-bank-tan",
+    "type": "sms",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "smishing",
+    "module": 6,
+    "consumer": true,
+    "content": {
+      "links": [
+        {
+          "text": "stadtbank-zwickau.konto-check.test",
+          "href": "https://stadtbank-zwickau.konto-check.test"
+        }
+      ],
+      "sender": "Stadtbank",
+      "number": "Stadtbank",
+      "messages": [
+        {
+          "text": "Ihr Online-Banking wird morgen gesperrt. Verlängern Sie Ihre TAN-App jetzt: stadtbank-zwickau.konto-check.test",
+          "time": "17:03"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "link:0",
+        "hint": "Maßgeblich ist der Teil vor der Endung: konto-check.test. \"stadtbank-zwickau\" ist nur eine Subdomain."
+      },
+      {
+        "target": "body:gesperrt",
+        "hint": "Drohung mit Sperrung, damit du sofort klickst."
+      },
+      {
+        "target": "sender",
+        "hint": "Absendernamen lassen sich fälschen. Die SMS kann sogar im selben Verlauf wie echte Nachrichten landen."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Banken schicken nie Links zum \"Verlängern\". Öffne im Zweifel selbst die Banking-App oder ruf die Nummer von deiner Karte an.",
+    "tags": []
+  },
+  {
+    "id": "chat-new-number",
+    "type": "chat",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "family_scam",
+    "module": 6,
+    "consumer": true,
+    "content": {
+      "links": [],
+      "sender": "+49 176 44120987",
+      "number": "+49 176 44120987",
+      "messages": [
+        {
+          "text": "Hallo Mama, das ist meine neue Nummer. Mein Handy ist kaputt.",
+          "time": "11:02"
+        },
+        {
+          "text": "Kannst du mir bitte schnell helfen? Ich muss heute noch 1.340 € überweisen und mein Banking geht auf dem neuen Handy noch nicht. Gebe es dir morgen zurück.",
+          "time": "11:03"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "number",
+        "hint": "Eine unbekannte Nummer, die behauptet, dein Kind zu sein. Ruf die alte Nummer an."
+      },
+      {
+        "target": "body:neue Nummer",
+        "hint": "Die neue Nummer erklärt, warum du den Namen nicht siehst. So beginnt die Masche."
+      },
+      {
+        "target": "body:überweisen",
+        "hint": "Geld, heute noch und eine Ausrede, warum das Kind es nicht selbst kann."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "reply"
+    ],
+    "explanation": "Die Masche \"Hallo Mama\". Ruf immer unter der alten, bekannten Nummer zurück oder stelle eine Frage, die nur dein Kind beantworten kann.",
+    "tags": []
+  },
+  {
+    "id": "chat-kleinmarkt",
+    "type": "chat",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "marketplace_scam",
+    "module": 6,
+    "consumer": true,
+    "content": {
+      "links": [
+        {
+          "text": "kleinmarkt-sicher-bezahlen.test/empfang",
+          "href": "https://kleinmarkt-sicher-bezahlen.test/empfang"
+        }
+      ],
+      "sender": "Interessent \"Marco_87\"",
+      "number": "+49 152 90411207",
+      "messages": [
+        {
+          "text": "Hallo, ich kaufe dein Sofa von Kleinmarkt. Ich zahle sicher und schicke einen Kurier.",
+          "time": "14:20"
+        },
+        {
+          "text": "Um dein Geld zu bekommen, gib hier deine Kartendaten ein: kleinmarkt-sicher-bezahlen.test/empfang",
+          "time": "14:21"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "link:0",
+        "hint": "Nicht die Domain des Marktplatzes, nur das Wort darin."
+      },
+      {
+        "target": "body:Kartendaten",
+        "hint": "Um Geld zu EMPFANGEN, braucht niemand deine Kartennummer samt Prüfziffer."
+      },
+      {
+        "target": "body:Kurier",
+        "hint": "Ungesehen kaufen und Kurier: So wird es aus der Plattform herausgeführt."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Marktplatz-Betrug. Bleib auf der Plattform, übergib wenn möglich persönlich, gib nie Kartendaten für den Geldempfang ein.",
+    "tags": []
+  },
+  {
+    "id": "sms-voicemail-apk",
+    "type": "sms",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "smishing",
+    "module": 4,
+    "consumer": true,
+    "content": {
+      "links": [
+        {
+          "text": "mobilbox-voicemail.test/app.apk",
+          "href": "https://mobilbox-voicemail.test/app.apk"
+        }
+      ],
+      "sender": "+49 1521 0098123",
+      "number": "+49 1521 0098123",
+      "messages": [
+        {
+          "text": "Sie haben 1 neue Sprachnachricht. Zum Anhören installieren Sie: mobilbox-voicemail.test/app.apk",
+          "time": "20:14"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "link:0",
+        "hint": "Eine .apk ist eine Android-App. Sie würde an der Sicherheitsprüfung des Stores vorbei installiert."
+      },
+      {
+        "target": "body:installieren",
+        "hint": "Für eine Sprachnachricht installiert man nichts. Ein solcher Schädling kann SMS mitlesen und sich weiterverschicken."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Schadsoftware per SMS: Solche Apps lesen TANs mit und schicken sich an deine Kontakte weiter. Apps nur aus dem offiziellen Store.",
+    "tags": []
+  },
+  {
+    "id": "sms-dentist-legit",
+    "type": "sms",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 6,
+    "consumer": true,
+    "content": {
+      "links": [],
+      "sender": "Praxis Dr. Lang",
+      "number": "Praxis Lang",
+      "messages": [
+        {
+          "text": "Erinnerung: Ihr Termin ist morgen um 9:30 Uhr. Falls Sie verhindert sind, rufen Sie uns bitte an. Ihre Praxis Dr. Lang",
+          "time": "16:00"
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: kein Link, keine Forderung, ein Termin, den du kennst. Für Änderungen sollst du selbst anrufen.",
+    "tags": []
+  },
+  {
+    "id": "sms-code-legit",
+    "type": "sms",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 9,
+    "consumer": true,
+    "content": {
+      "links": [],
+      "sender": "OfficeCloud",
+      "number": "OfficeCloud",
+      "messages": [
+        {
+          "text": "Ihr Anmeldecode: 482913. Sie haben gerade eine Anmeldung gestartet. Geben Sie diesen Code niemals an andere weiter.",
+          "time": "gerade eben"
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: Du hast dich gerade selbst angemeldet und der Code warnt dich sogar. Gib ihn nur auf der Seite ein, auf der du dich anmeldest.",
+    "tags": []
+  },
+  {
+    "id": "sms-parcel-legit",
+    "type": "sms",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 6,
+    "consumer": true,
+    "content": {
+      "links": [],
+      "sender": "Paketblitz",
+      "number": "Paketblitz",
+      "messages": [
+        {
+          "text": "Ihre Bestellung liegt in der Filiale Hauptstraße 12. Abholcode: 7741. Bitte Ausweis mitbringen.",
+          "time": "13:32"
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: Du erwartest ein Paket, die Nachricht enthält keinen Link und will kein Geld. Abholcode und Ausweis sind normal.",
+    "tags": []
+  },
+  {
+    "id": "chat-colleague-legit",
+    "type": "chat",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 6,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "sender": "Lena Hoffmann",
+      "number": "Kontakt",
+      "messages": [
+        {
+          "text": "Bin im Stau, komme ca. 10 Minuten später zum Meeting. Fangt ruhig schon an!",
+          "time": "08:52"
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open",
+      "reply"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: bekannter Kontakt, nichts verlangt, kein Link, kein Geld.",
+    "tags": []
+  }
+]

@@ -1,0 +1,92 @@
+{
+  "id": "binance-2019",
+  "company": "Binance",
+  "year": 2019,
+  "title": "Der 7.000-Bitcoin-Diebstahl",
+  "summary": "Im Mai 2019 stahlen Angreifer rund 7.000 BTC von der Kryptobörse Binance. Sie brauchten keine Lücke im Kerncode: Sie sammelten über lange Zeit API-Schlüssel und 2FA-Codes von Nutzern, unter anderem mit Phishing und Schadsoftware.",
+  "disclaimer": "Interaktive Nachstellung: Die Nachrichten sind beispielhaft. Die Fakten im Zeitstrahl stammen aus der öffentlichen Stellungnahme von Binance.",
+  "steps": [
+    {
+      "channel": "email",
+      "narration": "Du handelst privat mit Krypto bei einer großen Börse. Wir schreiben das Jahr 2019.",
+      "message": "Von: support@binance-security.test\nBetreff: Ungewöhnliche Anmeldung erkannt\n\nBestätigen Sie Ihr Konto innerhalb von 12 Stunden, sonst werden Abhebungen gesperrt.",
+      "question": "Was machst du?",
+      "options": [
+        {
+          "label": "Link öffnen und Konto bestätigen",
+          "stops": false,
+          "feedback": "Der erste Schritt der Angreifer ist geschafft: Auf der Kopie landen Passwort und 2FA-Code."
+        },
+        {
+          "label": "Selbst die echte Seite über das Lesezeichen öffnen",
+          "stops": true,
+          "feedback": "Genau richtig. Keine Warnung auf der echten Seite: Die E-Mail war Betrug."
+        },
+        {
+          "label": "E-Mail löschen und vergessen",
+          "stops": true,
+          "feedback": "Dein Konto ist sicher. Hilfreicher wäre noch eine Meldung an den Support gewesen."
+        }
+      ]
+    },
+    {
+      "channel": "file",
+      "narration": "Ein Kollege aus deiner Krypto-Gruppe teilt ein Tool, das dir angeblich bessere Kurse zeigt.",
+      "message": "Trading_Bot_Pro_Setup.exe\n\"Trag einfach deinen API-Schlüssel ein, läuft von selbst!\"",
+      "question": "Was machst du?",
+      "options": [
+        {
+          "label": "Installieren und API-Schlüssel eintragen",
+          "stops": false,
+          "feedback": "Schadsoftware und ein weitergegebener API-Schlüssel: Damit können Angreifer in deinem Namen handeln."
+        },
+        {
+          "label": "Nicht installieren und in der Gruppe warnen",
+          "stops": true,
+          "feedback": "Stark. Ein API-Schlüssel ist so viel wert wie dein Passwort, in manchen Fällen sogar mehr."
+        },
+        {
+          "label": "Installieren, aber nur mit Lese-Schlüssel",
+          "stops": false,
+          "feedback": "Besser, aber die Schadsoftware läuft trotzdem auf deinem Rechner und liest deine Eingaben mit."
+        }
+      ]
+    },
+    {
+      "channel": "push",
+      "narration": "Die Angreifer warten geduldig auf den richtigen Moment. Bei dir kommt eine Benachrichtigung an.",
+      "message": "Neuer API-Schlüssel erstellt.\nWaren Sie das?",
+      "question": "Was machst du?",
+      "options": [
+        {
+          "label": "Ignorieren, wird schon stimmen",
+          "stops": false,
+          "feedback": "Das ist der Moment, der den Schaden entscheidet: Niemand hat reagiert, und die Angreifer sammeln weiter."
+        },
+        {
+          "label": "Sofort Schlüssel löschen, Passwort ändern, Support informieren",
+          "stops": true,
+          "feedback": "Genau. Eine schnelle Meldung kann ganze Angriffswellen früher sichtbar machen."
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "Vor Mai 2019",
+      "what": "Laut Binance sammeln die Angreifer über Phishing, Viren und andere Angriffe Nutzerdaten wie API-Schlüssel und 2FA-Codes. Sie warten geduldig ab."
+    },
+    {
+      "when": "7. Mai 2019",
+      "what": "In einer einzigen Transaktion werden rund 7.000 BTC abgezogen, damals etwa 40 Millionen US-Dollar. Die Transaktion ist so aufgebaut, dass sie die Warnsysteme zunächst passiert."
+    },
+    {
+      "when": "Danach",
+      "what": "Binance setzt Ein- und Auszahlungen etwa eine Woche aus und deckt den Schaden aus seinem Sicherheitsfonds SAFU."
+    }
+  ],
+  "lesson": "Der teuerste Angriff begann nicht im Code, sondern bei einzelnen Menschen. Jede gemeldete Phishing-Mail hätte die Vorbereitung sichtbarer gemacht.",
+  "sources": [
+    "Öffentliche Stellungnahme von Binance zum Sicherheitsvorfall, Mai 2019"
+  ]
+}

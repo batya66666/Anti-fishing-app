@@ -1,0 +1,675 @@
+[
+  {
+    "id": "mail-invoice-exe",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "malicious_attachment",
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [
+        {
+          "name": "Rechnung_2026-1147.pdf.exe",
+          "size_kb": 412
+        }
+      ],
+      "from_name": "Buchhaltung Müller Logistik GmbH",
+      "from_email": "rechnung@mueller-logistlk.test",
+      "time": "08:12",
+      "subject": "Dringend: Offene Rechnung Nr. 2026-1147 – Mahnung",
+      "body_md": "Sehr geehrte Damen und Herren,\n\nleider ist Ihre Zahlung noch nicht eingegangen. Bitte begleichen Sie den Betrag **innerhalb von 24 Stunden**, um Mahngebühren zu vermeiden.\n\nDie Rechnung finden Sie im Anhang.\n\nMit freundlichen Grüßen\nBuchhaltung"
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "Die Domain lautet \"logistlk\" statt \"logistik\": ein einziger Buchstabe ist vertauscht."
+      },
+      {
+        "target": "body:innerhalb von 24 Stunden",
+        "hint": "Künstlicher Zeitdruck: So sollst du handeln, bevor du nachdenkst."
+      },
+      {
+        "target": "attachment:0",
+        "hint": "Doppelte Endung: Das ist eine .exe, also ein Programm, und kein PDF."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "open_attachment"
+    ],
+    "explanation": "Gefälschte Rechnung. Eine .exe im Anhang ist nie eine Rechnung. Prüfe den Lieferanten über die bekannte Telefonnummer und tippe auf \"Melden\".",
+    "tags": [
+      "attachments",
+      "lookalike-domain",
+      "urgency"
+    ]
+  },
+  {
+    "id": "mail-ceo-transfer",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "ceo_fraud",
+    "module": 5,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Dr. Stefan Müller (Geschäftsführung)",
+      "from_email": "stefan.mueller.gf@freemail.test",
+      "time": "09:41",
+      "subject": "Vertraulich – kurze Bitte",
+      "body_md": "Hallo,\n\nich sitze gleich in einer Notarbesprechung und bin nicht erreichbar. Für eine Übernahme muss heute noch eine Anzahlung von 48.500 € raus. Die Kontodaten schicke ich gleich.\n\nBitte behandeln Sie das streng vertraulich und sprechen Sie mit niemandem darüber, auch nicht in der Abteilung.\n\nS. Müller"
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "Die Geschäftsführung schreibt nicht von einem Freemail-Konto. Der Anzeigename beweist gar nichts."
+      },
+      {
+        "target": "body:nicht erreichbar",
+        "hint": "Unerreichbarkeit verhindert, dass du zurückfragst."
+      },
+      {
+        "target": "body:mit niemandem",
+        "hint": "Geheimhaltung soll das Vier-Augen-Prinzip aushebeln."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "reply"
+    ],
+    "explanation": "CEO-Fraud. Autorität + Eile + Geheimhaltung sind das klassische Muster. Frag über einen bekannten Kanal nach, Zahlungen laufen immer über das Vier-Augen-Prinzip.",
+    "tags": []
+  },
+  {
+    "id": "mail-password-expiry",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "credential_phishing",
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "links": [
+        {
+          "text": "Passwort beibehalten",
+          "href": "https://officecloud-security.test/keep-password"
+        }
+      ],
+      "attachments": [],
+      "from_name": "OfficeCloud Support",
+      "from_email": "no-reply@officecloud-security.test",
+      "time": "10:03",
+      "subject": "Ihr Passwort läuft heute ab",
+      "body_md": "Sehr geehrter Nutzer,\n\nIhr Passwort läuft in 3 Stunden ab. Danach wird Ihr Postfach gesperrt und alle E-Mails gehen verloren.\n\nBehalten Sie jetzt Ihr aktuelles Passwort:"
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "Das ist nicht die Domain deiner Firma und nicht die echte OfficeCloud-Domain."
+      },
+      {
+        "target": "body:Sehr geehrter Nutzer",
+        "hint": "Eine allgemeine Anrede: Deine eigene IT kennt deinen Namen."
+      },
+      {
+        "target": "body:alle E-Mails gehen verloren",
+        "hint": "Angst vor Verlust ist ein starker Hebel und hier völlig unrealistisch."
+      },
+      {
+        "target": "link:0",
+        "hint": "Halte den Link gedrückt: Er führt auf eine fremde Domain."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Passwort-Phishing. Ändere Passwörter nur über das bekannte Portal, nie über einen Link aus einer E-Mail.",
+    "tags": []
+  },
+  {
+    "id": "mail-shared-doc",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "credential_phishing",
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "links": [
+        {
+          "text": "Dokument öffnen",
+          "href": "https://databox.example/s/8f2k/login-firma"
+        }
+      ],
+      "attachments": [],
+      "from_name": "Julia Brandt via DataBox",
+      "from_email": "share@databox.example",
+      "time": "11:20",
+      "subject": "Julia Brandt hat \"Angebot_Q4_final.pdf\" mit Ihnen geteilt",
+      "body_md": "Julia Brandt hat ein Dokument für Sie freigegeben.\n\nHinweis: Melden Sie sich mit Ihrem Firmen-Passwort an, um das Dokument anzuzeigen."
+    },
+    "red_flags": [
+      {
+        "target": "body:Firmen-Passwort",
+        "hint": "Ein fremder Dienst braucht nie dein Firmen-Passwort. Genau das wollen die Angreifer."
+      },
+      {
+        "target": "subject",
+        "hint": "Du kennst keine Julia Brandt und erwartest kein Angebot. Unerwartet heißt: erst prüfen."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Echter Dienst, falsche Absicht: Der Link liegt wirklich bei DataBox, die Datei dahinter ist die Falle. Darum hilft auch der saubere Absender nicht. Frag die Person über einen anderen Weg.",
+    "tags": []
+  },
+  {
+    "id": "mail-bonus-xlsm",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "macro",
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [
+        {
+          "name": "Bonus_2026_Mitarbeiter.xlsm",
+          "size_kb": 88
+        }
+      ],
+      "from_name": "Personalabteilung",
+      "from_email": "personal@muster-automotive.test",
+      "time": "13:05",
+      "subject": "Bonusauszahlung 2026 – bitte prüfen",
+      "body_md": "Liebe Kolleginnen und Kollegen,\n\nanbei die Liste der Bonuszahlungen. Damit die Beträge angezeigt werden, klicken Sie beim Öffnen bitte auf \"Inhalt aktivieren\"."
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "Fast richtig: .test statt .example. Eure echte Domain ist muster-automotive.example."
+      },
+      {
+        "target": "attachment:0",
+        "hint": ".xlsm bedeutet: Excel mit Makros, und Makros sind Programmcode."
+      },
+      {
+        "target": "body:Inhalt aktivieren",
+        "hint": "\"Inhalt aktivieren\" startet die Makros. Das ist die klassische Falle."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "open_attachment"
+    ],
+    "explanation": "Makro-Anhang mit Köder \"Gehalt\". Neugier ist der Hebel. Echte Gehaltsdaten verschickt niemand als Liste an alle.",
+    "tags": []
+  },
+  {
+    "id": "mail-bank-change",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "invoice_fraud",
+    "module": 5,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Petra Vogel, Kessler Stahl GmbH",
+      "from_email": "p.vogel@kessler-stahl-gmbh.test",
+      "time": "14:22",
+      "subject": "Änderung unserer Bankverbindung",
+      "body_md": "Guten Tag,\n\nwegen einer Umstellung unserer Hausbank bitten wir Sie, offene und künftige Rechnungen ab sofort auf folgendes Konto zu überweisen:\n\nIBAN DE00 1234 5678 9012 3456 78\n\nBitte bestätigen Sie kurz per Antwort auf diese E-Mail.\n\nFreundliche Grüße\nPetra Vogel"
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "Die echte Domain ist kessler-stahl.example. Hier wurde \"-gmbh\" ergänzt und die Endung geändert."
+      },
+      {
+        "target": "body:auf folgendes Konto",
+        "hint": "Geänderte Bankdaten sind der Kern dieses Betrugs. Prüfe sie immer telefonisch."
+      },
+      {
+        "target": "body:per Antwort auf diese E-Mail",
+        "hint": "Die Bestätigung soll im Kanal des Betrügers bleiben. Ruf lieber die bekannte Nummer an."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "reply"
+    ],
+    "explanation": "Rechnungsbetrug (BEC). Kein Anhang, kein Link, kein Rechtschreibfehler: darum gefährlich. Bankänderungen immer über die bekannte Telefonnummer prüfen, nie über die Daten aus der E-Mail.",
+    "tags": []
+  },
+  {
+    "id": "mail-prince",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": true,
+    "attack_type": "advance_fee",
+    "module": 1,
+    "consumer": true,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Mr. Benjamin Okoro",
+      "from_email": "b.okoro1962@freemail.test",
+      "time": "07:30",
+      "subject": "STRENG VERTRAULICHES GESCHÄFT 14,5 MILLIONEN USD",
+      "body_md": "Lieber Freund,\n\nich bin Anwalt eines verstorbenen Kunden. Sie erhalten 30% von 14,5 Millionen Dollar, wenn Sie mir helfen das Geld zu transferieren. Senden Sie nur Ihre Bankdaten und eine kleine Bearbeitungsgebühr."
+    },
+    "red_flags": [
+      {
+        "target": "body:14,5 Millionen",
+        "hint": "Zu schön, um wahr zu sein. Ist es auch."
+      },
+      {
+        "target": "body:Bearbeitungsgebühr",
+        "hint": "Vorschussbetrug: Du zahlst kleine Gebühren für Geld, das es nie gibt."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "reply"
+    ],
+    "explanation": "Der Klassiker. Kaum jemand fällt noch darauf herein, aber er zeigt das Grundprinzip: Gier ausnutzen.",
+    "tags": []
+  },
+  {
+    "id": "mail-thread-hijack",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "invoice_fraud",
+    "module": 5,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [
+        {
+          "name": "Rechnung_KW46.zip",
+          "size_kb": 214
+        }
+      ],
+      "from_name": "Markus Thiel",
+      "from_email": "m.thiel@bauer-elektrik.example",
+      "time": "15:47",
+      "subject": "AW: AW: Lieferung Schaltschränke KW 46",
+      "body_md": "Hallo,\n\nwie gerade besprochen die aktualisierte Rechnung zur Lieferung. Der Anhang ist wegen des Datenschutzes verschlüsselt, das Passwort lautet: 4471.\n\n> Am 28.10. schrieben Sie: Bitte bestätigen Sie den Liefertermin KW 46."
+    },
+    "red_flags": [
+      {
+        "target": "body:das Passwort lautet",
+        "hint": "Ein Passwort-Archiv kann kein Virenscanner prüfen. Genau deshalb wird es verwendet."
+      },
+      {
+        "target": "attachment:0",
+        "hint": "Die Rechnung kommt sonst immer als PDF. Eine plötzliche Änderung ist ein Warnzeichen."
+      },
+      {
+        "target": "body:wie gerade besprochen",
+        "hint": "Es gab kein Gespräch. Das Konto von Herrn Thiel wurde gekapert, der Verlauf ist echt."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "open_attachment"
+    ],
+    "explanation": "Thread Hijacking: Der Absender und der Verlauf sind echt, das Konto wurde übernommen. Stimmen die Details, aber nicht das Verhalten, ruf kurz an. Diese Masche machte Emotet so erfolgreich.",
+    "tags": []
+  },
+  {
+    "id": "mail-lookalike-colleague",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "lookalike_domain",
+    "module": 2,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Sabine Krüger",
+      "from_email": "sabine.krueger@muster-autornotive.example",
+      "time": "09:15",
+      "subject": "Kurze Frage zu den Zugangsdaten",
+      "body_md": "Hi, ich komme gerade nicht ins Lieferantenportal. Kannst du mir kurz dein Passwort schicken? Ist wirklich eilig, der Termin ist in zehn Minuten."
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "Schau genau hin: \"autornotive\". Aus \"m\" wurde \"rn\". In vielen Schriften sieht das gleich aus."
+      },
+      {
+        "target": "body:dein Passwort",
+        "hint": "Passwörter teilt man nie, auch nicht unter Kollegen. Das ist immer ein Warnzeichen."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "reply"
+    ],
+    "explanation": "Homoglyph-Domain: \"rn\" sieht aus wie \"m\". Passwörter gibt man nie weiter, egal wer fragt.",
+    "tags": []
+  },
+  {
+    "id": "mail-tax-refund",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": true,
+    "attack_type": "credential_phishing",
+    "module": 1,
+    "consumer": true,
+    "content": {
+      "links": [
+        {
+          "text": "Erstattung anfordern",
+          "href": "https://finanzamt-online.test/erstattung"
+        }
+      ],
+      "attachments": [],
+      "from_name": "Finanzamt Online",
+      "from_email": "erstattung@finanzamt-online.test",
+      "time": "18:02",
+      "subject": "Ihre Steuerrückerstattung: 468,23 €",
+      "body_md": "Sehr geehrter Kunde,\n\nSie haben Anspruch auf eine Rückerstattung. Geben Sie innerhalb von 48 Stunden Ihre Kartendaten ein, damit wir den Betrag überweisen können."
+    },
+    "red_flags": [
+      {
+        "target": "body:Kartendaten",
+        "hint": "Das Finanzamt fragt nie per E-Mail nach Kartendaten und nennt dich auch nicht \"Kunde\"."
+      },
+      {
+        "target": "from_email",
+        "hint": "Behörden nutzen keine solche Domain."
+      },
+      {
+        "target": "link:0",
+        "hint": "Der Link führt nicht zu einer Behörde."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Gier und Autorität: Geld vom Amt. Behörden schreiben per Post oder über ihr offizielles Portal.",
+    "tags": []
+  },
+  {
+    "id": "mail-team-lunch",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 1,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Lena Hoffmann",
+      "from_email": "lena.hoffmann@muster-automotive.example",
+      "time": "08:05",
+      "subject": "Mittagessen am Freitag?",
+      "body_md": "Hi zusammen,\n\nwir wollen Freitag um 12:30 Uhr zusammen in die Kantine. Wer ist dabei? Schreibt mir einfach kurz.\n\nLG Lena"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open",
+      "reply"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echte Nachricht: interne Adresse, kein Link, kein Anhang, kein Druck. Nicht alles ist ein Angriff.",
+    "tags": []
+  },
+  {
+    "id": "mail-supplier-legit",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 5,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [
+        {
+          "name": "Rechnung_88213.pdf",
+          "size_kb": 96
+        }
+      ],
+      "from_name": "Kessler Stahl GmbH",
+      "from_email": "rechnung@kessler-stahl.example",
+      "time": "09:30",
+      "subject": "Rechnung 88213 zu Ihrer Bestellung 4500127",
+      "body_md": "Guten Tag Frau Schneider,\n\nanbei erhalten Sie die Rechnung zu Ihrer Bestellung 4500127 vom 21.10. Das Zahlungsziel beträgt wie vereinbart 30 Tage, die Bankverbindung ist unverändert.\n\nFreundliche Grüße\nKessler Stahl GmbH, Buchhaltung"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open_attachment",
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echte Rechnung: bekannte Domain, deine Bestellnummer, deine Anrede, normales PDF, kein Druck. Richtig, sie zu bearbeiten.",
+    "tags": []
+  },
+  {
+    "id": "mail-it-maintenance",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 2,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "IT-Service",
+      "from_email": "it-service@muster-automotive.example",
+      "time": "16:10",
+      "subject": "Wartung am Samstag, 8–12 Uhr",
+      "body_md": "Hallo zusammen,\n\nam Samstag ist das Warenwirtschaftssystem von 8 bis 12 Uhr nicht erreichbar. Sie müssen nichts tun. Fragen beantwortet das Service-Team unter Durchwahl 400."
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echte Info: interne Adresse, keine Aufforderung, kein Link. Nichts spricht dagegen.",
+    "tags": []
+  },
+  {
+    "id": "mail-payroll-legit",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 2,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Personalabteilung",
+      "from_email": "personal@muster-automotive.example",
+      "time": "11:00",
+      "subject": "Ihre Gehaltsabrechnung liegt bereit",
+      "body_md": "Hallo,\n\nIhre Abrechnung für Oktober liegt wie jeden Monat im Personalportal bereit. Sie finden sie wie gewohnt über Ihr Lesezeichen im Intranet."
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: Die Nachricht enthält keinen Link und schickt dich über deinen gewohnten Weg ins Portal. So sehen gute Mails aus.",
+    "tags": []
+  },
+  {
+    "id": "mail-training-legit",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "links": [
+        {
+          "text": "Zur Schulung",
+          "href": "https://lernen.muster-automotive.example/brandschutz"
+        }
+      ],
+      "attachments": [],
+      "from_name": "Lernplattform",
+      "from_email": "lernen@muster-automotive.example",
+      "time": "10:30",
+      "subject": "Erinnerung: Brandschutz-Schulung bis 30.11.",
+      "body_md": "Guten Tag,\n\nbitte schließen Sie die jährliche Brandschutz-Schulung bis zum 30.11. ab. Dauer ca. 15 Minuten."
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "click_link",
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: interne Domain, auch der Link bleibt auf eurer Domain, die Frist ist realistisch.",
+    "tags": []
+  },
+  {
+    "id": "mail-reset-legit",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 9,
+    "consumer": false,
+    "content": {
+      "links": [
+        {
+          "text": "Neues Passwort festlegen",
+          "href": "https://portal.kessler-stahl.example/reset/9f31"
+        }
+      ],
+      "attachments": [],
+      "from_name": "Lieferantenportal",
+      "from_email": "no-reply@portal.kessler-stahl.example",
+      "time": "gerade eben",
+      "subject": "Ihr Link zum Zurücksetzen des Passworts",
+      "body_md": "Sie haben gerade auf \"Passwort vergessen\" geklickt (Vorgang vor 1 Minute, von Ihrem Standort Zwickau). Wenn Sie das nicht waren, ignorieren Sie diese E-Mail."
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "click_link",
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt, denn du hast es selbst gerade angefordert: Erwartung + richtige Domain + kein Druck. Der entscheidende Faktor ist, dass DU den Vorgang gestartet hast.",
+    "tags": []
+  },
+  {
+    "id": "mail-shop-order-legit",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 2,
+    "consumer": true,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Bücher Sonnenschein",
+      "from_email": "bestellung@buecher-sonnenschein.example",
+      "time": "19:12",
+      "subject": "Bestellbestätigung Nr. 20419",
+      "body_md": "Hallo Helga,\n\nvielen Dank für Ihre Bestellung von gestern: \"Der Garten im Herbst\", 18,90 €. Sie bezahlen wie gewählt auf Rechnung, das Buch kommt in 2 bis 3 Tagen."
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: Du hast wirklich bestellt, die Bestellung stimmt, niemand will Daten oder einen Klick von dir.",
+    "tags": []
+  },
+  {
+    "id": "mail-newsletter-legit",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 1,
+    "consumer": false,
+    "content": {
+      "links": [],
+      "attachments": [],
+      "from_name": "Werksnews",
+      "from_email": "news@muster-automotive.example",
+      "time": "12:00",
+      "subject": "Werksnews: neue Kantine ab Januar",
+      "body_md": "Ab Januar öffnet die neue Kantine in Halle 3. Den Speiseplan hängen wir wie immer am Eingang aus."
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: nur eine Information, keine Handlung gefordert.",
+    "tags": []
+  }
+]

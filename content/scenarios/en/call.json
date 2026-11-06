@@ -1,0 +1,302 @@
+[
+  {
+    "id": "call-ceo-fraud",
+    "type": "call",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "ceo_fraud",
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "Boss – Mr Müller",
+      "number": "+49 170 5550142",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Hello, Müller here. I am stuck in an important meeting. We have to pay a supplier right away or the contract falls through. The invoice is coming by email shortly. Please do not tell anyone.",
+          "options": [
+            {
+              "label": "Of course, I will take care of it right away.",
+              "next": "b"
+            },
+            {
+              "label": "I will call you straight back on your office number.",
+              "action": "verify"
+            },
+            {
+              "label": "Could you tell me the project number for this?",
+              "next": "c"
+            },
+            {
+              "label": "Hang up and report it to IT.",
+              "action": "report"
+            }
+          ]
+        },
+        "b": {
+          "say": "Perfect. Please transfer the 48,500 euros before noon and report only to me. I am counting on you.",
+          "options": [
+            {
+              "label": "Consider it done, Mr Müller.",
+              "action": "comply"
+            },
+            {
+              "label": "Wait, I have to check that first. I will call back.",
+              "action": "verify"
+            }
+          ]
+        },
+        "c": {
+          "say": "I really do not have time for that! This is an instruction. Should I tell the board that it failed because of you?",
+          "options": [
+            {
+              "label": "Sorry, I will transfer it right away.",
+              "action": "comply"
+            },
+            {
+              "label": "I cannot do this without checking. I will call you back through reception.",
+              "action": "verify"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [
+      {
+        "target": "note:urgency",
+        "hint": "Pressure and threats: \"right away\", \"or the contract falls through\"."
+      },
+      {
+        "target": "note:secrecy",
+        "hint": "\"Do not tell anyone\" switches off all controls."
+      },
+      {
+        "target": "number",
+        "hint": "An unknown mobile number, even if the voice sounds familiar. Voices can be cloned with AI today."
+      }
+    ],
+    "correct_actions": [
+      "verify",
+      "report",
+      "hang_up"
+    ],
+    "dangerous_actions": [
+      "comply"
+    ],
+    "explanation": "Sounds like the boss, but is not: a voice can be cloned from a few seconds of audio. The rule stays the same: hang up and call back on the known number.",
+    "tags": []
+  },
+  {
+    "id": "call-it-support",
+    "type": "call",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "vishing",
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "IT support",
+      "number": "+49 30 5550177",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Good day, this is Kevin from IT support. We can see your computer is sending out malware right now. I have to fix it immediately. Please open the site remote-help dot test and tell me the code that appears there.",
+          "options": [
+            {
+              "label": "Oh no! I will open the site right away.",
+              "action": "comply"
+            },
+            {
+              "label": "What is the ticket number? I will call the hotline back.",
+              "action": "verify"
+            },
+            {
+              "label": "Hang up and report it to IT.",
+              "action": "report"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [
+      {
+        "target": "note:remote",
+        "hint": "Remote-access codes give strangers full control of your computer."
+      },
+      {
+        "target": "note:fear",
+        "hint": "First panic, then the solution: that is how thinking gets switched off."
+      }
+    ],
+    "correct_actions": [
+      "verify",
+      "report",
+      "hang_up"
+    ],
+    "dangerous_actions": [
+      "comply"
+    ],
+    "explanation": "Real IT comes with a ticket and can wait until you call back on the known hotline.",
+    "tags": []
+  },
+  {
+    "id": "call-enkeltrick",
+    "type": "call",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": true,
+    "attack_type": "vishing",
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "Unknown",
+      "number": "Withheld",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Hi Grandma, it's me! Guess who this is. I have had an accident and need money very quickly or I will go to prison. Please do not tell anyone, it is so embarrassing!",
+          "options": [
+            {
+              "label": "Lukas, is that you? How much do you need?",
+              "next": "b"
+            },
+            {
+              "label": "I will hang up and call you on your known number.",
+              "action": "verify"
+            },
+            {
+              "label": "Hang up and call the police on 110.",
+              "action": "report"
+            }
+          ]
+        },
+        "b": {
+          "say": "Yes, Lukas! I will send a messenger right away. Please get fifteen thousand euros from the bank and do not say what it is for.",
+          "options": [
+            {
+              "label": "I will go to the bank right away.",
+              "action": "comply"
+            },
+            {
+              "label": "No. I am calling your parents now.",
+              "action": "verify"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [
+      {
+        "target": "note:guess",
+        "hint": "\"Guess who this is\": that way you give away the name yourself."
+      },
+      {
+        "target": "note:messenger",
+        "hint": "A messenger picks up the money: the hallmark of the grandchild scam."
+      }
+    ],
+    "correct_actions": [
+      "verify",
+      "report",
+      "hang_up"
+    ],
+    "dangerous_actions": [
+      "comply"
+    ],
+    "explanation": "Grandchild scam. Simply hang up and call the real number. Being rude is perfectly fine here. The police never collect money.",
+    "tags": []
+  },
+  {
+    "id": "call-police",
+    "type": "call",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "vishing",
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "Police",
+      "number": "110",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Good day, Detective Weber from the criminal police. There have been burglaries in your neighbourhood and we found your name on a list. Your cash and jewellery are no longer safe. A colleague will collect everything and keep it safe.",
+          "options": [
+            {
+              "label": "Thank you! What should I prepare?",
+              "action": "comply"
+            },
+            {
+              "label": "I will hang up and dial 110 myself.",
+              "action": "report"
+            },
+            {
+              "label": "I will call my daughter first.",
+              "action": "verify"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [
+      {
+        "target": "number",
+        "hint": "The 110 on the display is faked: the real police never call from 110."
+      },
+      {
+        "target": "note:money",
+        "hint": "The police never keep your money or jewellery safe for you."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "verify",
+      "hang_up"
+    ],
+    "dangerous_actions": [
+      "comply"
+    ],
+    "explanation": "Fake police officer. The number on the display can be faked. Hang up, wait a moment, dial 110 yourself.",
+    "tags": []
+  },
+  {
+    "id": "call-it-legit",
+    "type": "call",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "IT service (extension 400)",
+      "number": "Internal: 400",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Hello, this is Jana from IT service. You opened ticket 4471 this morning about your printer. It is repaired now. Could you print a test page, please? I do not need any data from you.",
+          "options": [
+            {
+              "label": "Sure, I will print a test page.",
+              "action": "cooperate"
+            },
+            {
+              "label": "Hang up and report as an attack.",
+              "action": "report"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "cooperate"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: internal extension, your own ticket, and nobody wants passwords or codes. Being careful does not mean distrusting everyone.",
+    "tags": []
+  }
+]

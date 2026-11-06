@@ -1,0 +1,118 @@
+[
+  {
+    "id": "qr-parking",
+    "type": "qr",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "quishing",
+    "module": 8,
+    "consumer": true,
+    "content": {
+      "context": "Parking meter in the city centre. A sticker on it says: \"Pay easily by QR code\".",
+      "place": "Parking meter",
+      "sticker": true,
+      "url": "https://parken-zwickau.test/pay"
+    },
+    "red_flags": [
+      {
+        "target": "note:sticker",
+        "hint": "A sticker on the meter: it has often been added afterwards. If in doubt, scratch at it."
+      },
+      {
+        "target": "url",
+        "hint": "The address does not belong to the city. Official sites are printed on the meter itself."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "ignore"
+    ],
+    "dangerous_actions": [
+      "scan_open"
+    ],
+    "explanation": "Quishing: with a QR code you cannot see the destination in advance. Pay at the meter or through the official parking app you installed yourself.",
+    "tags": []
+  },
+  {
+    "id": "qr-mail-mfa",
+    "type": "qr",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "quishing",
+    "module": 8,
+    "consumer": false,
+    "content": {
+      "context": "Email from \"IT\": \"Everyone must renew their two-factor sign-in by Friday. Scan this QR code with your phone.\"",
+      "place": "Email on your laptop",
+      "sticker": false,
+      "url": "https://officecloud-mfa.test/renew"
+    },
+    "red_flags": [
+      {
+        "target": "note:qr-in-mail",
+        "hint": "A QR code in an email dodges the link filter and moves you to your unprotected phone."
+      },
+      {
+        "target": "url",
+        "hint": "The domain is foreign. Your IT uses muster-automotive.example."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "ignore"
+    ],
+    "dangerous_actions": [
+      "scan_open"
+    ],
+    "explanation": "Attackers use QR codes in emails on purpose because filters check them less well. Ask IT, do not scan.",
+    "tags": []
+  },
+  {
+    "id": "qr-canteen-legit",
+    "type": "qr",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 8,
+    "consumer": false,
+    "content": {
+      "context": "Official notice at the canteen entrance, behind glass: \"Menu of the week\".",
+      "place": "Canteen",
+      "sticker": false,
+      "url": "https://kantine.muster-automotive.example/speiseplan"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "scan_open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: the notice is behind glass, the address belongs to your company and nothing is asked of you.",
+    "tags": []
+  },
+  {
+    "id": "qr-event-legit",
+    "type": "qr",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 8,
+    "consumer": false,
+    "content": {
+      "context": "The flyer for the staff meeting, which HR handed you, has a QR code for the agenda.",
+      "place": "Flyer",
+      "sticker": false,
+      "url": "https://intranet.muster-automotive.example/versammlung"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "scan_open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: known source, and the address shown is your own domain. Always read the address before opening.",
+    "tags": []
+  }
+]

@@ -1,0 +1,70 @@
+{
+  "id": "twitter-2020",
+  "company": "Twitter",
+  "year": 2020,
+  "title": "The phone call that cost 130 accounts",
+  "summary": "In July 2020 attackers made targeted phone calls to Twitter employees. Using the access obtained this way, they reached internal tools and hijacked prominent accounts for a bitcoin scam.",
+  "disclaimer": "Interactive reconstruction: the conversation is illustrative. The facts in the timeline come from Twitter's updates and the New York financial regulator's report.",
+  "steps": [
+    {
+      "channel": "call",
+      "narration": "You are working from home, and the pandemic has been going on for months. Your phone rings.",
+      "message": "\"Hello, this is IT. We are switching the VPN over and we see a problem on your side. Please sign in briefly on our site and I will guide you through.\"",
+      "question": "What do you do?",
+      "options": [
+        {
+          "label": "Sign in, the colleague sounds competent",
+          "stops": false,
+          "feedback": "The call sounds real, the site looks like the VPN portal. Your login details are gone."
+        },
+        {
+          "label": "Hang up and call IT on the known number",
+          "stops": true,
+          "feedback": "That is the one action that stops this attack."
+        },
+        {
+          "label": "Ask for a ticket number",
+          "stops": true,
+          "feedback": "Good reaction, but only a callback on the known number really gives you certainty."
+        }
+      ]
+    },
+    {
+      "channel": "chat",
+      "narration": "A colleague messages you: she got a similar call.",
+      "message": "\"Hey, did IT call you about the VPN too? That was odd, wasn't it?\"",
+      "question": "What do you do?",
+      "options": [
+        {
+          "label": "Both of you inform the security team",
+          "stops": true,
+          "feedback": "Two identical calls are a pattern. That is exactly what the security team needs right away."
+        },
+        {
+          "label": "Wait and see, it will be nothing",
+          "stops": false,
+          "feedback": "The attackers needed only a few people to get further."
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "July 2020",
+      "what": "Using phone spear phishing, the perpetrators obtain employees' access, including to internal support tools."
+    },
+    {
+      "when": "15 July 2020",
+      "what": "130 accounts are targeted, and tweets are sent from 45 of them: \"I will double your bitcoin\"."
+    },
+    {
+      "when": "Afterwards",
+      "what": "The perpetrators take over 100,000 US dollars in bitcoin and are later arrested."
+    }
+  ],
+  "lesson": "No zero-day, no malware: just a convincing call. Calling back on the known number is the strongest defence against vishing.",
+  "sources": [
+    "Twitter: updates on the security incident, July 2020",
+    "New York State Department of Financial Services: investigation report, October 2020"
+  ]
+}

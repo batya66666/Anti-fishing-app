@@ -1,0 +1,92 @@
+{
+  "id": "binance-2019",
+  "company": "Binance",
+  "year": 2019,
+  "title": "The 7,000 bitcoin theft",
+  "summary": "In May 2019 attackers stole about 7,000 BTC from the crypto exchange Binance. They did not need a hole in the core code: over a long time they collected API keys and 2FA codes from users, among other things through phishing and malware.",
+  "disclaimer": "Interactive reconstruction: the messages are illustrative. The facts in the timeline come from the public statement by Binance.",
+  "steps": [
+    {
+      "channel": "email",
+      "narration": "You trade crypto privately on a large exchange. The year is 2019.",
+      "message": "From: support@binance-security.test\nSubject: Unusual sign-in detected\n\nConfirm your account within 12 hours or withdrawals will be locked.",
+      "question": "What do you do?",
+      "options": [
+        {
+          "label": "Open the link and confirm the account",
+          "stops": false,
+          "feedback": "The attackers' first step is done: the copy captures your password and 2FA code."
+        },
+        {
+          "label": "Open the real site yourself using a bookmark",
+          "stops": true,
+          "feedback": "Exactly right. No warning on the real site: the email was fraud."
+        },
+        {
+          "label": "Delete the email and forget it",
+          "stops": true,
+          "feedback": "Your account is safe. Reporting it to support would have helped even more."
+        }
+      ]
+    },
+    {
+      "channel": "file",
+      "narration": "Someone in your crypto group shares a tool that supposedly shows you better prices.",
+      "message": "Trading_Bot_Pro_Setup.exe\n\"Just enter your API key, it runs by itself!\"",
+      "question": "What do you do?",
+      "options": [
+        {
+          "label": "Install it and enter the API key",
+          "stops": false,
+          "feedback": "Malware and a handed-over API key: attackers can now trade in your name."
+        },
+        {
+          "label": "Do not install it and warn the group",
+          "stops": true,
+          "feedback": "Strong. An API key is worth as much as your password, sometimes more."
+        },
+        {
+          "label": "Install it, but with a read-only key",
+          "stops": false,
+          "feedback": "Better, but the malware still runs on your computer and reads what you type."
+        }
+      ]
+    },
+    {
+      "channel": "push",
+      "narration": "The attackers wait patiently for the right moment. A notification reaches you.",
+      "message": "New API key created.\nWas this you?",
+      "question": "What do you do?",
+      "options": [
+        {
+          "label": "Ignore it, it will be fine",
+          "stops": false,
+          "feedback": "This is the moment that decides the damage: nobody reacted, and the attackers keep collecting."
+        },
+        {
+          "label": "Delete the key right away, change the password, inform support",
+          "stops": true,
+          "feedback": "Exactly. A quick report can make whole waves of attacks visible earlier."
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "Before May 2019",
+      "what": "According to Binance, the attackers collect user data such as API keys and 2FA codes through phishing, viruses and other attacks. They wait patiently."
+    },
+    {
+      "when": "7 May 2019",
+      "what": "About 7,000 BTC are withdrawn in a single transaction, then worth about 40 million US dollars. The transaction is structured so that it initially passes the alert systems."
+    },
+    {
+      "when": "Afterwards",
+      "what": "Binance suspends deposits and withdrawals for about a week and covers the loss from its SAFU security fund."
+    }
+  ],
+  "lesson": "The most expensive attack did not begin in the code but with individual people. Every reported phishing email would have made the preparation more visible.",
+  "sources": [
+    "Public statement by Binance on the security incident, May 2019"
+  ]
+}

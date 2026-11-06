@@ -1,0 +1,9 @@
+# Generates app/packages/koeder_api from docs/openapi.json. Run scripts/gen_api.sh after changing the API.
+generatorName: dart-dio
+inputSpec: docs/openapi.json
+outputDir: app/packages/koeder_api
+additionalProperties:
+  pubName: koeder_api
+  pubDescription: Generated client for the KOEDER API
+  serializationLibrary: json_serializable
+  dateLibrary: core

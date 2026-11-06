@@ -1,0 +1,17 @@
+name: koeder_api
+version: 1.0.0
+description: Generated client for the KOEDER API
+homepage: homepage
+
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  dio: '^5.7.0'
+  json_annotation: '^4.9.0'
+
+dev_dependencies:
+  build_runner: any
+  json_serializable: '^6.9.3'
+  test: '^1.16.0'

@@ -1,0 +1,70 @@
+{
+  "id": "twitter-2020",
+  "company": "Twitter",
+  "year": 2020,
+  "title": "Der Anruf, der 130 Konten kostete",
+  "summary": "Im Juli 2020 riefen Angreifer gezielt Twitter-Mitarbeitende an. Über die so erbeuteten Zugänge gelangten sie an interne Werkzeuge und kaperten prominente Konten für einen Bitcoin-Betrug.",
+  "disclaimer": "Interaktive Nachstellung: Der Gesprächsverlauf ist beispielhaft. Die Fakten im Zeitstrahl stammen aus den Mitteilungen von Twitter und dem Bericht der New Yorker Finanzaufsicht.",
+  "steps": [
+    {
+      "channel": "call",
+      "narration": "Du arbeitest im Homeoffice, die Pandemie läuft seit Monaten. Dein Telefon klingelt.",
+      "message": "\"Hallo, hier ist die IT. Wir stellen gerade das VPN um und sehen bei Ihnen eine Störung. Melden Sie sich bitte kurz auf unserer Seite an, ich leite Sie durch.\"",
+      "question": "Was machst du?",
+      "options": [
+        {
+          "label": "Anmelden, der Kollege klingt kompetent",
+          "stops": false,
+          "feedback": "Das Gespräch wirkt echt, die Seite sieht aus wie das VPN-Portal. Deine Zugangsdaten sind weg."
+        },
+        {
+          "label": "Auflegen und die IT über die bekannte Nummer anrufen",
+          "stops": true,
+          "feedback": "Das ist die eine Handlung, die diesen Angriff stoppt."
+        },
+        {
+          "label": "Nach einer Ticketnummer fragen",
+          "stops": true,
+          "feedback": "Gute Reaktion, aber erst der Rückruf über die bekannte Nummer gibt dir wirklich Sicherheit."
+        }
+      ]
+    },
+    {
+      "channel": "chat",
+      "narration": "Eine Kollegin schreibt dir: Sie hat einen ähnlichen Anruf bekommen.",
+      "message": "\"Hey, hat dich auch die IT wegen des VPN angerufen? War komisch, oder?\"",
+      "question": "Was machst du?",
+      "options": [
+        {
+          "label": "Beide das Security-Team informieren",
+          "stops": true,
+          "feedback": "Zwei gleiche Anrufe sind ein Muster. Genau das braucht das Security-Team sofort."
+        },
+        {
+          "label": "Abwarten, wird schon nichts sein",
+          "stops": false,
+          "feedback": "Die Angreifer brauchten nur wenige Menschen, um weiterzukommen."
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "Juli 2020",
+      "what": "Mit telefonischem Spear-Phishing verschaffen sich die Täter Zugänge von Mitarbeitenden, darunter zu internen Support-Werkzeugen."
+    },
+    {
+      "when": "15. Juli 2020",
+      "what": "130 Konten werden angegriffen, von 45 werden Tweets verschickt: \"Ich verdopple dein Bitcoin\"."
+    },
+    {
+      "when": "Danach",
+      "what": "Die Täter erbeuten über 100.000 US-Dollar in Bitcoin und werden später festgenommen."
+    }
+  ],
+  "lesson": "Kein Zero-Day, keine Malware: nur ein überzeugender Anruf. Der Rückruf über die bekannte Nummer ist die stärkste Abwehr gegen Vishing.",
+  "sources": [
+    "Twitter: Mitteilungen zum Sicherheitsvorfall, Juli 2020",
+    "New York State Department of Financial Services: Untersuchungsbericht, Oktober 2020"
+  ]
+}

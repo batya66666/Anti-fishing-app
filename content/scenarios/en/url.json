@@ -1,0 +1,217 @@
+[
+  {
+    "id": "url-subdomain",
+    "type": "url",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "lookalike_domain",
+    "module": 3,
+    "consumer": true,
+    "content": {
+      "context": "You followed a link in an email: \"Your PayFriend account has been limited.\"",
+      "url": "https://payfriend.example.secure-login.test/signin",
+      "secure": true,
+      "page_title": "PayFriend",
+      "page_kind": "login",
+      "brand": "PayFriend"
+    },
+    "red_flags": [
+      {
+        "target": "url",
+        "hint": "The real domain sits right before the first slash: secure-login.test. \"payfriend.example\" is only a subdomain here."
+      },
+      {
+        "target": "secure",
+        "hint": "The padlock only means \"encrypted\", not \"trustworthy\". Fraudsters get certificates too."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "leave"
+    ],
+    "dangerous_actions": [
+      "enter_credentials"
+    ],
+    "explanation": "Read addresses from right to left: what sits before the ending and the first \"/\" is the owner.",
+    "tags": []
+  },
+  {
+    "id": "url-homoglyph",
+    "type": "url",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "homoglyph",
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "context": "You wanted to sign in to your webmail quickly and clicked a link in a chat.",
+      "url": "https://rnailbox.example/login",
+      "secure": true,
+      "page_title": "Mailbox",
+      "page_kind": "login",
+      "brand": "Mailbox"
+    },
+    "red_flags": [
+      {
+        "target": "url",
+        "hint": "\"rnailbox\": the \"m\" became \"r\" + \"n\". The real site is mailbox.example."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "leave"
+    ],
+    "dangerous_actions": [
+      "enter_credentials"
+    ],
+    "explanation": "Homoglyphs are nearly invisible. So use bookmarks or type the address yourself. A password manager will not fill anything in here either: a good warning sign.",
+    "tags": []
+  },
+  {
+    "id": "url-https-myth",
+    "type": "url",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "lookalike_domain",
+    "module": 3,
+    "consumer": true,
+    "content": {
+      "context": "A text from your \"bank\" led you here. You can see a padlock at the top.",
+      "url": "https://stadtbank-zwlckau.test/online-banking",
+      "secure": true,
+      "page_title": "Stadtbank Zwickau",
+      "page_kind": "login",
+      "brand": "Stadtbank Zwickau"
+    },
+    "red_flags": [
+      {
+        "target": "url",
+        "hint": "\"zwlckau\" instead of \"zwickau\", and the ending is wrong too."
+      },
+      {
+        "target": "secure",
+        "hint": "HTTPS does not mean \"safe\". Nearly all phishing sites have a padlock today."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "leave"
+    ],
+    "dangerous_actions": [
+      "enter_credentials"
+    ],
+    "explanation": "The padlock only protects the connection: you can talk to a fraudster with excellent encryption.",
+    "tags": []
+  },
+  {
+    "id": "url-punycode",
+    "type": "url",
+    "locale": "en",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "homoglyph",
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "context": "A link from a supplier email. In the browser, it looked completely right at first.",
+      "url": "https://xn--kessler-stahl-7ib.example/portal",
+      "secure": true,
+      "page_title": "Kessler Stahl Portal",
+      "page_kind": "login",
+      "brand": "Kessler Stahl"
+    },
+    "red_flags": [
+      {
+        "target": "url",
+        "hint": "\"xn--\" is punycode: the domain contains special characters that look like ordinary letters. This is not kessler-stahl.example."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "leave"
+    ],
+    "dangerous_actions": [
+      "enter_credentials"
+    ],
+    "explanation": "Characters from other alphabets can recreate domains convincingly. \"xn--\" at the start is a clear hint.",
+    "tags": []
+  },
+  {
+    "id": "url-legit-bank",
+    "type": "url",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 3,
+    "consumer": true,
+    "content": {
+      "context": "You opened your bookmark for online banking.",
+      "url": "https://login.stadtbank-zwickau.example/banking",
+      "secure": true,
+      "page_title": "Stadtbank Zwickau",
+      "page_kind": "login",
+      "brand": "Stadtbank Zwickau"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "enter_credentials"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: your own bookmark and the right domain. \"login.\" is an ordinary subdomain of the bank here.",
+    "tags": []
+  },
+  {
+    "id": "url-legit-intranet",
+    "type": "url",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "context": "As every morning, you open the intranet using the desktop link.",
+      "url": "https://intranet.muster-automotive.example/start",
+      "secure": true,
+      "page_title": "Intranet",
+      "page_kind": "login",
+      "brand": "Muster Automotive"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "enter_credentials"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: your own domain, reached the usual way.",
+    "tags": []
+  },
+  {
+    "id": "url-legit-shop",
+    "type": "url",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 3,
+    "consumer": true,
+    "content": {
+      "context": "You typed the address of your favourite bookshop yourself and want to sign in.",
+      "url": "https://www.buecher-sonnenschein.example/konto",
+      "secure": true,
+      "page_title": "Bücher Sonnenschein",
+      "page_kind": "login",
+      "brand": "Bücher Sonnenschein"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "enter_credentials"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: typing it yourself is the safest way, and the domain is right.",
+    "tags": []
+  }
+]

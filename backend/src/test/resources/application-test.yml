@@ -1,0 +1,6 @@
+koeder:
+  ai:
+    api-key: ""
+  demo:
+    enabled: true
+    auto-join: true

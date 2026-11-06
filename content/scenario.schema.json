@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://koeder.example/scenario.schema.json",
+  "title": "KÖDER scenario",
+  "type": "object",
+  "required": ["id", "type", "locale", "difficulty", "is_attack", "module", "content", "red_flags", "correct_actions", "explanation"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$", "maxLength": 80 },
+    "type": { "enum": ["email", "sms", "chat", "url", "call", "qr", "push", "file", "scene"] },
+    "locale": { "enum": ["de", "en"] },
+    "difficulty": { "enum": ["bronze", "silver", "gold", "diamond"] },
+    "is_attack": { "type": "boolean" },
+    "attack_type": { "type": ["string", "null"] },
+    "module": { "type": "integer", "minimum": 1, "maximum": 13 },
+    "consumer": { "type": "boolean" },
+    "content": { "type": "object" },
+    "red_flags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["target", "hint"],
+        "properties": { "target": { "type": "string", "minLength": 1 }, "hint": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "correct_actions": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "dangerous_actions": { "type": "array", "items": { "type": "string" } },
+    "explanation": { "type": "string", "minLength": 1 },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "orgId": { "type": ["string", "null"] }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "type": { "const": "email" } } },
+      "then": { "properties": { "content": { "required": ["from_name", "from_email", "subject", "body_md"] } } }
+    },
+    {
+      "if": { "properties": { "type": { "enum": ["sms", "chat"] } } },
+      "then": { "properties": { "content": { "required": ["sender", "messages"] } } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "url" } } },
+      "then": { "properties": { "content": { "required": ["context", "url", "page_title"] } } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "call" } } },
+      "then": { "properties": { "content": { "required": ["caller", "number", "start", "nodes"] } } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "qr" } } },
+      "then": { "properties": { "content": { "required": ["context", "url"] } } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "push" } } },
+      "then": { "properties": { "content": { "required": ["app", "title", "body", "repeat"] } } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "file" } } },
+      "then": { "properties": { "content": { "required": ["context", "name", "size_kb"] } } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "scene" } } },
+      "then": { "properties": { "content": { "required": ["icon", "title", "text", "options"] } } }
+    },
+    {
+      "if": { "properties": { "is_attack": { "const": true } } },
+      "then": { "required": ["attack_type"], "properties": { "attack_type": { "type": "string" } } }
+    }
+  ]
+}

@@ -1,0 +1,348 @@
+[
+  {
+    "id": "scene-usb-drop",
+    "type": "scene",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "usb_drop",
+    "module": 12,
+    "consumer": false,
+    "content": {
+      "icon": "usb",
+      "title": "Found in the car park",
+      "text": "A USB stick labelled \"Salaries 2026 – confidential\" is lying in the company car park. What do you do?",
+      "options": [
+        {
+          "id": "plug_in",
+          "label": "Check on my work computer who it belongs to"
+        },
+        {
+          "id": "give_it",
+          "label": "Hand it to IT unopened"
+        },
+        {
+          "id": "home_pc",
+          "label": "Look at it on my home PC"
+        },
+        {
+          "id": "trash",
+          "label": "Throw it in the bin"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:bait",
+        "hint": "\"Salaries – confidential\": curiosity is meant to get you to plug it in."
+      }
+    ],
+    "correct_actions": [
+      "give_it",
+      "trash"
+    ],
+    "dangerous_actions": [
+      "plug_in",
+      "home_pc"
+    ],
+    "explanation": "USB drop. A stick can pose as a keyboard when plugged in and type commands within seconds. Also on your home PC. Off to IT with it.",
+    "tags": []
+  },
+  {
+    "id": "scene-wifi",
+    "type": "scene",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "evil_twin",
+    "module": 10,
+    "consumer": false,
+    "content": {
+      "icon": "wifi",
+      "title": "In the café",
+      "text": "You urgently need to upload a file. Your phone shows: \"Cafe_Muenz\" (password on the menu) and \"Cafe_Muenz_FREE\" (open, stronger signal). Your laptop has a VPN.",
+      "options": [
+        {
+          "id": "free",
+          "label": "The open network, it is faster"
+        },
+        {
+          "id": "vpn",
+          "label": "Hotspot from the work phone or known network, only with VPN"
+        },
+        {
+          "id": "no_vpn",
+          "label": "The password network, then I do not need a VPN"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:twin",
+        "hint": "A second open network with a nearly identical name is a typical \"evil twin\"."
+      }
+    ],
+    "correct_actions": [
+      "vpn"
+    ],
+    "dangerous_actions": [
+      "free"
+    ],
+    "explanation": "Evil twin: attackers set up a network with the same name and listen in. Use your phone hotspot or always a VPN.",
+    "tags": []
+  },
+  {
+    "id": "scene-private-laptop",
+    "type": "scene",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "shadow_it",
+    "module": 10,
+    "consumer": false,
+    "content": {
+      "icon": "laptop",
+      "title": "The work laptop at the weekend",
+      "text": "Your child wants to quickly install a game with mods found online on your work laptop. \"Just this weekend!\"",
+      "options": [
+        {
+          "id": "allow",
+          "label": "Oh well, once does not count"
+        },
+        {
+          "id": "private",
+          "label": "No. Work device for work only; the game goes on the home PC"
+        },
+        {
+          "id": "antivirus",
+          "label": "Allow it, the virus scanner is on anyway"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:mods",
+        "hint": "Mods and cracks are among the most common carriers of password-stealing malware."
+      }
+    ],
+    "correct_actions": [
+      "private"
+    ],
+    "dangerous_actions": [
+      "allow",
+      "antivirus"
+    ],
+    "explanation": "A single private download can steal saved company logins. Many large incidents began with exactly such an infostealer.",
+    "tags": []
+  },
+  {
+    "id": "scene-tailgating",
+    "type": "scene",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "tailgating",
+    "module": 12,
+    "consumer": false,
+    "content": {
+      "icon": "door",
+      "title": "At the security door",
+      "text": "A man in a hi-vis vest with his hands full asks you: \"Could you just hold the door? My badge is in my bag.\" You do not know him.",
+      "options": [
+        {
+          "id": "hold",
+          "label": "Hold the door, anything else would be rude"
+        },
+        {
+          "id": "escort",
+          "label": "Politely take him to reception or call them"
+        },
+        {
+          "id": "ignore",
+          "label": "Let the door close and say nothing"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:polite",
+        "hint": "Attackers use your politeness, and full hands are a proven trick."
+      }
+    ],
+    "correct_actions": [
+      "escort",
+      "ignore"
+    ],
+    "dangerous_actions": [
+      "hold"
+    ],
+    "explanation": "Tailgating: a hi-vis vest opens many doors. Staying friendly and taking him to reception is exactly right.",
+    "tags": []
+  },
+  {
+    "id": "scene-clicked",
+    "type": "scene",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": true,
+    "attack_type": "incident_response",
+    "module": 13,
+    "consumer": true,
+    "content": {
+      "icon": "alert",
+      "title": "Oh no, clicked!",
+      "text": "You just opened an attachment and realise: that was probably no invoice. What do you do first?",
+      "options": [
+        {
+          "id": "hide",
+          "label": "Say nothing or there will be trouble"
+        },
+        {
+          "id": "report_now",
+          "label": "Disconnect from the network and call IT right away"
+        },
+        {
+          "id": "restart",
+          "label": "Restart the computer and wait"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:speed",
+        "hint": "In an incident every minute counts. Reporting at once can limit the damage."
+      }
+    ],
+    "correct_actions": [
+      "report_now"
+    ],
+    "dangerous_actions": [
+      "hide"
+    ],
+    "explanation": "Mistakes happen to everyone. Hiding it is the bad part: the sooner IT knows, the smaller the damage. No reason to be ashamed.",
+    "tags": []
+  },
+  {
+    "id": "scene-oversharing",
+    "type": "scene",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "osint",
+    "module": 11,
+    "consumer": false,
+    "content": {
+      "icon": "people",
+      "title": "Your professional network",
+      "text": "You want to post: a photo of your first day at your desk, wearing your company badge, your screen in the background, and \"Finally in accounting at Muster Automotive, handling SAP invoices!\"",
+      "options": [
+        {
+          "id": "post",
+          "label": "Post it just like that, I am happy after all"
+        },
+        {
+          "id": "edit",
+          "label": "A photo with no badge or screen, no details about systems"
+        },
+        {
+          "id": "never",
+          "label": "Never post anything again"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:recon",
+        "hint": "Name, department, system, badge: all that attackers need for the perfect spear-phishing email."
+      }
+    ],
+    "correct_actions": [
+      "edit"
+    ],
+    "dangerous_actions": [
+      "post"
+    ],
+    "explanation": "Be happy by all means. Just leave out the details that make a perfect attack email tailored to you possible.",
+    "tags": []
+  },
+  {
+    "id": "scene-password-manager",
+    "type": "scene",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 9,
+    "consumer": true,
+    "content": {
+      "icon": "key",
+      "title": "New password",
+      "text": "You need a password for a new portal. What makes the most sense?",
+      "options": [
+        {
+          "id": "manager",
+          "label": "Have the password manager generate a random one"
+        },
+        {
+          "id": "same",
+          "label": "Reuse my tried-and-tested password"
+        },
+        {
+          "id": "note",
+          "label": "Think of something new and write it on a note"
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "manager"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Unique for each service: if one is hacked, the rest stay safe. A manager also only fills in passwords on the real site.",
+    "tags": []
+  },
+  {
+    "id": "scene-recon-call",
+    "type": "scene",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "osint",
+    "module": 11,
+    "consumer": false,
+    "content": {
+      "icon": "people",
+      "title": "A harmless survey?",
+      "text": "A friendly student messages you online: for her thesis she would like to know which software you use, who approves your invoices and when your boss is on holiday.",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Glad to help, I will answer everything"
+        },
+        {
+          "id": "decline",
+          "label": "Politely decline and refer her to corporate communications"
+        },
+        {
+          "id": "report",
+          "label": "Decline and report it to IT"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:details",
+        "hint": "Software, approval chain, boss's holiday: exactly the ingredients for CEO fraud."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "decline"
+    ],
+    "dangerous_actions": [
+      "answer"
+    ],
+    "explanation": "Social engineering often begins harmlessly. Individually these facts seem trivial; together they make the plan for the next fraud.",
+    "tags": []
+  }
+]

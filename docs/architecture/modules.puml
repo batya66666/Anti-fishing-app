@@ -1,0 +1,50 @@
+@startuml
+title <size:24>KOEDER</size>
+
+set separator none
+top to bottom direction
+
+<style>
+  root {
+    BackgroundColor: #ffffff
+    FontColor: #444444
+  }
+</style>
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Component>
+
+System_Boundary("KOEDER_boundary", "KOEDER", $tags="") {
+  Container_Boundary("KOEDER.KOEDER_boundary", "KOEDER", $tags="") {
+    Component(KOEDER.KOEDER.Content, "Content", $techn="Module", $descr="", $tags="", $link="")
+    Component(KOEDER.KOEDER.Identity, "Identity", $techn="Module", $descr="", $tags="", $link="")
+    Component(KOEDER.KOEDER.Ai, "Ai", $techn="Module", $descr="", $tags="", $link="")
+    Component(KOEDER.KOEDER.Duel, "Duel", $techn="Module", $descr="", $tags="", $link="")
+    Component(KOEDER.KOEDER.Shift, "Shift", $techn="Module", $descr="", $tags="", $link="")
+    Component(KOEDER.KOEDER.Organization, "Organization", $techn="Module", $descr="", $tags="", $link="")
+    Component(KOEDER.KOEDER.Progression, "Progression", $techn="Module", $descr="", $tags="", $link="")
+  }
+
+}
+
+Rel(KOEDER.KOEDER.Ai, KOEDER.KOEDER.Content, "depends on", $techn="", $tags="", $link="")
+Rel(KOEDER.KOEDER.Organization, KOEDER.KOEDER.Shift, "listens to", $techn="", $tags="", $link="")
+Rel(KOEDER.KOEDER.Organization, KOEDER.KOEDER.Identity, "listens to", $techn="", $tags="", $link="")
+Rel(KOEDER.KOEDER.Organization, KOEDER.KOEDER.Ai, "uses", $techn="", $tags="", $link="")
+Rel(KOEDER.KOEDER.Organization, KOEDER.KOEDER.Content, "uses", $techn="", $tags="", $link="")
+Rel(KOEDER.KOEDER.Organization, KOEDER.KOEDER.Identity, "uses", $techn="", $tags="", $link="")
+Rel(KOEDER.KOEDER.Progression, KOEDER.KOEDER.Shift, "listens to", $techn="", $tags="", $link="")
+Rel(KOEDER.KOEDER.Progression, KOEDER.KOEDER.Duel, "listens to", $techn="", $tags="", $link="")
+Rel(KOEDER.KOEDER.Progression, KOEDER.KOEDER.Identity, "listens to", $techn="", $tags="", $link="")
+Rel(KOEDER.KOEDER.Progression, KOEDER.KOEDER.Identity, "uses", $techn="", $tags="", $link="")
+Rel(KOEDER.KOEDER.Progression, KOEDER.KOEDER.Shift, "uses", $techn="", $tags="", $link="")
+Rel(KOEDER.KOEDER.Progression, KOEDER.KOEDER.Duel, "uses", $techn="", $tags="", $link="")
+Rel(KOEDER.KOEDER.Duel, KOEDER.KOEDER.Content, "uses", $techn="", $tags="", $link="")
+Rel(KOEDER.KOEDER.Duel, KOEDER.KOEDER.Identity, "uses", $techn="", $tags="", $link="")
+Rel(KOEDER.KOEDER.Shift, KOEDER.KOEDER.Content, "uses", $techn="", $tags="", $link="")
+Rel(KOEDER.KOEDER.Shift, KOEDER.KOEDER.Identity, "uses", $techn="", $tags="", $link="")
+
+SHOW_LEGEND(true)
+hide stereotypes
+@enduml

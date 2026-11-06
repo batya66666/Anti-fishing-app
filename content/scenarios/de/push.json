@@ -1,0 +1,86 @@
+[
+  {
+    "id": "push-mfa-fatigue",
+    "type": "push",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "mfa_fatigue",
+    "module": 9,
+    "consumer": true,
+    "content": {
+      "app": "OfficeCloud Authenticator",
+      "title": "Anmeldung bestätigen?",
+      "body": "Anmeldung bei OfficeCloud\nStandort: unbekannt",
+      "context": "Es ist 22:47 Uhr, du liegst auf dem Sofa und hast dich nirgends angemeldet.",
+      "repeat": 10
+    },
+    "red_flags": [
+      {
+        "target": "note:unasked",
+        "hint": "Du hast keine Anmeldung gestartet. Jemand anders kennt dein Passwort!"
+      },
+      {
+        "target": "note:spam",
+        "hint": "So viele Anfragen hintereinander sollen dich zermürben. Das nennt man MFA-Fatigue."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "deny"
+    ],
+    "dangerous_actions": [
+      "approve"
+    ],
+    "explanation": "MFA-Fatigue: Genau so begann der Uber-Vorfall 2022. Bestätige nie, was du nicht selbst gestartet hast. Melde es und ändere dein Passwort, denn es ist offenbar bekannt.",
+    "tags": []
+  },
+  {
+    "id": "push-login-legit",
+    "type": "push",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 9,
+    "consumer": true,
+    "content": {
+      "app": "OfficeCloud Authenticator",
+      "title": "Anmeldung bestätigen?",
+      "body": "Anmeldung bei OfficeCloud\nStandort: Zwickau",
+      "context": "Du hast dich gerade am Laptop angemeldet und wartest auf die Bestätigung.",
+      "repeat": 1
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "approve"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: Du hast die Anmeldung selbst gerade gestartet, genau eine Anfrage, richtiger Standort.",
+    "tags": []
+  },
+  {
+    "id": "push-bank-legit",
+    "type": "push",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 9,
+    "consumer": true,
+    "content": {
+      "app": "Stadtbank App",
+      "title": "Zahlung freigeben?",
+      "body": "42,90 € an Bücher Sonnenschein",
+      "context": "Du bezahlst gerade online deine Bücher. Der Betrag und der Händler stimmen genau.",
+      "repeat": 1
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "approve"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: selbst gestartet, Betrag und Empfänger stimmen. Genau das sollst du jedes Mal prüfen.",
+    "tags": []
+  }
+]

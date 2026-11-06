@@ -1,0 +1,302 @@
+[
+  {
+    "id": "call-ceo-fraud",
+    "type": "call",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "ceo_fraud",
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "Chef – Herr Müller",
+      "number": "+49 170 5550142",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Hallo, hier ist Müller. Ich stecke gerade in einer wichtigen Besprechung. Wir müssen sofort einen Lieferanten bezahlen, sonst platzt der Vertrag. Die Rechnung kommt gleich per E-Mail. Sagen Sie bitte niemandem etwas.",
+          "options": [
+            {
+              "label": "Natürlich, ich kümmere mich sofort darum.",
+              "next": "b"
+            },
+            {
+              "label": "Ich rufe Sie gleich unter Ihrer Büronummer zurück.",
+              "action": "verify"
+            },
+            {
+              "label": "Können Sie mir dazu die Projektnummer nennen?",
+              "next": "c"
+            },
+            {
+              "label": "Auflegen und der IT melden.",
+              "action": "report"
+            }
+          ]
+        },
+        "b": {
+          "say": "Perfekt. Überweisen Sie die 48.500 Euro bitte noch vor Mittag und melden Sie sich nur bei mir. Ich verlasse mich auf Sie.",
+          "options": [
+            {
+              "label": "Wird erledigt, Herr Müller.",
+              "action": "comply"
+            },
+            {
+              "label": "Moment, das muss ich erst prüfen. Ich rufe zurück.",
+              "action": "verify"
+            }
+          ]
+        },
+        "c": {
+          "say": "Dafür habe ich jetzt wirklich keine Zeit! Das ist eine Anweisung. Soll ich dem Vorstand sagen, dass es an Ihnen gescheitert ist?",
+          "options": [
+            {
+              "label": "Entschuldigung, ich überweise sofort.",
+              "action": "comply"
+            },
+            {
+              "label": "Ohne Prüfung geht es nicht. Ich rufe Sie über die Zentrale zurück.",
+              "action": "verify"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [
+      {
+        "target": "note:urgency",
+        "hint": "Zeitdruck und Drohung: \"sofort\", \"sonst platzt der Vertrag\"."
+      },
+      {
+        "target": "note:secrecy",
+        "hint": "\"Sagen Sie niemandem etwas\" schaltet alle Kontrollen aus."
+      },
+      {
+        "target": "number",
+        "hint": "Eine unbekannte Handynummer, auch wenn die Stimme bekannt klingt. Stimmen lassen sich heute mit KI klonen."
+      }
+    ],
+    "correct_actions": [
+      "verify",
+      "report",
+      "hang_up"
+    ],
+    "dangerous_actions": [
+      "comply"
+    ],
+    "explanation": "Klingt wie der Chef, ist aber keiner: Mit wenigen Sekunden Audio lässt sich eine Stimme klonen. Die Regel bleibt gleich: Leg auf und ruf über die bekannte Nummer zurück.",
+    "tags": []
+  },
+  {
+    "id": "call-it-support",
+    "type": "call",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "vishing",
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "IT-Support",
+      "number": "+49 30 5550177",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Guten Tag, hier ist Kevin vom IT-Support. Wir sehen, dass Ihr Rechner gerade Schadsoftware verschickt. Ich muss das sofort beheben. Bitte öffnen Sie die Seite remote-hilfe punkt test und nennen Sie mir den Code, der dort erscheint.",
+          "options": [
+            {
+              "label": "Oh nein! Ich öffne die Seite sofort.",
+              "action": "comply"
+            },
+            {
+              "label": "Wie lautet die Ticketnummer? Ich rufe die Hotline zurück.",
+              "action": "verify"
+            },
+            {
+              "label": "Auflegen und der IT melden.",
+              "action": "report"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [
+      {
+        "target": "note:remote",
+        "hint": "Fernwartungs-Codes geben Fremden volle Kontrolle über deinen Rechner."
+      },
+      {
+        "target": "note:fear",
+        "hint": "Erst die Panik, dann die Lösung: So wird Denken abgeschaltet."
+      }
+    ],
+    "correct_actions": [
+      "verify",
+      "report",
+      "hang_up"
+    ],
+    "dangerous_actions": [
+      "comply"
+    ],
+    "explanation": "Echte IT meldet sich mit einem Ticket und kann warten, bis du über die bekannte Hotline zurückrufst.",
+    "tags": []
+  },
+  {
+    "id": "call-enkeltrick",
+    "type": "call",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": true,
+    "attack_type": "vishing",
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "Unbekannt",
+      "number": "Unterdrückt",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Hallo Oma, ich bin's! Rate mal, wer dran ist. Ich hatte einen Unfall und brauche ganz schnell Geld, sonst muss ich ins Gefängnis. Bitte sag es niemandem, das ist mir so peinlich!",
+          "options": [
+            {
+              "label": "Lukas, bist du es? Wie viel brauchst du?",
+              "next": "b"
+            },
+            {
+              "label": "Ich lege auf und rufe dich auf deiner bekannten Nummer an.",
+              "action": "verify"
+            },
+            {
+              "label": "Auflegen und die Polizei unter 110 anrufen.",
+              "action": "report"
+            }
+          ]
+        },
+        "b": {
+          "say": "Ja, Lukas! Ich schicke gleich einen Boten vorbei. Hol bitte fünfzehntausend Euro von der Bank und sag dort nicht, wofür.",
+          "options": [
+            {
+              "label": "Ich gehe gleich zur Bank.",
+              "action": "comply"
+            },
+            {
+              "label": "Nein. Ich rufe jetzt deine Eltern an.",
+              "action": "verify"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [
+      {
+        "target": "note:guess",
+        "hint": "\"Rate mal, wer dran ist\": So verrätst du selbst den Namen."
+      },
+      {
+        "target": "note:messenger",
+        "hint": "Ein Bote holt das Geld ab: Das Kennzeichen des Enkeltricks."
+      }
+    ],
+    "correct_actions": [
+      "verify",
+      "report",
+      "hang_up"
+    ],
+    "dangerous_actions": [
+      "comply"
+    ],
+    "explanation": "Enkeltrick. Leg einfach auf und ruf die echte Nummer an. Unhöflich sein ist hier völlig in Ordnung. Die Polizei holt nie Geld ab.",
+    "tags": []
+  },
+  {
+    "id": "call-police",
+    "type": "call",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "vishing",
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "Polizei",
+      "number": "110",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Guten Tag, Kommissar Weber von der Kriminalpolizei. In Ihrer Nachbarschaft gab es Einbrüche, und wir haben Ihren Namen auf einer Liste gefunden. Ihr Bargeld und Schmuck sind nicht mehr sicher. Ein Kollege holt alles ab und verwahrt es.",
+          "options": [
+            {
+              "label": "Danke! Was soll ich vorbereiten?",
+              "action": "comply"
+            },
+            {
+              "label": "Ich lege auf und wähle selbst die 110.",
+              "action": "report"
+            },
+            {
+              "label": "Ich rufe zuerst meine Tochter an.",
+              "action": "verify"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [
+      {
+        "target": "number",
+        "hint": "Die 110 im Display ist gefälscht: Die echte Polizei ruft nie von der 110 an."
+      },
+      {
+        "target": "note:money",
+        "hint": "Die Polizei verwahrt niemals dein Geld oder deinen Schmuck."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "verify",
+      "hang_up"
+    ],
+    "dangerous_actions": [
+      "comply"
+    ],
+    "explanation": "Falscher Polizist. Die Nummer im Display lässt sich fälschen. Leg auf, warte kurz, wähle selbst die 110.",
+    "tags": []
+  },
+  {
+    "id": "call-it-legit",
+    "type": "call",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "IT-Service (Durchwahl 400)",
+      "number": "Intern: 400",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Hallo, hier ist Jana vom IT-Service. Sie hatten heute Morgen das Ticket 4471 wegen Ihres Druckers eröffnet. Der ist jetzt repariert. Können Sie bitte kurz eine Testseite drucken? Ich brauche keine Daten von Ihnen.",
+          "options": [
+            {
+              "label": "Klar, ich drucke kurz eine Testseite.",
+              "action": "cooperate"
+            },
+            {
+              "label": "Auflegen und als Angriff melden.",
+              "action": "report"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "cooperate"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: interne Durchwahl, dein eigenes Ticket und niemand will Passwörter oder Codes. Vorsicht heißt nicht, jedem zu misstrauen.",
+    "tags": []
+  }
+]

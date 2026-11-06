@@ -1,0 +1,86 @@
+[
+  {
+    "id": "push-mfa-fatigue",
+    "type": "push",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "mfa_fatigue",
+    "module": 9,
+    "consumer": true,
+    "content": {
+      "app": "OfficeCloud Authenticator",
+      "title": "Approve sign-in?",
+      "body": "Sign-in to OfficeCloud\nLocation: unknown",
+      "context": "It is 10:47 pm, you are on the sofa and you have not signed in anywhere.",
+      "repeat": 10
+    },
+    "red_flags": [
+      {
+        "target": "note:unasked",
+        "hint": "You did not start a sign-in. Someone else knows your password!"
+      },
+      {
+        "target": "note:spam",
+        "hint": "So many requests in a row are meant to wear you down. It is called MFA fatigue."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "deny"
+    ],
+    "dangerous_actions": [
+      "approve"
+    ],
+    "explanation": "MFA fatigue: this is how the 2022 Uber incident began. Never approve what you did not start yourself. Report it and change your password, because it is evidently known.",
+    "tags": []
+  },
+  {
+    "id": "push-login-legit",
+    "type": "push",
+    "locale": "en",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 9,
+    "consumer": true,
+    "content": {
+      "app": "OfficeCloud Authenticator",
+      "title": "Approve sign-in?",
+      "body": "Sign-in to OfficeCloud\nLocation: Zwickau",
+      "context": "You have just signed in on your laptop and are waiting for the prompt.",
+      "repeat": 1
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "approve"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: you just started the sign-in yourself; exactly one request, right location.",
+    "tags": []
+  },
+  {
+    "id": "push-bank-legit",
+    "type": "push",
+    "locale": "en",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 9,
+    "consumer": true,
+    "content": {
+      "app": "Stadtbank app",
+      "title": "Approve payment?",
+      "body": "€42.90 to Bücher Sonnenschein",
+      "context": "You are paying for your books online right now. The amount and merchant match exactly.",
+      "repeat": 1
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "approve"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: started by you, amount and recipient match. That is what to check every time.",
+    "tags": []
+  }
+]

@@ -1,0 +1,118 @@
+[
+  {
+    "id": "qr-parking",
+    "type": "qr",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "quishing",
+    "module": 8,
+    "consumer": true,
+    "content": {
+      "context": "Parkautomat in der Innenstadt. Über dem Automaten klebt ein Aufkleber: \"Bequem per QR-Code bezahlen\".",
+      "place": "Parkautomat",
+      "sticker": true,
+      "url": "https://parken-zwickau.test/pay"
+    },
+    "red_flags": [
+      {
+        "target": "note:sticker",
+        "hint": "Ein Aufkleber über dem Automaten: Oft wurde er nachträglich angebracht. Kratz im Zweifel daran."
+      },
+      {
+        "target": "url",
+        "hint": "Die Adresse gehört nicht zur Stadt. Offizielle Seiten stehen auf dem Automaten selbst."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "ignore"
+    ],
+    "dangerous_actions": [
+      "scan_open"
+    ],
+    "explanation": "Quishing: Auf einem QR-Code siehst du das Ziel nicht vorher. Zahle am Automaten oder über die offizielle Park-App, die du selbst installiert hast.",
+    "tags": []
+  },
+  {
+    "id": "qr-mail-mfa",
+    "type": "qr",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "quishing",
+    "module": 8,
+    "consumer": false,
+    "content": {
+      "context": "E-Mail von \"IT\": \"Bis Freitag müssen alle ihre Zwei-Faktor-Anmeldung erneuern. Scannen Sie dazu diesen QR-Code mit dem Handy.\"",
+      "place": "E-Mail auf dem Laptop",
+      "sticker": false,
+      "url": "https://officecloud-mfa.test/renew"
+    },
+    "red_flags": [
+      {
+        "target": "note:qr-in-mail",
+        "hint": "Ein QR-Code in einer E-Mail umgeht den Linkfilter und wechselt auf dein ungeschütztes Handy."
+      },
+      {
+        "target": "url",
+        "hint": "Die Domain ist fremd. Eure IT nutzt muster-automotive.example."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "ignore"
+    ],
+    "dangerous_actions": [
+      "scan_open"
+    ],
+    "explanation": "Angreifer nutzen QR-Codes in E-Mails gezielt, weil Filter sie schlechter prüfen. Bei der IT nachfragen, nicht scannen.",
+    "tags": []
+  },
+  {
+    "id": "qr-canteen-legit",
+    "type": "qr",
+    "locale": "de",
+    "difficulty": "bronze",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 8,
+    "consumer": false,
+    "content": {
+      "context": "Offizieller Aushang im Kantinen-Eingang, hinter Glas: \"Speiseplan der Woche\".",
+      "place": "Kantine",
+      "sticker": false,
+      "url": "https://kantine.muster-automotive.example/speiseplan"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "scan_open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: Der Aushang ist hinter Glas, die Adresse gehört zu eurer Firma und du wirst nichts gefragt.",
+    "tags": []
+  },
+  {
+    "id": "qr-event-legit",
+    "type": "qr",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 8,
+    "consumer": false,
+    "content": {
+      "context": "Der Flyer zur Betriebsversammlung, den du von der Personalabteilung bekommen hast, enthält einen QR-Code zur Tagesordnung.",
+      "place": "Flyer",
+      "sticker": false,
+      "url": "https://intranet.muster-automotive.example/versammlung"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "scan_open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: bekannte Quelle, und die angezeigte Adresse ist eure eigene Domain. Vor dem Öffnen immer die Adresse lesen.",
+    "tags": []
+  }
+]

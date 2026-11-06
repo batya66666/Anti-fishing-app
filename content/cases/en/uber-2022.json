@@ -1,0 +1,70 @@
+{
+  "id": "uber-2022",
+  "company": "Uber",
+  "year": 2022,
+  "title": "Worn down by push notifications",
+  "summary": "In September 2022 an attacker broke into Uber. He knew an external contractor's password and kept sending 2FA requests until one of them was approved.",
+  "disclaimer": "Interactive reconstruction: the messages are illustrative. The facts in the timeline come from Uber's statement and media reports.",
+  "steps": [
+    {
+      "channel": "push",
+      "narration": "It is late in the evening. Your phone keeps vibrating.",
+      "message": "Approve sign-in?\nRequest 1 ... 2 ... 3 ... 9 ... 14",
+      "question": "What do you do?",
+      "options": [
+        {
+          "label": "Approve so it finally stops",
+          "stops": false,
+          "feedback": "That is exactly what MFA fatigue aims for. The door is open."
+        },
+        {
+          "label": "Deny and inform IT right away",
+          "stops": true,
+          "feedback": "Right. The requests prove your password is known. It must be changed right away."
+        },
+        {
+          "label": "Mute the phone and go to sleep",
+          "stops": false,
+          "feedback": "You approved nothing, but nobody learns that someone has your password. The attacker will try again tomorrow."
+        }
+      ]
+    },
+    {
+      "channel": "chat",
+      "narration": "Shortly afterwards someone contacts you by messenger.",
+      "message": "\"Hi, this is Uber IT. About those requests: please approve the next one and it will stop right away.\"",
+      "question": "What do you do?",
+      "options": [
+        {
+          "label": "Approve the next request",
+          "stops": false,
+          "feedback": "Real IT never asks you to approve a sign-in you did not start yourself."
+        },
+        {
+          "label": "Call back through the official hotline",
+          "stops": true,
+          "feedback": "Switching channels exposes the attacker."
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "Beforehand",
+      "what": "According to Uber, the external contractor's password was probably bought on the dark web after his device was infected with malware."
+    },
+    {
+      "when": "September 2022",
+      "what": "The attacker repeatedly tries to sign in. The requests are denied at first, and finally one is approved. According to media reports, he also contacted the contractor by messenger, posing as IT."
+    },
+    {
+      "when": "Afterwards",
+      "what": "He gains access to further employee accounts and internal tools and posts in the company chat. Uber informs the authorities."
+    }
+  ],
+  "lesson": "2FA only protects you if nobody is pressured into approving it. Requests you did not start: deny and report.",
+  "sources": [
+    "Uber: Security Update, September 2022",
+    "Media reports on the incident, September 2022"
+  ]
+}
