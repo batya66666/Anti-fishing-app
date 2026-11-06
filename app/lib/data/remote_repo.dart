@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:koeder_api/koeder_api.dart' as api;
 
@@ -20,17 +22,23 @@ class RemoteRepo implements GameRepo {
   String? _token;
   DuelClient? _duel;
 
+  /// Signed in with a password rather than as this device's guest.
+  bool _account = false;
+  bool get hasAccount => _account;
+
   /// Signs in as a guest. Throws if the server cannot be reached, and the app then starts offline.
-  static Future<RemoteRepo> connect({required String deviceId, required String locale, required OfflineRepo fallback, String? displayName}) async {
+  static Future<RemoteRepo> connect({required String deviceId, required String locale, required OfflineRepo fallback, String? session, String? displayName}) async {
     final dio = Dio(BaseOptions(baseUrl: Config.apiBase, connectTimeout: const Duration(seconds: 4), receiveTimeout: const Duration(seconds: 45)));
     final repo = RemoteRepo._(dio, deviceId, locale, fallback);
-    await repo._signIn(displayName);
+    if (session == null || !await repo._resume(session)) await repo._signIn(displayName);
+    unawaited(repo._loadPublicInfo());
     dio.interceptors.add(InterceptorsWrapper(onRequest: (o, h) {
       if (repo._token != null) o.headers['Authorization'] = 'Bearer ${repo._token}';
       h.next(o);
     }, onError: (e, h) async {
-      // Expired token: sign in once more with the device id and repeat the request.
-      if (e.response?.statusCode == 401 && e.requestOptions.extra['retried'] != true) {
+      // Expired guest token: sign in once more with the device id and repeat the request.
+      // An account's password is never silently replaced by a guest: that would look like lost progress.
+      if (e.response?.statusCode == 401 && !repo._account && e.requestOptions.extra['retried'] != true) {
         try {
           await repo._signIn(null);
           final o = e.requestOptions
@@ -42,6 +50,70 @@ class RemoteRepo implements GameRepo {
       h.next(e);
     }));
     return repo;
+  }
+
+  /// Continues a saved session. False if the token is no longer accepted.
+  Future<bool> _resume(String session) async {
+    try {
+      await _dio.get<void>('/api/me', options: Options(headers: {'Authorization': 'Bearer $session'}));
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) return false;
+      rethrow; // no network: the app starts offline
+    }
+    _token = session;
+    _account = true;
+    return true;
+  }
+
+  Future<void> _loadPublicInfo() async {
+    try {
+      final r = await _dio.get<Map<String, dynamic>>('/api/public/info');
+      Config.serverPublicUrl = r.data?['publicUrl'] as String?;
+    } catch (_) {
+      // QR codes then simply use the address the page came from.
+    }
+  }
+
+  @override
+  Future<String> register(String email, String password, String? displayName) async {
+    try {
+      final r = await _api.getAuthApi().register(registerRequest: api.RegisterRequest(email: email, password: password, displayName: displayName));
+      return _adopt(r.data!.token!);
+    } on DioException catch (e) {
+      throw AuthFailed(switch (e.response?.statusCode) {
+        409 => AuthFailure.emailTaken,
+        null => AuthFailure.needsServer,
+        _ => AuthFailure.other,
+      });
+    }
+  }
+
+  @override
+  Future<String> login(String email, String password) async {
+    try {
+      final r = await _api.getAuthApi().login(loginRequest: api.LoginRequest(email: email, password: password));
+      return _adopt(r.data!.token!);
+    } on DioException catch (e) {
+      throw AuthFailed(switch (e.response?.statusCode) {
+        401 || 400 => AuthFailure.badLogin,
+        null => AuthFailure.needsServer,
+        _ => AuthFailure.other,
+      });
+    }
+  }
+
+  String _adopt(String token) {
+    _token = token;
+    _account = true;
+    _duel?.dispose(); // its connection was opened with the old identity
+    _duel = null;
+    return token;
+  }
+
+  @override
+  void close() {
+    _duel?.dispose();
+    _duel = null;
   }
 
   Future<void> _signIn(String? displayName) async {
@@ -109,14 +181,13 @@ class RemoteRepo implements GameRepo {
   Future<List<Scenario>> reviewDue() async => _scenarios((await _api.getPlayApi().reviewDue()).data);
 
   @override
-  Future<List<Scenario>> swipeDeck() async {
-    try {
-      return _scenarios((await _api.getPlayApi().swipeDeck()).data);
-    } on DioException catch (e) {
-      if (e.response?.statusCode == 429) throw LimitReached();
-      rethrow;
-    }
-  }
+  Future<TodayShift> nextShift() async => TodayShift.fromJson((await _api.getPlayApi().nextShift()).data!.toJson());
+
+  @override
+  Future<List<Scenario>> endless({String? difficulty}) async => _scenarios((await _api.getPlayApi().endless(difficulty: difficulty)).data);
+
+  @override
+  Future<List<Scenario>> swipeDeck() async => _scenarios((await _api.getPlayApi().swipeDeck()).data);
 
   @override
   Future<List<Scenario>> flagsDeck() async => _scenarios((await _api.getPlayApi().flagsDeck()).data);
@@ -161,7 +232,7 @@ class RemoteRepo implements GameRepo {
   Future<String> createFriendly() async => (await _api.getDuelsApi().friendly()).data!.code!;
 
   @override
-  Future<String> friendlyAgainstBot() async => (await _api.getDuelsApi().friendlyBot()).data!.duelId!;
+  Future<String> friendlyAgainstBot({String? level}) async => (await _api.getDuelsApi().friendlyBot(level: level)).data!.duelId!;
 
   @override
   Future<String> joinFriendly(String code) async {

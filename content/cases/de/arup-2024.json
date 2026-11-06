@@ -1,0 +1,69 @@
+{
+  "id": "arup-2024",
+  "company": "Arup",
+  "year": 2024,
+  "title": "Alle im Videocall waren falsch",
+  "summary": "Ein Finanzmitarbeiter von Arup in Hongkong war misstrauisch, bis er im Videocall den Finanzchef und Kollegen sah. Alle waren Deepfakes. Er überwies 200 Millionen Hongkong-Dollar, rund 25 Millionen US-Dollar.",
+  "disclaimer": "Interaktive Nachstellung: Die Nachrichten sind beispielhaft, der genaue Wortlaut ist nicht öffentlich. Die Fakten der Zeitleiste stammen aus Angaben der Polizei Hongkong und von Arup, wie sie CNN und Insurance Business wiedergeben.",
+  "steps": [
+    {
+      "channel": "email",
+      "narration": "Du arbeitest in der Finanzabteilung im Büro in Hongkong. Eine Mail kommt aus dem Büro in Großbritannien.",
+      "message": "Betreff: Vertrauliche Transaktion\n\nWir bereiten eine vertrauliche Transaktion vor. Bitte behandeln Sie das streng vertraulich, Details folgen im Videocall.",
+      "question": "Dein Bauch sagt: Das riecht nach Phishing. Was tust du?",
+      "options": [
+        {
+          "label": "Am Videocall teilnehmen, dann weiß ich ja, ob es echt ist",
+          "stops": false,
+          "feedback": "So ging es auch dem echten Mitarbeiter: Seine Zweifel waren richtig, doch der Call sollte sie zerstreuen."
+        },
+        {
+          "label": "Den Finanzchef über die bekannte Nummer anrufen, bevor irgendetwas passiert",
+          "stops": true,
+          "feedback": "Genau. Dein erstes Gefühl war richtig, und ein Rückruf über einen bekannten Weg kostet zwei Minuten."
+        }
+      ]
+    },
+    {
+      "channel": "call",
+      "narration": "Im Videocall siehst du den Finanzchef und mehrere Kollegen, die du kennst. Sie sehen so aus und klingen so wie immer.",
+      "message": "Danke, dass Sie so schnell dabei sind. Wir müssen die Zahlungen heute auf diese Konten in Hongkong anweisen. Sie wissen ja, wie vertraulich das ist.",
+      "question": "Du siehst und hörst sie doch. Was tust du?",
+      "options": [
+        {
+          "label": "Alle sind dabei, das reicht mir: Ich überweise",
+          "stops": false,
+          "feedback": "Was du gesehen und gehört hast, war erzeugt. Laut Polizei war jede Person im Call falsch."
+        },
+        {
+          "label": "Auflegen und über den normalen Freigabeweg und einen bekannten Kontakt prüfen",
+          "stops": true,
+          "feedback": "Richtig. Gesicht und Stimme beweisen heute nichts mehr. Der vereinbarte Prozess schon."
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "Januar 2024",
+      "what": "Ein Finanzmitarbeiter in Hongkong hält eine Mail zu einer geheimen Transaktion zunächst für Phishing. Nach einem Videocall mit vermeintlichem Finanzchef und Kollegen legt er seine Zweifel ab und veranlasst 15 Überweisungen über insgesamt 200 Millionen Hongkong-Dollar."
+    },
+    {
+      "when": "Danach",
+      "what": "Erst eine Nachfrage in der britischen Zentrale deckt den Betrug auf. Arup meldet ihn der Polizei."
+    },
+    {
+      "when": "Februar 2024",
+      "what": "Die Polizei Hongkong macht den Fall öffentlich, ohne die Firma zu nennen: Jede Person im Call war gefälscht."
+    },
+    {
+      "when": "Mai 2024",
+      "what": "Arup wird als betroffene Firma bekannt und bestätigt, dass \"gefälschte Stimmen und Bilder\" eingesetzt wurden. Interne Systeme waren laut Arup nicht betroffen."
+    }
+  ],
+  "lesson": "Der Mitarbeiter hatte recht, bis der Videocall ihn überzeugte. Bei Geld zählt nicht, wen du siehst, sondern ob du über einen eigenen, bekannten Weg nachgefragt hast.",
+  "sources": [
+    "CNN, 16.5.2024",
+    "Insurance Business UK, 20.5.2024"
+  ]
+}

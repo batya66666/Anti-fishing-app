@@ -12,6 +12,8 @@ import '../../core/sfx.dart';
 import '../../core/theme.dart';
 import '../../data/models.dart';
 import '../../effects/mascot.dart';
+import '../../effects/tour.dart';
+import '../../simulators/common.dart';
 import '../../simulators/scenario_view.dart';
 import '../play/scenario_player.dart';
 import 'shift_report.dart';
@@ -33,6 +35,10 @@ class _ShiftScreenState extends ConsumerState<ShiftScreen> {
   final Map<String, Evaluation> _results = {};
   final Set<String> _alreadyDone = {};
   int _levelBefore = 1;
+  final _inboxKey = GlobalKey();
+  final _pillKey = GlobalKey();
+  final _mailTour = MailTourKeys();
+  bool _touring = false;
 
   @override
   void initState() {
@@ -66,9 +72,37 @@ class _ShiftScreenState extends ConsumerState<ShiftScreen> {
       Timer(const Duration(milliseconds: 250), () {
         if (mounted && _arrived == 0 && shift.scenarios.isNotEmpty) setState(() => _arrived = 1);
       });
+      Timer(const Duration(milliseconds: 900), _inboxTour);
     } catch (e) {
       if (mounted) setState(() => _error = e);
     }
+  }
+
+  Future<void> _inboxTour() async {
+    final app = ref.read(appProvider.notifier);
+    if (!mounted || _touring || _open != null || app.tourSeen('shift')) return;
+    _touring = true;
+    final l = context.l;
+    await runTour(context, [
+      TourStep(target: _inboxKey, title: l.tourInboxTitle, body: l.tourInboxBody),
+      TourStep(target: _pillKey, title: l.tourProgressTitle, body: l.tourProgressBody, mood: MascotMood.cheering),
+    ]);
+    _touring = false;
+    await app.markTour('shift');
+  }
+
+  Future<void> _mailTourRun() async {
+    final app = ref.read(appProvider.notifier);
+    if (!mounted || _touring || app.tourSeen('mail')) return;
+    _touring = true;
+    final l = context.l;
+    await runTour(context, [
+      TourStep(target: _mailTour.sender, title: l.tourSenderTitle, body: l.tourSenderBody, mood: MascotMood.neutral),
+      TourStep(target: _mailTour.content, title: l.tourContentTitle, body: l.tourContentBody, mood: MascotMood.worried),
+      TourStep(target: _mailTour.actions, title: l.tourActionsTitle, body: l.tourActionsBody, mood: MascotMood.cheering),
+    ]);
+    _touring = false;
+    await app.markTour('mail');
   }
 
   bool _interrupts(Scenario s) => (s.type == 'call' || s.type == 'push') && !_isDone(s.id);
@@ -79,6 +113,7 @@ class _ShiftScreenState extends ConsumerState<ShiftScreen> {
     if (_isDone(s.id)) return;
     Sfx.click();
     setState(() => _open = s);
+    if (s.type == 'email') WidgetsBinding.instance.addPostFrameCallback((_) => _mailTourRun());
   }
 
   void _closeScenario() {
@@ -134,6 +169,7 @@ class _ShiftScreenState extends ConsumerState<ShiftScreen> {
               key: ValueKey(open.id),
               scenario: open,
               simple: ref.read(appProvider).simple,
+              mailTour: _mailTour,
               submit: (action, ms) async {
                 final r = await ref.read(repoProvider).act(shift.id, open.id, action, ms);
                 setState(() => _results[open.id] = r.evaluation);
@@ -156,7 +192,7 @@ class _ShiftScreenState extends ConsumerState<ShiftScreen> {
             child: Row(children: [
               IconButton(onPressed: () => context.pop(), icon: const Icon(Icons.arrow_back)),
               Expanded(child: Text(l.shiftTitle, style: Theme.of(context).textTheme.titleLarge)),
-              Pill(icon: Icons.shield_outlined, label: '$protectedCount/$total', color: K.teal),
+              KeyedSubtree(key: _pillKey, child: Pill(icon: Icons.shield_outlined, label: '$protectedCount/$total', color: K.teal)),
             ]),
           ),
           Padding(
@@ -175,6 +211,7 @@ class _ShiftScreenState extends ConsumerState<ShiftScreen> {
             ]),
           ),
           Expanded(
+            key: _inboxKey,
             child: ListView.builder(
               padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
               itemCount: _arrived,

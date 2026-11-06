@@ -82,5 +82,65 @@
     "dangerous_actions": [],
     "explanation": "Genuine: started by you, amount and recipient match. That is what to check every time.",
     "tags": []
+  },
+  {
+    "id": "push-single-prompt",
+    "type": "push",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "mfa_fatigue",
+    "module": 9,
+    "consumer": true,
+    "content": {
+      "app": "OfficeCloud Authenticator",
+      "title": "Approve sign-in?",
+      "body": "Sign-in to OfficeCloud\nLocation: Leipzig",
+      "context": "You are still working on your laptop and have been signed in for an hour. You are in Zwickau. Exactly one prompt arrives.",
+      "repeat": 1
+    },
+    "red_flags": [
+      {
+        "target": "note:unasked",
+        "hint": "Just a single prompt, no spam at all, but you did not start a new sign-in. Someone else knows your password."
+      },
+      {
+        "target": "note:unasked",
+        "hint": "Leipzig instead of Zwickau: the location does not fit you."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "deny"
+    ],
+    "dangerous_actions": [
+      "approve"
+    ],
+    "explanation": "Skilled attackers send one prompt only and hope for a reflex. Approve only what you have just started yourself, and change your password afterwards.",
+    "tags": []
+  },
+  {
+    "id": "push-new-laptop-legit",
+    "type": "push",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 9,
+    "consumer": true,
+    "content": {
+      "app": "OfficeCloud Authenticator",
+      "title": "Approve sign-in?",
+      "body": "Sign-in to OfficeCloud\nNew device · Location: Zwickau",
+      "context": "You have just set up your new work laptop and signed in on it for the first time.",
+      "repeat": 1
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "approve"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: \"new device\" sounds suspicious, but you have just done exactly that yourself: one prompt, the right place, the right moment.",
+    "tags": []
   }
 ]

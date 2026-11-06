@@ -344,5 +344,53 @@
     ],
     "explanation": "Social engineering often begins harmlessly. Individually these facts seem trivial; together they make the plan for the next fraud.",
     "tags": []
+  },
+  {
+    "id": "scene-oauth-consent",
+    "type": "scene",
+    "locale": "en",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "credential_phishing",
+    "module": 9,
+    "consumer": false,
+    "content": {
+      "icon": "key",
+      "title": "An app asks for access",
+      "text": "You open a shared link. The real OfficeCloud page at login.officecloud.example appears, with no password prompt at all. Just a notice: \"PDF Express Reader\" wants to read your email, send in your name and keep permanent access.",
+      "options": [
+        {
+          "id": "accept",
+          "label": "Accept, the page is genuine after all"
+        },
+        {
+          "id": "decline",
+          "label": "Decline"
+        },
+        {
+          "id": "report",
+          "label": "Decline and report to IT"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:scope",
+        "hint": "A PDF program needs neither your email nor the right to send in your name."
+      },
+      {
+        "target": "note:domain",
+        "hint": "The page really is genuine, so checking the domain does not help here. The danger is what you allow the foreign app to do."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "decline"
+    ],
+    "dangerous_actions": [
+      "accept"
+    ],
+    "explanation": "Consent phishing: no password is stolen, and MFA does not help either, because you grant the app access yourself. Always read which rights an app asks for.",
+    "tags": []
   }
 ]

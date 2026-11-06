@@ -146,5 +146,28 @@
     "dangerous_actions": [],
     "explanation": "Echt: erwartet, bekannte Person, .xlsx ohne Makros. Das \"m\" in .xlsm wäre der Unterschied.",
     "tags": []
+  },
+  {
+    "id": "file-zip-colleague-legit",
+    "type": "file",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "context": "Lena hat dir in der Besprechung gesagt, dass sie dir die Messefotos schickt. Eben kam ihr Link über euren internen Dateiablage-Dienst.",
+      "name": "Messefotos_Oktober.zip",
+      "size_kb": 48210,
+      "shown_type": "ZIP-Archiv"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open_attachment"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: angekündigt, interner Weg, und die Größe passt zu Fotos. Eine ZIP-Datei allein ist noch kein Angriff, es kommt auf Herkunft und Erwartung an.",
+    "tags": []
   }
 ]

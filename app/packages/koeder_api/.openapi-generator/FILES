@@ -12,6 +12,7 @@ doc/CasesApi.md
 doc/CheckRequest.md
 doc/CheckResult.md
 doc/CodeResponse.md
+doc/DifficultySetting.md
 doc/DuelRef.md
 doc/DuelsApi.md
 doc/Energy.md
@@ -27,6 +28,8 @@ doc/OrganizationApi.md
 doc/PlayApi.md
 doc/PracticeRequest.md
 doc/ProfileApi.md
+doc/PublicApi.md
+doc/PublicInfo.md
 doc/PublicScenario.md
 doc/RedFlag.md
 doc/RegisterRequest.md
@@ -43,6 +46,7 @@ lib/src/api/duels_api.dart
 lib/src/api/organization_api.dart
 lib/src/api/play_api.dart
 lib/src/api/profile_api.dart
+lib/src/api/public_api.dart
 lib/src/auth/api_key_auth.dart
 lib/src/auth/auth.dart
 lib/src/auth/basic_auth.dart
@@ -55,6 +59,7 @@ lib/src/model/board_row.dart
 lib/src/model/check_request.dart
 lib/src/model/check_result.dart
 lib/src/model/code_response.dart
+lib/src/model/difficulty_setting.dart
 lib/src/model/duel_ref.dart
 lib/src/model/energy.dart
 lib/src/model/evaluation.dart
@@ -66,6 +71,7 @@ lib/src/model/join_request.dart
 lib/src/model/login_request.dart
 lib/src/model/me_response.dart
 lib/src/model/practice_request.dart
+lib/src/model/public_info.dart
 lib/src/model/public_scenario.dart
 lib/src/model/red_flag.dart
 lib/src/model/register_request.dart
@@ -83,6 +89,7 @@ test/cases_api_test.dart
 test/check_request_test.dart
 test/check_result_test.dart
 test/code_response_test.dart
+test/difficulty_setting_test.dart
 test/duel_ref_test.dart
 test/duels_api_test.dart
 test/energy_test.dart
@@ -98,6 +105,8 @@ test/organization_api_test.dart
 test/play_api_test.dart
 test/practice_request_test.dart
 test/profile_api_test.dart
+test/public_api_test.dart
+test/public_info_test.dart
 test/public_scenario_test.dart
 test/red_flag_test.dart
 test/register_request_test.dart

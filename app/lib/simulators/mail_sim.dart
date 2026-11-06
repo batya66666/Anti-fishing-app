@@ -5,6 +5,7 @@ import '../core/sfx.dart';
 import '../core/theme.dart';
 import '../data/models.dart';
 import 'common.dart';
+import 'pdf_sim.dart';
 
 /// A realistic mail client of our own design: light, plain, and nothing like the game around it.
 class MailSim extends StatefulWidget {
@@ -57,6 +58,7 @@ class _MailSimState extends State<MailSim> {
               ),
               const SizedBox(height: 14),
               InkWell(
+                key: p.mailTour?.sender,
                 borderRadius: BorderRadius.circular(8),
                 onTap: p.answered || p.picking
                     ? null
@@ -75,7 +77,7 @@ class _MailSimState extends State<MailSim> {
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text(name, style: const TextStyle(fontWeight: FontWeight.w600, color: K.simInk, fontSize: 15)),
                       const SizedBox(height: 2),
-                      if (addressVisible)
+                      if (addressVisible) ...[
                         FlagHighlight(
                           active: p.isFlagged('from_email'),
                           radius: 6,
@@ -87,8 +89,24 @@ class _MailSimState extends State<MailSim> {
                               child: Text('<${s.str('from_email')}>', style: const TextStyle(fontFamily: K.mono, fontSize: 12.5, color: K.simInk)),
                             ),
                           ),
-                        )
-                      else
+                        ),
+                        if (s.str('reply_to').isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 3),
+                            child: FlagHighlight(
+                              active: p.isFlagged('reply_to'),
+                              radius: 6,
+                              child: PickTarget(
+                                props: p,
+                                target: 'reply_to',
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                                  child: Text('${l.simReplyTo}: <${s.str('reply_to')}>', style: const TextStyle(fontFamily: K.mono, fontSize: 12.5, color: K.simInk)),
+                                ),
+                              ),
+                            ),
+                          ),
+                      ] else
                         Row(children: [
                           Text(l.simToMe, style: const TextStyle(color: K.simMuted, fontSize: 13)),
                           const Icon(Icons.expand_more, size: 18, color: K.simMuted),
@@ -98,50 +116,55 @@ class _MailSimState extends State<MailSim> {
                 ]),
               ),
               const SizedBox(height: 16),
-              if (p.picking)
-                for (final sentence in sentencesOf(s.str('body_md')))
+              Column(key: p.mailTour?.content, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                if (p.picking)
+                  for (final sentence in sentencesOf(s.str('body_md')))
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 6),
+                      child: PickTarget(
+                        props: p,
+                        target: 'body:$sentence',
+                        child: Text(sentence, style: const TextStyle(fontSize: 15, color: K.simInk, height: 1.4)),
+                      ),
+                    )
+                else
+                  Text.rich(richBody(s.str('body_md'), const TextStyle(fontSize: 15.5, color: K.simInk, height: 1.45), p.bodyPhrases)),
+                for (final (i, link) in links.indexed)
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 6),
-                    child: PickTarget(
-                      props: p,
-                      target: 'body:$sentence',
-                      child: Text(sentence, style: const TextStyle(fontSize: 15, color: K.simInk, height: 1.4)),
+                    padding: const EdgeInsets.only(top: 14),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: FlagHighlight(
+                        active: p.isFlagged('link:$i'),
+                        child: PickTarget(props: p, target: 'link:$i', child: _LinkButton(link: link, props: p)),
+                      ),
                     ),
-                  )
-              else
-                Text.rich(richBody(s.str('body_md'), const TextStyle(fontSize: 15.5, color: K.simInk, height: 1.45), p.bodyPhrases)),
-              for (final (i, link) in links.indexed)
-                Padding(
-                  padding: const EdgeInsets.only(top: 14),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
+                  ),
+                if (attachments.isNotEmpty) const SizedBox(height: 18),
+                for (final (i, a) in attachments.indexed)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
                     child: FlagHighlight(
-                      active: p.isFlagged('link:$i'),
-                      child: PickTarget(props: p, target: 'link:$i', child: _LinkButton(link: link, props: p)),
+                      active: p.isFlagged('attachment:$i'),
+                      child: PickTarget(props: p, target: 'attachment:$i', child: _Attachment(a: a, props: p)),
                     ),
                   ),
-                ),
-              if (attachments.isNotEmpty) const SizedBox(height: 18),
-              for (final (i, a) in attachments.indexed)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: FlagHighlight(
-                    active: p.isFlagged('attachment:$i'),
-                    child: PickTarget(props: p, target: 'attachment:$i', child: _Attachment(a: a, props: p)),
-                  ),
-                ),
+              ]),
             ]),
           ),
         ),
         if (!p.picking)
-          ActionBar(
-            onAction: p.onAction,
-            actions: [
-              SimAction('open', l.actOk, Icons.check),
-              SimAction('reply', l.actReply, Icons.reply),
-              SimAction('delete', l.actDelete, Icons.delete_outline),
-              SimAction('report', l.actReport, Icons.flag, primary: true),
-            ],
+          KeyedSubtree(
+            key: p.mailTour?.actions,
+            child: ActionBar(
+              onAction: p.onAction,
+              actions: [
+                SimAction('open', l.actOk, Icons.check),
+                SimAction('reply', l.actReply, Icons.reply),
+                SimAction('delete', l.actDelete, Icons.delete_outline),
+                SimAction('report', l.actReport, Icons.flag, primary: true),
+              ],
+            ),
           ),
       ]),
     );
@@ -181,19 +204,30 @@ class _Attachment extends StatelessWidget {
   Widget build(BuildContext context) {
     final name = a['name'] as String;
     final kb = (a['size_kb'] as num).toInt();
+    final pdf = a['pdf'] == null ? null : Map<String, dynamic>.from(a['pdf'] as Map);
+    // A readable PDF opens in the viewer and the decision comes later. In spot-the-flags mode you may look at it too.
+    void view() => showPdfViewer(context, name: name, pdf: pdf!, props: props.picking ? SimProps(reveal: const []) : props);
     return Material(
       color: K.simBg2,
       borderRadius: BorderRadius.circular(10),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
-        onTap: props.onAction == null || props.picking ? null : () => props.onAction!('open_attachment'),
+        onTap: props.picking
+            ? null
+            : pdf != null
+                ? view
+                : props.onAction == null
+                    ? null
+                    : () => props.onAction!('open_attachment'),
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(children: [
-            const Icon(Icons.attach_file, color: K.simMuted, size: 20),
+            Icon(name.toLowerCase().endsWith('.pdf') ? Icons.picture_as_pdf_outlined : Icons.attach_file, color: K.simMuted, size: 20),
             const SizedBox(width: 8),
             Expanded(child: Text(name, style: const TextStyle(fontFamily: K.mono, fontSize: 13, color: K.simInk, fontWeight: FontWeight.w700))),
             Text('$kb KB', style: const TextStyle(color: K.simMuted, fontSize: 12)),
+            if (pdf != null && props.picking)
+              IconButton(visualDensity: VisualDensity.compact, tooltip: name, onPressed: view, icon: const Icon(Icons.visibility_outlined, size: 20, color: K.simLink)),
           ]),
         ),
       ),

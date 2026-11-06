@@ -11,6 +11,7 @@ import '../../core/l10n.dart';
 import '../../core/theme.dart';
 import '../../effects/mascot.dart';
 import 'admin_api.dart';
+import 'difficulty_panel.dart';
 import 'download_web.dart';
 
 class AdminApp extends StatefulWidget {
@@ -148,7 +149,8 @@ class _ConsoleState extends State<_Console> {
             segments: [
               ButtonSegment(value: 0, label: Text(l.adminTabDashboard), icon: const Icon(Icons.dashboard_outlined, size: 17)),
               ButtonSegment(value: 1, label: Text(l.adminTabScenarios), icon: const Icon(Icons.auto_awesome_outlined, size: 17)),
-              ButtonSegment(value: 2, label: Text(l.adminTabJury), icon: const Icon(Icons.qr_code_2, size: 17)),
+              ButtonSegment(value: 2, label: Text(l.adminTabDifficulty), icon: const Icon(Icons.tune, size: 17)),
+              ButtonSegment(value: 3, label: Text(l.adminTabJury), icon: const Icon(Icons.qr_code_2, size: 17)),
             ],
             selected: {_tab},
             onSelectionChanged: (s) => setState(() => _tab = s.first),
@@ -161,6 +163,7 @@ class _ConsoleState extends State<_Console> {
           : IndexedStack(index: _tab, children: [
               _Dashboard(data: d, onReport: _downloadReport),
               _Generator(api: widget.api, companyName: d['name'] as String),
+              DifficultyPanel(api: widget.api),
               const _JuryPanel(),
             ]),
     );
@@ -796,6 +799,12 @@ class _JuryPanel extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           SelectableText(Config.arenaLink, style: const TextStyle(fontFamily: K.mono, color: K.teal, fontSize: 14)),
+          const SizedBox(height: 20),
+          Text(l.adminWifiTitle, style: Theme.of(context).textTheme.titleLarge),
+          const SizedBox(height: 2),
+          Text(l.adminWifiSub, textAlign: TextAlign.center, style: const TextStyle(color: K.muted)),
+          const SizedBox(height: 6),
+          SelectableText(Config.playAddress, style: const TextStyle(fontFamily: K.mono, color: K.teal, fontSize: 28, fontWeight: FontWeight.w700)),
         ]),
       ),
     );

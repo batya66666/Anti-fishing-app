@@ -6,6 +6,15 @@ import 'models.dart';
 abstract class GameRepo {
   bool get offline;
 
+  /// Turns the current guest into an account. Returns the session token. Throws [AuthFailed].
+  Future<String> register(String email, String password, String? displayName);
+
+  /// Returns the session token. Throws [AuthFailed].
+  Future<String> login(String email, String password);
+
+  /// Stops whatever runs in the background for this identity.
+  void close();
+
   Future<Me> me();
   Future<Me> updateSettings({String? displayName, int? avatar, String? locale, String? mode, bool? publicBoard});
   Future<Me> demoReset();
@@ -17,7 +26,11 @@ abstract class GameRepo {
   Future<Evaluation> practice({required String scenarioId, required String context, String? action, List<String>? flags, required int ms});
   Future<List<Scenario>> reviewDue();
 
-  /// Throws [LimitReached] when today's free rounds are used up.
+  /// The next shift of the day. There is no limit; an unfinished shift is returned as it is.
+  Future<TodayShift> nextShift();
+
+  /// The next questions of the endless mode. This never runs dry.
+  Future<List<Scenario>> endless({String? difficulty});
   Future<List<Scenario>> swipeDeck();
   Future<List<Scenario>> flagsDeck();
   Future<List<Scenario>> moduleLesson(int module);
@@ -30,12 +43,19 @@ abstract class GameRepo {
   Future<void> queueDuel();
   Future<void> leaveQueue();
   Future<String> createFriendly();
-  Future<String> friendlyAgainstBot();
+
+  /// [level] is rookie, analyst, veteran or ciso. Null lets the bot match the player.
+  Future<String> friendlyAgainstBot({String? level});
 
   /// Returns the duel id. Throws [DuelJoinFailed] for an unknown or used code.
   Future<String> joinFriendly(String code);
 }
 
-class LimitReached implements Exception {}
+enum AuthFailure { badLogin, emailTaken, needsServer, other }
+
+class AuthFailed implements Exception {
+  AuthFailed(this.reason);
+  final AuthFailure reason;
+}
 
 class DuelJoinFailed implements Exception {}

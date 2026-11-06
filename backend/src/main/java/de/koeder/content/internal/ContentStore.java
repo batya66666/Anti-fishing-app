@@ -156,6 +156,24 @@ class ContentStore implements ScenarioCatalog {
         }
     }
 
+    @Override
+    public Optional<String> forcedDifficulty(UUID orgId) {
+        if (orgId == null) {
+            return Optional.empty();
+        }
+        return jdbc.sql("SELECT forced_difficulty FROM content_settings WHERE org_id = :org AND forced_difficulty IS NOT NULL")
+                .param("org", orgId).query(String.class).optional();
+    }
+
+    @Override
+    @Transactional
+    public void setForcedDifficulty(UUID orgId, String difficulty) {
+        jdbc.sql("""
+                INSERT INTO content_settings (org_id, forced_difficulty) VALUES (:org, :d)
+                ON CONFLICT (org_id) DO UPDATE SET forced_difficulty = :d
+                """).param("org", orgId).param("d", difficulty, java.sql.Types.VARCHAR).update();
+    }
+
     /** Case files are story content, not scored scenarios: served as plain JSON documents. */
     List<Map<String, Object>> cases(String locale) throws IOException {
         var resolver = new PathMatchingResourcePatternResolver();

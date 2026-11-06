@@ -114,5 +114,63 @@
     "dangerous_actions": [],
     "explanation": "Echt: bekannte Quelle, und die angezeigte Adresse ist eure eigene Domain. Vor dem Öffnen immer die Adresse lesen.",
     "tags": []
+  },
+  {
+    "id": "qr-poster-canteen-app",
+    "type": "qr",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "quishing",
+    "module": 8,
+    "consumer": false,
+    "content": {
+      "context": "Ein gut gemachtes Plakat im Pausenraum, mit Firmenlogo: \"Neue Kantinen-App: jetzt mit Firmenkonto anmelden und 5 € Guthaben sichern\".",
+      "place": "Pausenraum",
+      "sticker": false,
+      "url": "https://kantine-muster-automotive.test/login"
+    },
+    "red_flags": [
+      {
+        "target": "url",
+        "hint": "Eure Kantine läuft unter kantine.muster-automotive.example. Diese Adresse gehört jemand anderem."
+      },
+      {
+        "target": "note:qr-in-mail",
+        "hint": "Ein Plakat kann jeder aufhängen. Logo und gute Gestaltung beweisen nichts, und das Guthaben ist der Köder."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "ignore"
+    ],
+    "dangerous_actions": [
+      "scan_open"
+    ],
+    "explanation": "Angriffe finden auch vor Ort statt. Prüfe nach dem Scannen die Adresse, bevor du dich anmeldest, und frag im Zweifel die Kantine oder die IT.",
+    "tags": []
+  },
+  {
+    "id": "qr-parking-official-legit",
+    "type": "qr",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 8,
+    "consumer": true,
+    "content": {
+      "context": "Parkautomat der Stadt. Der Code ist fest in die Metallplatte eingeprägt, die Adresse steht direkt daneben auf der Platte.",
+      "place": "Parkautomat",
+      "sticker": false,
+      "url": "https://parken.stadt-zwickau.example/zone4"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "scan_open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: Der Code ist kein Aufkleber, sondern eingeprägt, und die aufgedruckte Adresse stimmt mit dem Ziel überein. Nicht jeder QR-Code am Automaten ist Betrug. Prüfe aber trotzdem immer die Adresse.",
+    "tags": []
   }
 ]

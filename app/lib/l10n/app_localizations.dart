@@ -497,7 +497,7 @@ abstract class AppLocalizations {
   /// No description provided for @onbPrivacy.
   ///
   /// In de, this message translates to:
-  /// **'Kein Konto nötig. Du spielst anonym, deine Fehler sieht nur du.'**
+  /// **'Ein Konto ist freiwillig. Als Gast spielst du anonym, und nur du siehst deine Fehler.'**
   String get onbPrivacy;
 
   /// No description provided for @tabWork.
@@ -554,18 +554,6 @@ abstract class AppLocalizations {
   /// **'Schicht starten'**
   String get shiftStart;
 
-  /// No description provided for @shiftDoneTitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Feierabend!'**
-  String get shiftDoneTitle;
-
-  /// No description provided for @shiftDoneBody.
-  ///
-  /// In de, this message translates to:
-  /// **'Gute Arbeit. Dein Kopf braucht jetzt eine Pause, morgen wartet ein neuer Fall. Heute geht noch ein Duell.'**
-  String get shiftDoneBody;
-
   /// No description provided for @reviewDue.
   ///
   /// In de, this message translates to:
@@ -577,12 +565,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Swipe'**
   String get modeSwipe;
-
-  /// No description provided for @swipeLeft.
-  ///
-  /// In de, this message translates to:
-  /// **'{count, plural, =1{Heute noch 1 Runde} other{Heute noch {count} Runden}}'**
-  String swipeLeft(int count);
 
   /// No description provided for @modeFlags.
   ///
@@ -607,18 +589,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Echte Angriffe nachspielen'**
   String get modeCasesSub;
-
-  /// No description provided for @modeRedTeam.
-  ///
-  /// In de, this message translates to:
-  /// **'Werde zum Hacker'**
-  String get modeRedTeam;
-
-  /// No description provided for @modeRedTeamSub.
-  ///
-  /// In de, this message translates to:
-  /// **'Baue selbst einen Köder'**
-  String get modeRedTeamSub;
 
   /// No description provided for @checkTitle.
   ///
@@ -821,7 +791,7 @@ abstract class AppLocalizations {
   /// No description provided for @simplePracticeDone.
   ///
   /// In de, this message translates to:
-  /// **'Für heute geschafft. Bis morgen!'**
+  /// **'Geschafft. Noch eine Runde?'**
   String get simplePracticeDone;
 
   /// No description provided for @simpleReview.
@@ -925,12 +895,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Gute Schicht! Dein Kopf braucht jetzt Ruhe, morgen wartet ein neuer Fall.'**
   String get reportRest;
-
-  /// No description provided for @swipeLimit.
-  ///
-  /// In de, this message translates to:
-  /// **'Für heute sind deine Swipe-Runden vorbei. Das Wiederholen deiner Fehler bleibt immer kostenlos.'**
-  String get swipeLimit;
 
   /// No description provided for @swipePhishing.
   ///
@@ -1183,216 +1147,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Quellen'**
   String get caseSources;
-
-  /// No description provided for @rtIntro.
-  ///
-  /// In de, this message translates to:
-  /// **'Du bist Pentester für eine fiktive Firma. Baue eine Mail und finde heraus, warum Köder funktionieren. Wer die Hebel kennt, erkennt sie.'**
-  String get rtIntro;
-
-  /// No description provided for @rtSender.
-  ///
-  /// In de, this message translates to:
-  /// **'Absender'**
-  String get rtSender;
-
-  /// No description provided for @rtSenderUnknown.
-  ///
-  /// In de, this message translates to:
-  /// **'Unbekannt'**
-  String get rtSenderUnknown;
-
-  /// No description provided for @rtSenderColleague.
-  ///
-  /// In de, this message translates to:
-  /// **'Kollegin'**
-  String get rtSenderColleague;
-
-  /// No description provided for @rtSenderIt.
-  ///
-  /// In de, this message translates to:
-  /// **'IT-Abteilung'**
-  String get rtSenderIt;
-
-  /// No description provided for @rtSenderBoss.
-  ///
-  /// In de, this message translates to:
-  /// **'Chef'**
-  String get rtSenderBoss;
-
-  /// No description provided for @rtPretext.
-  ///
-  /// In de, this message translates to:
-  /// **'Anlass'**
-  String get rtPretext;
-
-  /// No description provided for @rtPretextParcel.
-  ///
-  /// In de, this message translates to:
-  /// **'Paket'**
-  String get rtPretextParcel;
-
-  /// No description provided for @rtPretextPassword.
-  ///
-  /// In de, this message translates to:
-  /// **'Passwort läuft ab'**
-  String get rtPretextPassword;
-
-  /// No description provided for @rtPretextInvoice.
-  ///
-  /// In de, this message translates to:
-  /// **'Rechnung'**
-  String get rtPretextInvoice;
-
-  /// No description provided for @rtPretextBonus.
-  ///
-  /// In de, this message translates to:
-  /// **'Bonus'**
-  String get rtPretextBonus;
-
-  /// No description provided for @rtUrgency.
-  ///
-  /// In de, this message translates to:
-  /// **'Dringlichkeit'**
-  String get rtUrgency;
-
-  /// No description provided for @rtUrgencyNone.
-  ///
-  /// In de, this message translates to:
-  /// **'Keine'**
-  String get rtUrgencyNone;
-
-  /// No description provided for @rtUrgencyToday.
-  ///
-  /// In de, this message translates to:
-  /// **'Heute'**
-  String get rtUrgencyToday;
-
-  /// No description provided for @rtUrgencyHour.
-  ///
-  /// In de, this message translates to:
-  /// **'1 Stunde'**
-  String get rtUrgencyHour;
-
-  /// No description provided for @rtPersonal.
-  ///
-  /// In de, this message translates to:
-  /// **'Persönlich'**
-  String get rtPersonal;
-
-  /// No description provided for @rtPersonalNone.
-  ///
-  /// In de, this message translates to:
-  /// **'Allgemein'**
-  String get rtPersonalNone;
-
-  /// No description provided for @rtPersonalName.
-  ///
-  /// In de, this message translates to:
-  /// **'Name'**
-  String get rtPersonalName;
-
-  /// No description provided for @rtPersonalProject.
-  ///
-  /// In de, this message translates to:
-  /// **'Name + Projekt'**
-  String get rtPersonalProject;
-
-  /// No description provided for @rtBait.
-  ///
-  /// In de, this message translates to:
-  /// **'Köder'**
-  String get rtBait;
-
-  /// No description provided for @rtBaitLink.
-  ///
-  /// In de, this message translates to:
-  /// **'Link'**
-  String get rtBaitLink;
-
-  /// No description provided for @rtBaitAttachment.
-  ///
-  /// In de, this message translates to:
-  /// **'Anhang'**
-  String get rtBaitAttachment;
-
-  /// No description provided for @rtBaitQr.
-  ///
-  /// In de, this message translates to:
-  /// **'QR-Code'**
-  String get rtBaitQr;
-
-  /// No description provided for @rtEthics.
-  ///
-  /// In de, this message translates to:
-  /// **'Alles bleibt im Spiel: feste Bausteine, fiktive Firma und Domains, kein Export. Diese Übung zeigt, wie Angriffe funktionieren, damit du sie erkennst.'**
-  String get rtEthics;
-
-  /// No description provided for @rtLaunch.
-  ///
-  /// In de, this message translates to:
-  /// **'An 100 Kollegen senden'**
-  String get rtLaunch;
-
-  /// No description provided for @rtRunning.
-  ///
-  /// In de, this message translates to:
-  /// **'Die Kampagne läuft...'**
-  String get rtRunning;
-
-  /// No description provided for @rtDone.
-  ///
-  /// In de, this message translates to:
-  /// **'Ergebnis der Kampagne'**
-  String get rtDone;
-
-  /// No description provided for @rtClicked.
-  ///
-  /// In de, this message translates to:
-  /// **'Geklickt'**
-  String get rtClicked;
-
-  /// No description provided for @rtReported.
-  ///
-  /// In de, this message translates to:
-  /// **'Gemeldet'**
-  String get rtReported;
-
-  /// No description provided for @rtIgnored.
-  ///
-  /// In de, this message translates to:
-  /// **'Ignoriert'**
-  String get rtIgnored;
-
-  /// No description provided for @rtVerdictHigh.
-  ///
-  /// In de, this message translates to:
-  /// **'Erschreckend wirksam.'**
-  String get rtVerdictHigh;
-
-  /// No description provided for @rtVerdictMid.
-  ///
-  /// In de, this message translates to:
-  /// **'Beachtlich: Das reicht für einen Einbruch.'**
-  String get rtVerdictMid;
-
-  /// No description provided for @rtVerdictLow.
-  ///
-  /// In de, this message translates to:
-  /// **'Die meisten durchschauen das.'**
-  String get rtVerdictLow;
-
-  /// No description provided for @rtLesson.
-  ///
-  /// In de, this message translates to:
-  /// **'Ein einziger Klick reicht Angreifern. Autorität, Zeitdruck und persönliche Details machen den Unterschied. Genau daran erkennst du Köder ab jetzt selbst. Und jede Meldung hilft: Die IT kann alle warnen, bevor der Nächste klickt.'**
-  String get rtLesson;
-
-  /// No description provided for @rtAgain.
-  ///
-  /// In de, this message translates to:
-  /// **'Neue Kampagne'**
-  String get rtAgain;
 
   /// No description provided for @checkIntro.
   ///
@@ -1703,7 +1457,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingSound.
   ///
   /// In de, this message translates to:
-  /// **'Ton und Sprache'**
+  /// **'Ton'**
   String get settingSound;
 
   /// No description provided for @settingPublicBoard.
@@ -1823,13 +1577,13 @@ abstract class AppLocalizations {
   /// No description provided for @planFree.
   ///
   /// In de, this message translates to:
-  /// **'1 Schicht pro Tag, Grundlagen, Fehler wiederholen, 1 Duell pro Tag, einfacher Modus'**
+  /// **'Unbegrenzt spielen: Schichten, Endlos-Modus, Duelle, Lernpfad, einfacher Modus'**
   String get planFree;
 
   /// No description provided for @planPremium.
   ///
   /// In de, this message translates to:
-  /// **'Ohne Limits, alle Module, Case Files, Red Team, Nachrichten-Check ohne Limit, Serien einfrieren'**
+  /// **'Case Files, Nachrichten-Check ohne Limit, Serien einfrieren'**
   String get planPremium;
 
   /// No description provided for @planFamily.
@@ -1841,7 +1595,7 @@ abstract class AppLocalizations {
   /// No description provided for @planTeam.
   ///
   /// In de, this message translates to:
-  /// **'Firmenliga, Admin-Panel, Berichte nach Abteilung, keine Limits'**
+  /// **'Firmenliga, Admin-Panel, Berichte nach Abteilung'**
   String get planTeam;
 
   /// No description provided for @planBusiness.
@@ -2281,6 +2035,744 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Scannen, und in Sekunden sind Sie im Duell. Ohne App und ohne Konto.'**
   String get jurySub;
+
+  /// No description provided for @tourSkip.
+  ///
+  /// In de, this message translates to:
+  /// **'Überspringen'**
+  String get tourSkip;
+
+  /// No description provided for @tourDone.
+  ///
+  /// In de, this message translates to:
+  /// **'Los geht’s!'**
+  String get tourDone;
+
+  /// No description provided for @tourAgain.
+  ///
+  /// In de, this message translates to:
+  /// **'Rundgang wiederholen'**
+  String get tourAgain;
+
+  /// No description provided for @tourWelcomeTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Hallo, ich bin Köderchen!'**
+  String get tourWelcomeTitle;
+
+  /// No description provided for @tourWelcomeBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Ich zeige dir kurz, wo alles ist. Keine Sorge, das dauert nur eine Minute.'**
+  String get tourWelcomeBody;
+
+  /// No description provided for @tourLevelTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Dein Rang'**
+  String get tourLevelTitle;
+
+  /// No description provided for @tourLevelBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Hier steigst du vom Praktikanten bis zum CISO auf. Jede richtige Entscheidung bringt XP.'**
+  String get tourLevelBody;
+
+  /// No description provided for @tourShiftTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Deine Schicht'**
+  String get tourShiftTitle;
+
+  /// No description provided for @tourShiftBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Das Herz des Spiels: Dein Postfach läuft voll, und du entscheidest, was echt ist. Die Hälfte der Nachrichten ist harmlos.'**
+  String get tourShiftBody;
+
+  /// No description provided for @tourEndlessTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Endlos spielen'**
+  String get tourEndlessTitle;
+
+  /// No description provided for @tourEndlessBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Frage auf Frage, ohne Limit und in der Schwierigkeit, die du wählst.'**
+  String get tourEndlessBody;
+
+  /// No description provided for @tourModesTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Noch mehr Training'**
+  String get tourModesTitle;
+
+  /// No description provided for @tourModesBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Wischen gegen die Uhr, Warnzeichen suchen, echte Fälle nachspielen oder eine eigene Nachricht prüfen.'**
+  String get tourModesBody;
+
+  /// No description provided for @tourCheckTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Echte Nachricht prüfen'**
+  String get tourCheckTitle;
+
+  /// No description provided for @tourCheckBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Du hast etwas Verdächtiges bekommen? Füge es hier ein und ich schaue es mir an.'**
+  String get tourCheckBody;
+
+  /// No description provided for @tourPathTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Dein Lernpfad'**
+  String get tourPathTitle;
+
+  /// No description provided for @tourPathBody.
+  ///
+  /// In de, this message translates to:
+  /// **'13 Themen. Dein Fortschritt wird gespeichert: Du machst immer genau dort weiter, wo du aufgehört hast.'**
+  String get tourPathBody;
+
+  /// No description provided for @tourDuelTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Duelle'**
+  String get tourDuelTitle;
+
+  /// No description provided for @tourDuelBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Tritt live gegen andere an oder fordere einen Bot heraus. Vom Praktikanten bis zur CISO.'**
+  String get tourDuelBody;
+
+  /// No description provided for @tourLeagueTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Liga'**
+  String get tourLeagueTitle;
+
+  /// No description provided for @tourLeagueBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Sammle in der Woche XP und steig auf.'**
+  String get tourLeagueBody;
+
+  /// No description provided for @tourProfileTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Profil'**
+  String get tourProfileTitle;
+
+  /// No description provided for @tourProfileBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Deine Statistik und Abzeichen, dazu Konto, Sprache und dieser Rundgang.'**
+  String get tourProfileBody;
+
+  /// No description provided for @tourInboxTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Dein Postfach'**
+  String get tourInboxTitle;
+
+  /// No description provided for @tourInboxBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Nachrichten kommen von selbst rein. Tippe eine an. Vorsicht: Anrufe unterbrechen dich jederzeit.'**
+  String get tourInboxBody;
+
+  /// No description provided for @tourProgressTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Abgewehrte Angriffe'**
+  String get tourProgressTitle;
+
+  /// No description provided for @tourProgressBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Hier siehst du, wie viele Nachrichten du richtig behandelt hast.'**
+  String get tourProgressBody;
+
+  /// No description provided for @tourSenderTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Wer schreibt wirklich?'**
+  String get tourSenderTitle;
+
+  /// No description provided for @tourSenderBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Der Name kann alles behaupten. Tippe auf den Absender, dann siehst du die echte Adresse.'**
+  String get tourSenderBody;
+
+  /// No description provided for @tourContentTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Links und Anhänge'**
+  String get tourContentTitle;
+
+  /// No description provided for @tourContentBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Halte den Finger auf einen Link, um sein Ziel zu sehen. Eine PDF öffnet sich in der Vorschau, aber auch in PDFs steckt Phishing.'**
+  String get tourContentBody;
+
+  /// No description provided for @tourActionsTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Deine Entscheidung'**
+  String get tourActionsTitle;
+
+  /// No description provided for @tourActionsBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Echt? Tippe auf „In Ordnung“. Ein Angriff? Melden ist das Beste, was du tun kannst. Fällst du darauf herein, wirst du gehackt. Meldest du Echtes, bist du Paranoiker.'**
+  String get tourActionsBody;
+
+  /// No description provided for @onbWelcomeLanguage.
+  ///
+  /// In de, this message translates to:
+  /// **'Willkommen! Welcome!'**
+  String get onbWelcomeLanguage;
+
+  /// No description provided for @onbChooseLanguage.
+  ///
+  /// In de, this message translates to:
+  /// **'Wähle deine Sprache'**
+  String get onbChooseLanguage;
+
+  /// No description provided for @authRegisterTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Konto anlegen'**
+  String get authRegisterTitle;
+
+  /// No description provided for @authLoginTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Willkommen zurück'**
+  String get authLoginTitle;
+
+  /// No description provided for @authWhy.
+  ///
+  /// In de, this message translates to:
+  /// **'Mit Konto bleibt dein Fortschritt erhalten, auch auf einem anderen Gerät.'**
+  String get authWhy;
+
+  /// No description provided for @authRegister.
+  ///
+  /// In de, this message translates to:
+  /// **'Registrieren'**
+  String get authRegister;
+
+  /// No description provided for @authLogin.
+  ///
+  /// In de, this message translates to:
+  /// **'Anmelden'**
+  String get authLogin;
+
+  /// No description provided for @authLogout.
+  ///
+  /// In de, this message translates to:
+  /// **'Abmelden'**
+  String get authLogout;
+
+  /// No description provided for @authGuest.
+  ///
+  /// In de, this message translates to:
+  /// **'Ohne Konto als Gast weiter'**
+  String get authGuest;
+
+  /// No description provided for @authName.
+  ///
+  /// In de, this message translates to:
+  /// **'Dein Name im Spiel (optional)'**
+  String get authName;
+
+  /// No description provided for @authEmail.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail'**
+  String get authEmail;
+
+  /// No description provided for @authPassword.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort'**
+  String get authPassword;
+
+  /// No description provided for @authShowPassword.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort anzeigen'**
+  String get authShowPassword;
+
+  /// No description provided for @authPasswordHint.
+  ///
+  /// In de, this message translates to:
+  /// **'Mindestens {count} Zeichen'**
+  String authPasswordHint(int count);
+
+  /// No description provided for @authShortPassword.
+  ///
+  /// In de, this message translates to:
+  /// **'Das Passwort braucht mindestens {count} Zeichen.'**
+  String authShortPassword(int count);
+
+  /// No description provided for @authBadEmail.
+  ///
+  /// In de, this message translates to:
+  /// **'Bitte gib eine gültige E-Mail-Adresse ein.'**
+  String get authBadEmail;
+
+  /// No description provided for @authBadLogin.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail oder Passwort stimmt nicht.'**
+  String get authBadLogin;
+
+  /// No description provided for @authTaken.
+  ///
+  /// In de, this message translates to:
+  /// **'Für diese E-Mail gibt es schon ein Konto. Melde dich an.'**
+  String get authTaken;
+
+  /// No description provided for @authNeedsServer.
+  ///
+  /// In de, this message translates to:
+  /// **'Konten brauchen eine Verbindung zum Server. Du kannst offline als Gast weiterspielen.'**
+  String get authNeedsServer;
+
+  /// No description provided for @authInsecure.
+  ///
+  /// In de, this message translates to:
+  /// **'Dieses Demo-Netz läuft ohne HTTPS. Nimm hier kein Passwort, das du anderswo benutzt.'**
+  String get authInsecure;
+
+  /// No description provided for @authAccountGuest.
+  ///
+  /// In de, this message translates to:
+  /// **'Du spielst als Gast'**
+  String get authAccountGuest;
+
+  /// No description provided for @authAccountGuestSub.
+  ///
+  /// In de, this message translates to:
+  /// **'Konto anlegen, um deinen Fortschritt zu sichern'**
+  String get authAccountGuestSub;
+
+  /// No description provided for @authAccountHave.
+  ///
+  /// In de, this message translates to:
+  /// **'Ich habe schon ein Konto'**
+  String get authAccountHave;
+
+  /// No description provided for @endlessTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Endlos-Modus'**
+  String get endlessTitle;
+
+  /// No description provided for @endlessSub.
+  ///
+  /// In de, this message translates to:
+  /// **'Ohne Limit'**
+  String get endlessSub;
+
+  /// No description provided for @endlessIntro.
+  ///
+  /// In de, this message translates to:
+  /// **'Frage auf Frage, so lange du willst. Zuerst kommt Neues, danach das, was du am längsten nicht gesehen hast.'**
+  String get endlessIntro;
+
+  /// No description provided for @endlessStart.
+  ///
+  /// In de, this message translates to:
+  /// **'Los geht’s'**
+  String get endlessStart;
+
+  /// No description provided for @endlessNext.
+  ///
+  /// In de, this message translates to:
+  /// **'Nächste Frage'**
+  String get endlessNext;
+
+  /// No description provided for @retry.
+  ///
+  /// In de, this message translates to:
+  /// **'Nochmal versuchen'**
+  String get retry;
+
+  /// No description provided for @difficultyTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Schwierigkeit'**
+  String get difficultyTitle;
+
+  /// No description provided for @difficultyMix.
+  ///
+  /// In de, this message translates to:
+  /// **'Gemischt'**
+  String get difficultyMix;
+
+  /// No description provided for @difficultyMixBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Alle Stufen, die Hälfte davon schwer'**
+  String get difficultyMixBody;
+
+  /// No description provided for @difficultyBronze.
+  ///
+  /// In de, this message translates to:
+  /// **'Bronze'**
+  String get difficultyBronze;
+
+  /// No description provided for @difficultySilver.
+  ///
+  /// In de, this message translates to:
+  /// **'Silber'**
+  String get difficultySilver;
+
+  /// No description provided for @difficultyGold.
+  ///
+  /// In de, this message translates to:
+  /// **'Gold'**
+  String get difficultyGold;
+
+  /// No description provided for @difficultyDiamond.
+  ///
+  /// In de, this message translates to:
+  /// **'Diamant'**
+  String get difficultyDiamond;
+
+  /// No description provided for @difficultyBronzeBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Klassiker, die man kennen muss'**
+  String get difficultyBronzeBody;
+
+  /// No description provided for @difficultySilverBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Die üblichen Maschen, gut gemacht'**
+  String get difficultySilverBody;
+
+  /// No description provided for @difficultyGoldBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Plausibel und fehlerfrei, oft mit PDF'**
+  String get difficultyGoldBody;
+
+  /// No description provided for @difficultyDiamondBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Echte Konten, geklonte Stimmen: fast nicht zu erkennen'**
+  String get difficultyDiamondBody;
+
+  /// No description provided for @difficultyForced.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Admin hat „{level}“ für alle festgelegt.'**
+  String difficultyForced(String level);
+
+  /// No description provided for @pdfScan.
+  ///
+  /// In de, this message translates to:
+  /// **'Code mit dem Handy scannen'**
+  String get pdfScan;
+
+  /// No description provided for @pdfHoldHint.
+  ///
+  /// In de, this message translates to:
+  /// **'Finger halten oder Rechtsklick zeigt das Ziel.'**
+  String get pdfHoldHint;
+
+  /// No description provided for @pdfBack.
+  ///
+  /// In de, this message translates to:
+  /// **'Zurück zur Nachricht'**
+  String get pdfBack;
+
+  /// No description provided for @simReplyTo.
+  ///
+  /// In de, this message translates to:
+  /// **'Antwort an'**
+  String get simReplyTo;
+
+  /// No description provided for @shiftAgainTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Schicht geschafft!'**
+  String get shiftAgainTitle;
+
+  /// No description provided for @shiftAgainBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Gute Arbeit. Lust auf mehr? Es gibt kein Tageslimit.'**
+  String get shiftAgainBody;
+
+  /// No description provided for @shiftAgain.
+  ///
+  /// In de, this message translates to:
+  /// **'Noch eine Schicht'**
+  String get shiftAgain;
+
+  /// No description provided for @swipeSub.
+  ///
+  /// In de, this message translates to:
+  /// **'60 Sekunden gegen die Uhr'**
+  String get swipeSub;
+
+  /// No description provided for @swipeAgain.
+  ///
+  /// In de, this message translates to:
+  /// **'Noch eine Runde'**
+  String get swipeAgain;
+
+  /// No description provided for @flagsAgain.
+  ///
+  /// In de, this message translates to:
+  /// **'Noch eine Runde'**
+  String get flagsAgain;
+
+  /// No description provided for @moduleContinue.
+  ///
+  /// In de, this message translates to:
+  /// **'Weiterlernen'**
+  String get moduleContinue;
+
+  /// No description provided for @moduleProgress.
+  ///
+  /// In de, this message translates to:
+  /// **'{done} von {total} gelöst'**
+  String moduleProgress(int done, int total);
+
+  /// No description provided for @moduleDone.
+  ///
+  /// In de, this message translates to:
+  /// **'Geschafft'**
+  String get moduleDone;
+
+  /// No description provided for @moduleRetry.
+  ///
+  /// In de, this message translates to:
+  /// **'Fehler wiederholen'**
+  String get moduleRetry;
+
+  /// No description provided for @pathDone.
+  ///
+  /// In de, this message translates to:
+  /// **'Lernpfad abgeschlossen!'**
+  String get pathDone;
+
+  /// No description provided for @hackedFalseAlarmBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Aber dein Alarm hat echte Arbeit aufgehalten. Wer alles meldet, wird bald nicht mehr ernst genommen, auch beim nächsten echten Angriff.'**
+  String get hackedFalseAlarmBody;
+
+  /// No description provided for @hackedMissedBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Das war nicht die sichere Wahl. In echt hätte dich genau das treffen können. Schau dir an, was dich hätte warnen können.'**
+  String get hackedMissedBody;
+
+  /// No description provided for @botPickTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Gegen wen spielst du?'**
+  String get botPickTitle;
+
+  /// No description provided for @botAuto.
+  ///
+  /// In de, this message translates to:
+  /// **'Passend zu mir'**
+  String get botAuto;
+
+  /// No description provided for @botAutoBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Passt sich deiner Stärke an und bleibt spannend'**
+  String get botAutoBody;
+
+  /// No description provided for @botRookie.
+  ///
+  /// In de, this message translates to:
+  /// **'Praktikant Otto'**
+  String get botRookie;
+
+  /// No description provided for @botRookieBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Liest langsam, fällt auf vieles herein'**
+  String get botRookieBody;
+
+  /// No description provided for @botAnalyst.
+  ///
+  /// In de, this message translates to:
+  /// **'Analystin Grete'**
+  String get botAnalyst;
+
+  /// No description provided for @botAnalystBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Solide, aber bei schweren Fällen unsicher'**
+  String get botAnalystBody;
+
+  /// No description provided for @botVeteran.
+  ///
+  /// In de, this message translates to:
+  /// **'Veteran Kalle'**
+  String get botVeteran;
+
+  /// No description provided for @botVeteranBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Schnell, macht kaum noch Fehler'**
+  String get botVeteranBody;
+
+  /// No description provided for @botCiso.
+  ///
+  /// In de, this message translates to:
+  /// **'CISO Frieda'**
+  String get botCiso;
+
+  /// No description provided for @botCisoBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Endgegnerin. Blitzschnell und fast fehlerfrei'**
+  String get botCisoBody;
+
+  /// No description provided for @adminTabDifficulty.
+  ///
+  /// In de, this message translates to:
+  /// **'Schwierigkeit'**
+  String get adminTabDifficulty;
+
+  /// No description provided for @adminDifficultyTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Schwierigkeit festlegen'**
+  String get adminDifficultyTitle;
+
+  /// No description provided for @adminDifficultyIntro.
+  ///
+  /// In de, this message translates to:
+  /// **'Zum Vorführen und Prüfen: Die gewählte Stufe gilt sofort für alle Spielerinnen und Spieler der Firma, in Schichten, im Endlos-Modus, beim Wischen und in Duellen.'**
+  String get adminDifficultyIntro;
+
+  /// No description provided for @adminDifficultyOff.
+  ///
+  /// In de, this message translates to:
+  /// **'Normal'**
+  String get adminDifficultyOff;
+
+  /// No description provided for @adminDifficultyOffBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Normales Spiel: Die Schwierigkeit richtet sich nach dem Spieler.'**
+  String get adminDifficultyOffBody;
+
+  /// No description provided for @adminDifficultySaved.
+  ///
+  /// In de, this message translates to:
+  /// **'Gespeichert. Gilt ab der nächsten Frage.'**
+  String get adminDifficultySaved;
+
+  /// No description provided for @adminCatalogTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Alle Szenarien prüfen'**
+  String get adminCatalogTitle;
+
+  /// No description provided for @adminCatalogSub.
+  ///
+  /// In de, this message translates to:
+  /// **'{count} Szenarien mit Lösung. Antippen, um sie so zu sehen, wie sie im Spiel erscheinen.'**
+  String adminCatalogSub(int count);
+
+  /// No description provided for @adminCatalogAll.
+  ///
+  /// In de, this message translates to:
+  /// **'Alle'**
+  String get adminCatalogAll;
+
+  /// No description provided for @adminCatalogPdfOnly.
+  ///
+  /// In de, this message translates to:
+  /// **'Nur mit PDF'**
+  String get adminCatalogPdfOnly;
+
+  /// No description provided for @adminWifiTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Mitspielen im WLAN'**
+  String get adminWifiTitle;
+
+  /// No description provided for @adminWifiSub.
+  ///
+  /// In de, this message translates to:
+  /// **'Alle im selben WLAN öffnen einfach diese Adresse:'**
+  String get adminWifiSub;
+
+  /// No description provided for @paranoidTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'PARANOIKER!'**
+  String get paranoidTitle;
+
+  /// No description provided for @paranoidSub.
+  ///
+  /// In de, this message translates to:
+  /// **'Das war echt. Dein Alarm galt einer harmlosen Nachricht.'**
+  String get paranoidSub;
+
+  /// No description provided for @paranoidCalmTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Gehackt wurde niemand.'**
+  String get paranoidCalmTitle;
+
+  /// No description provided for @paranoidButton.
+  ///
+  /// In de, this message translates to:
+  /// **'Zeig mir, woran ich es erkannt hätte'**
+  String get paranoidButton;
+
+  /// No description provided for @theoryTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Theorie'**
+  String get theoryTitle;
+
+  /// No description provided for @theoryRead.
+  ///
+  /// In de, this message translates to:
+  /// **'Theorie lesen (freiwillig)'**
+  String get theoryRead;
+
+  /// No description provided for @theoryOptional.
+  ///
+  /// In de, this message translates to:
+  /// **'Vorher die Theorie lesen (freiwillig)'**
+  String get theoryOptional;
+
+  /// No description provided for @theoryIntro.
+  ///
+  /// In de, this message translates to:
+  /// **'Ganz freiwillig: Du kannst auch direkt loslegen und unterwegs lernen.'**
+  String get theoryIntro;
+
+  /// No description provided for @botNoElo.
+  ///
+  /// In de, this message translates to:
+  /// **'Spiele gegen Bots verändern dein ELO nicht.'**
+  String get botNoElo;
 }
 
 class _AppLocalizationsDelegate

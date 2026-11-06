@@ -44,9 +44,9 @@ class RateLimitFilter extends OncePerRequestFilter {
     }
 
     private static Bucket newBucket(boolean expensive) {
-        // Generous for auth: a whole jury on one venue Wi-Fi shares an IP during the demo.
+        // Generous: behind Docker Desktop every phone on the Wi-Fi arrives with the same address.
         return Bucket.builder()
-                .addLimit(l -> l.capacity(expensive ? 20 : 120).refillGreedy(expensive ? 20 : 120, Duration.ofMinutes(1)))
+                .addLimit(l -> l.capacity(expensive ? 60 : 240).refillGreedy(expensive ? 60 : 240, Duration.ofMinutes(1)))
                 .build();
     }
 }

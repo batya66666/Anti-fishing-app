@@ -1,0 +1,65 @@
+{
+  "id": "mgm-2023",
+  "company": "MGM Resorts",
+  "year": 2023,
+  "title": "Als die Spielautomaten stillstanden",
+  "summary": "Im September 2023 legte ein Social-Engineering-Angriff Teile der Casinos von MGM Resorts in Las Vegas lahm: Spielautomaten, Zimmerbuchungen und Kartenzahlungen. Die Kosten: mindestens 100 Millionen US-Dollar.",
+  "disclaimer": "Interaktive Nachstellung: Das Gespräch ist beispielhaft. MGM spricht von einem Social-Engineering-Angriff durch kriminelle Dritte, hat aber den genauen Einstieg nicht offengelegt. Der oft genannte Anruf beim Helpdesk beruht auf Medien- und Herstellerberichten und ist nicht offiziell bestätigt.",
+  "steps": [
+    {
+      "channel": "call",
+      "narration": "Du arbeitest beim IT-Helpdesk eines großen Hotel- und Casino-Konzerns. Am Telefon ist jemand, der sich als Kollege vorstellt. Seinen Namen findet man auch im Netz, in Berufsnetzwerken.",
+      "message": "Hi, ich komme gerade nicht an mein Konto, und das Handy mit der App ist weg. Können Sie mir einen neuen Zugang einrichten? Ich sitze hier im Hotel und muss dringend ran.",
+      "question": "Was tust du?",
+      "options": [
+        {
+          "label": "Zugang einrichten und zweiten Faktor zurücksetzen, er kennt ja alle Details",
+          "stops": false,
+          "feedback": "Solche Gruppen arbeiten vor allem mit Telefon und SMS. Ein zurückgesetzter Zugang reicht ihnen für den Einstieg."
+        },
+        {
+          "label": "Identität über den festgelegten Weg prüfen, etwa durch die Führungskraft oder ein Treffen vor Ort",
+          "stops": true,
+          "feedback": "Genau. Ein verlorenes Handy ist die häufigste Geschichte. Gerade dann gilt die volle Prüfung."
+        }
+      ]
+    },
+    {
+      "channel": "chat",
+      "narration": "Etwas später: Ein ungewöhnlicher Hinweis landet bei dir.",
+      "message": "Monitoring: Neues Admin-Konto angelegt. Anmeldungen von unbekanntem Standort. Ticket automatisch niedrig eingestuft.",
+      "question": "Was tust du?",
+      "options": [
+        {
+          "label": "Niedrig eingestuft, das schaue ich mir nach dem Wochenende an",
+          "stops": false,
+          "feedback": "Bald stehen Automaten und Buchungssysteme still. Jede Stunde Vorsprung zählt für die Angreifer."
+        },
+        {
+          "label": "Sofort das Sicherheitsteam alarmieren",
+          "stops": true,
+          "feedback": "Richtig. Lieber einmal zu viel. Früh gemeldet heißt: kleiner Schaden."
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "September 2023",
+      "what": "Der Angriff stört Casino-Betrieb, Zimmerbuchungen und Kartenzahlungen an Standorten in Las Vegas. Die Gruppe Scattered Spider bekennt sich dazu und ist für Telefon- und SMS-Phishing bekannt. MGM bestätigt keine Einzelheiten zu Ransomware."
+    },
+    {
+      "when": "Oktober 2023",
+      "what": "MGM meldet der US-Börsenaufsicht Kosten von mindestens 100 Millionen US-Dollar und erwartet, dass die Versicherung sie deckt. Persönliche Daten von Kunden wurden gestohlen, darunter teils Sozialversicherungs- und Passnummern."
+    },
+    {
+      "when": "Danach",
+      "what": "Die Systeme werden wiederhergestellt. Der Konzern plant laut seinem Chef bis zu 40 Millionen US-Dollar zusätzliche IT-Investitionen."
+    }
+  ],
+  "lesson": "Ein Milliardenkonzern mit moderner Technik wurde über Menschen angegriffen. Wer Zugänge zurücksetzt, braucht ein Verfahren, das auch dann gilt, wenn der Anrufer nett, gestresst und gut informiert ist.",
+  "sources": [
+    "The Register, 6.10.2023",
+    "CFO Dive, 9.11.2023"
+  ]
+}

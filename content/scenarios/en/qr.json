@@ -114,5 +114,63 @@
     "dangerous_actions": [],
     "explanation": "Genuine: known source, and the address shown is your own domain. Always read the address before opening.",
     "tags": []
+  },
+  {
+    "id": "qr-poster-canteen-app",
+    "type": "qr",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "quishing",
+    "module": 8,
+    "consumer": false,
+    "content": {
+      "context": "A well-made poster in the break room with the company logo: \"New canteen app: sign in with your company account now and get €5 credit\".",
+      "place": "Break room",
+      "sticker": false,
+      "url": "https://kantine-muster-automotive.test/login"
+    },
+    "red_flags": [
+      {
+        "target": "url",
+        "hint": "Your canteen runs at kantine.muster-automotive.example. This address belongs to someone else."
+      },
+      {
+        "target": "note:qr-in-mail",
+        "hint": "Anyone can put up a poster. A logo and good design prove nothing, and the credit is the bait."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "ignore"
+    ],
+    "dangerous_actions": [
+      "scan_open"
+    ],
+    "explanation": "Attacks happen on site too. After scanning, check the address before you sign in, and if in doubt ask the canteen or IT.",
+    "tags": []
+  },
+  {
+    "id": "qr-parking-official-legit",
+    "type": "qr",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 8,
+    "consumer": true,
+    "content": {
+      "context": "A city parking meter. The code is stamped into the metal plate, and the address is printed right next to it on the plate.",
+      "place": "Parking meter",
+      "sticker": false,
+      "url": "https://parken.stadt-zwickau.example/zone4"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "scan_open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: the code is no sticker but stamped into the plate, and the printed address matches the destination. Not every QR code on a meter is a scam. Still, always check the address.",
+    "tags": []
   }
 ]

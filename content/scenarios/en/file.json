@@ -146,5 +146,28 @@
     "dangerous_actions": [],
     "explanation": "Genuine: expected, known person, .xlsx without macros. The \"m\" in .xlsm would be the difference.",
     "tags": []
+  },
+  {
+    "id": "file-zip-colleague-legit",
+    "type": "file",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "context": "In the meeting, Lena told you she would send you the trade fair photos. Her link just arrived through your internal file sharing service.",
+      "name": "Trade_fair_photos_October.zip",
+      "size_kb": 48210,
+      "shown_type": "ZIP archive"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open_attachment"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: announced, an internal route, and the size fits photos. A ZIP file alone is no attack, what matters is where it comes from and whether you expected it.",
+    "tags": []
   }
 ]

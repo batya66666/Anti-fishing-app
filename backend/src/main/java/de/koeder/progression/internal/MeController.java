@@ -49,7 +49,8 @@ class MeController {
                       int shiftsDone, int attacksReported, int attacksSeen, int timesHacked, int falseAlarms, int answers, int answersCorrect,
                       int elo, int wins, int losses,
                       String leagueTier, int weeklyXp,
-                      long reviewsDue, ShiftApi.Energy energy, Map<Integer, Integer> moduleProgress, List<String> badges) {
+                      long reviewsDue, ShiftApi.Energy energy, Map<Integer, Integer> moduleProgress, Map<Integer, Integer> moduleTotals,
+                      String forcedDifficulty, List<String> badges) {
     }
 
     record SettingsRequest(@Size(min = 1, max = 40) String displayName, Integer avatar, String locale, String mode, Boolean publicBoard) {
@@ -117,7 +118,8 @@ class MeController {
                 num(p, "false_alarms"), num(p, "answers"), num(p, "answers_correct"),
                 rating.elo(), rating.wins(), rating.losses(),
                 String.valueOf(league.get("tier")), num(league, "weekly_xp"),
-                shifts.reviewsDue(id), shifts.energy(id), shifts.moduleProgress(id), progression.badges(id));
+                shifts.reviewsDue(id), shifts.energy(id), shifts.moduleProgress(id), shifts.moduleTotals(id),
+                shifts.forcedDifficulty(id).orElse(null), progression.badges(id));
     }
 
     private static int num(Map<String, Object> m, String k) {

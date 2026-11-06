@@ -1,0 +1,70 @@
+{
+  "id": "marks-spencer-2025",
+  "company": "Marks & Spencer",
+  "year": 2025,
+  "title": "Ein Anruf, ein neues Passwort, 300 Millionen Pfund",
+  "summary": "Im April 2025 gaben sich Angreifer als einer von 50.000 Menschen aus, die für Marks & Spencer arbeiten, und brachten einen externen Dienstleister dazu, ein Passwort zurückzusetzen. Der Schaden: rund 300 Millionen Pfund Betriebsgewinn.",
+  "disclaimer": "Interaktive Nachstellung: Das Gespräch ist beispielhaft, sein Wortlaut ist nicht öffentlich. Die Fakten stammen aus der Anhörung des Verwaltungsratsvorsitzenden vor dem britischen Parlament, wie sie BleepingComputer, Infosecurity Magazine und Insurance Journal wiedergeben. Medien nennen einen bestimmten Dienstleister. M&S hat keinen Namen genannt, und dieser Fall nennt auch keinen.",
+  "steps": [
+    {
+      "channel": "call",
+      "narration": "Du arbeitest beim Helpdesk eines Dienstleisters für einen großen Händler. Ein Anruf kommt rein.",
+      "message": "Hallo, ich komme nicht mehr in mein Konto, und ich muss heute noch die Warenplanung abschließen. Können Sie mein Passwort schnell zurücksetzen? Meinen Namen und meine Personalnummer kann ich Ihnen geben.",
+      "question": "Name und Personalnummer stimmen mit dem System überein. Was tust du?",
+      "options": [
+        {
+          "label": "Passwort zurücksetzen, die Daten stimmen ja",
+          "stops": false,
+          "feedback": "Das war die Tür. Name und Personalnummer lassen sich herausfinden. Der Vorsitzende nannte es später schlicht Identitätsbetrug."
+        },
+        {
+          "label": "Identität über einen zweiten Weg prüfen: Rückruf an die hinterlegte Nummer oder Bestätigung durch die Führungskraft",
+          "stops": true,
+          "feedback": "Genau. Wissen, das andere auch haben können, beweist nichts. Ein Rückruf kostet zwei Minuten."
+        }
+      ]
+    },
+    {
+      "channel": "chat",
+      "narration": "Der Anrufer wird ungeduldig und schreibt nach.",
+      "message": "Das dauert mir zu lange. Bei uns steht gerade alles still. Soll ich Ihre Führungskraft anrufen und sagen, dass es an Ihnen liegt?",
+      "question": "Was tust du?",
+      "options": [
+        {
+          "label": "Nachgeben, ich will keinen Ärger",
+          "stops": false,
+          "feedback": "Druck ist Teil des Handwerks: Genau darum soll der Prozess auch unter Druck gelten."
+        },
+        {
+          "label": "Freundlich bleiben, beim Verfahren bleiben und den Vorgang melden",
+          "stops": true,
+          "feedback": "Stark. Wer echt ist, wartet die zwei Minuten. Wer drängt, hat einen Grund."
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "17. April 2025",
+      "what": "Laut dem Vorsitzenden Archie Norman beginnt der Einbruch mit einem Identitätsbetrug: Die Angreifer geben sich als einer der 50.000 Menschen aus, die für M&S arbeiten, und bringen einen Dritten dazu, ein Passwort zurückzusetzen."
+    },
+    {
+      "when": "Zwei Tage später",
+      "what": "M&S entdeckt den Einbruch. Die Firma schaltet Systeme selbst ab, um die Ausbreitung zu stoppen. Das trifft unter anderem den Online-Shop über Wochen."
+    },
+    {
+      "when": "8. Juli 2025",
+      "what": "Norman sagt vor dem britischen Parlament aus. Er bestätigt die Ransomware-Gruppe DragonForce, lässt aber offen, ob Lösegeld gezahlt wurde."
+    },
+    {
+      "when": "Schaden",
+      "what": "M&S rechnet mit rund 300 Millionen Pfund weniger Betriebsgewinn und hofft, einen wesentlichen Teil über die Versicherung zurückzubekommen."
+    }
+  ],
+  "lesson": "Kein Virus und keine Sicherheitslücke, nur ein überzeugendes Gespräch. Der Helpdesk ist eine der wichtigsten Sicherheitskontrollen einer Firma, auch beim Dienstleister. Passwörter werden nur nach einer echten Prüfung zurückgesetzt.",
+  "sources": [
+    "BleepingComputer, 8.7.2025",
+    "Infosecurity Magazine, 9.7.2025",
+    "Insurance Journal, 10.7.2025"
+  ]
+}

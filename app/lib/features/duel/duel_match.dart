@@ -14,6 +14,7 @@ import '../../core/theme.dart';
 import '../../data/duel_client.dart';
 import '../../data/models.dart';
 import '../../effects/confetti.dart';
+import '../../effects/hacked_overlay.dart';
 import '../../effects/mascot.dart';
 import '../../simulators/common.dart';
 import '../../simulators/mail_sim.dart';
@@ -210,8 +211,19 @@ class _DuelMatchScreenState extends ConsumerState<DuelMatchScreen> {
     final locale = ref.read(appProvider).locale;
     final solution = Map<String, dynamic>.from((solutions[locale] ?? solutions.values.first) as Map);
     final correct = mine['correct'] == true;
-    correct ? Sfx.success() : Sfx.error();
-    if (!correct) HapticFeedback.heavyImpact();
+    if (correct) {
+      Sfx.success();
+    } else {
+      HapticFeedback.heavyImpact();
+      // Running out of time on a genuine message is neither a hack nor paranoia.
+      if (solution['isAttack'] == true) {
+        ref.read(hackProvider.notifier).play(short: true);
+      } else if (_answered) {
+        ref.read(hackProvider.notifier).play(kind: HackKind.paranoid, short: true);
+      } else {
+        Sfx.error();
+      }
+    }
     setState(() {
       _phase = _Phase.result;
       _scoreA = (a['total'] as num).toInt();
@@ -420,7 +432,7 @@ class _DuelMatchScreenState extends ConsumerState<DuelMatchScreen> {
                   ),
                 ),
               ])
-            : Padding(padding: const EdgeInsets.fromLTRB(16, 12, 16, 8), child: ScenarioCard(key: ValueKey('card$_round'), s: s).animate().scaleXY(begin: 0.9, end: 1, duration: 220.ms, curve: Curves.easeOutBack)),
+            : Padding(padding: const EdgeInsets.fromLTRB(16, 12, 16, 8), child: ScenarioCard(key: ValueKey('card$_round'), s: s, scrollable: true).animate().scaleXY(begin: 0.9, end: 1, duration: 220.ms, curve: Curves.easeOutBack)),
       ),
       if (_answered)
         Padding(
@@ -511,6 +523,7 @@ class _DuelMatchScreenState extends ConsumerState<DuelMatchScreen> {
           Expanded(child: _scoreCell(_opponent, _theirScore, K.violet)),
         ]),
         const SizedBox(height: 12),
+        if (_opponent['bot'] == true) Text(l.botNoElo, textAlign: TextAlign.center, style: const TextStyle(color: K.muted, fontSize: 13)),
         if (delta != 0)
           Center(child: Pill(icon: delta > 0 ? Icons.trending_up : Icons.trending_down, label: 'ELO ${delta > 0 ? '+' : ''}$delta → ${(mine['elo'] as num).toInt()}', color: delta > 0 ? K.teal : K.warn)),
         if (_review.isNotEmpty) ...[

@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +27,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 /** Everything here is aggregate data for company managers. There is no endpoint that returns a person. */
@@ -61,6 +63,10 @@ class OrgController {
     record JoinRequest(@NotBlank @Size(max = 20) String code) {
     }
 
+    /** difficulty null means normal play. */
+    record DifficultySetting(@Pattern(regexp = "bronze|silver|gold|diamond") String difficulty) {
+    }
+
     @PostMapping("/join")
     void join(@Valid @RequestBody JoinRequest r) {
         orgs.joinByCode(CurrentUser.id(), r.code());
@@ -78,6 +84,30 @@ class OrgController {
     List<Scenario> scenarios(@PathVariable UUID id) {
         orgs.requireManagerOf(CurrentUser.id(), id);
         return catalog.orgScenarios(id, true);
+    }
+
+    @GetMapping("/{id}/difficulty")
+    @PreAuthorize("hasAnyRole('MANAGER','ADMIN')")
+    DifficultySetting difficulty(@PathVariable UUID id) {
+        orgs.requireManagerOf(CurrentUser.id(), id);
+        return new DifficultySetting(catalog.forcedDifficulty(id).orElse(null));
+    }
+
+    /** Pins one level for every player of the company: to demonstrate it, or to check it. */
+    @PutMapping("/{id}/difficulty")
+    @PreAuthorize("hasAnyRole('MANAGER','ADMIN')")
+    DifficultySetting setDifficulty(@PathVariable UUID id, @Valid @RequestBody DifficultySetting r) {
+        orgs.requireManagerOf(CurrentUser.id(), id);
+        catalog.setForcedDifficulty(id, r.difficulty());
+        return r;
+    }
+
+    /** All scenarios including their solutions, so a manager can review what the company plays. */
+    @GetMapping("/{id}/catalog")
+    @PreAuthorize("hasAnyRole('MANAGER','ADMIN')")
+    List<Scenario> catalog(@PathVariable UUID id, @RequestParam(defaultValue = "de") String locale) {
+        orgs.requireManagerOf(CurrentUser.id(), id);
+        return catalog.pool("en".equals(locale) ? "en" : "de", id);
     }
 
     @PostMapping("/{id}/scenarios")

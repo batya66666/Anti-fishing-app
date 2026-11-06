@@ -14,6 +14,7 @@ import 'package:koeder_api/src/api/duels_api.dart';
 import 'package:koeder_api/src/api/organization_api.dart';
 import 'package:koeder_api/src/api/play_api.dart';
 import 'package:koeder_api/src/api/profile_api.dart';
+import 'package:koeder_api/src/api/public_api.dart';
 
 class KoederApi {
   static const String basePath = r'http://localhost';
@@ -106,5 +107,11 @@ class KoederApi {
   /// by doing that all interceptors will not be executed
   ProfileApi getProfileApi() {
     return ProfileApi(dio);
+  }
+
+  /// Get PublicApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  PublicApi getPublicApi() {
+    return PublicApi(dio);
   }
 }

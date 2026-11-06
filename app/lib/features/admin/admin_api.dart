@@ -20,6 +20,18 @@ class AdminApi {
     _token = r.data['token'] as String;
     final me = await _dio.get('/api/me', options: _auth);
     orgId = me.data['orgId'] as String?;
+    final info = await _dio.get('/api/public/info');
+    Config.serverPublicUrl = info.data['publicUrl'] as String?;
+  }
+
+  Future<String?> forcedDifficulty() async => (await _dio.get('/api/orgs/$orgId/difficulty', options: _auth)).data['difficulty'] as String?;
+
+  Future<void> setForcedDifficulty(String? level) => _dio.put('/api/orgs/$orgId/difficulty', data: {'difficulty': level}, options: _auth);
+
+  /// All scenarios with their solutions, for review.
+  Future<List<Map<String, dynamic>>> catalog(String locale) async {
+    final r = await _dio.get('/api/orgs/$orgId/catalog', queryParameters: {'locale': locale}, options: _auth);
+    return (r.data as List).map((e) => Map<String, dynamic>.from(e as Map)).toList();
   }
 
   Future<Map<String, dynamic>> dashboard() async {

@@ -1,0 +1,70 @@
+{
+  "id": "marks-spencer-2025",
+  "company": "Marks & Spencer",
+  "year": 2025,
+  "title": "One call, one new password, 300 million pounds",
+  "summary": "In April 2025 attackers posed as one of the 50,000 people working for Marks & Spencer and got an outside service provider to reset a password. The damage: about 300 million pounds of operating profit.",
+  "disclaimer": "Interactive reconstruction: the conversation is illustrative, its wording is not public. The facts come from the chairman's hearing before the UK Parliament, as relayed by BleepingComputer, Infosecurity Magazine and Insurance Journal. Media name a particular service provider. M&S did not, and neither does this case.",
+  "steps": [
+    {
+      "channel": "call",
+      "narration": "You work on the help desk of a service provider for a large retailer. A call comes in.",
+      "message": "Hello, I am locked out of my account and I have to finish the stock planning today. Could you quickly reset my password? I can give you my name and staff number.",
+      "question": "Name and staff number match the system. What do you do?",
+      "options": [
+        {
+          "label": "Reset the password, the details are correct",
+          "stops": false,
+          "feedback": "That was the door. A name and a staff number can be found out. The chairman later simply called it impersonation."
+        },
+        {
+          "label": "Verify the identity a second way: call back on the number on file, or get the manager to confirm",
+          "stops": true,
+          "feedback": "Exactly. Knowledge that others can have proves nothing. A call back takes two minutes."
+        }
+      ]
+    },
+    {
+      "channel": "chat",
+      "narration": "The caller grows impatient and follows up in writing.",
+      "message": "This is taking too long. Everything has stopped here. Shall I call your manager and say it is down to you?",
+      "question": "What do you do?",
+      "options": [
+        {
+          "label": "Give in, I do not want any trouble",
+          "stops": false,
+          "feedback": "Pressure is part of the craft: that is exactly why the process must hold under pressure too."
+        },
+        {
+          "label": "Stay friendly, stick to the procedure and report the case",
+          "stops": true,
+          "feedback": "Strong. Whoever is real can wait two minutes. Whoever pushes has a reason."
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "17 April 2025",
+      "what": "According to chairman Archie Norman, the break-in begins with impersonation: the attackers pose as one of the 50,000 people working for M&S and get a third party to reset a password."
+    },
+    {
+      "when": "Two days later",
+      "what": "M&S detects the intrusion. The company shuts systems down itself to stop the spread. Among other things, this hits online shopping for weeks."
+    },
+    {
+      "when": "8 July 2025",
+      "what": "Norman testifies before the UK Parliament. He confirms the ransomware group DragonForce, but leaves open whether a ransom was paid."
+    },
+    {
+      "when": "Damage",
+      "what": "M&S expects about 300 million pounds less operating profit and hopes to recover a substantial part through insurance."
+    }
+  ],
+  "lesson": "No virus and no vulnerability, just a convincing conversation. The help desk is one of a company's most important security controls, including at a service provider. Passwords are reset only after a real check.",
+  "sources": [
+    "BleepingComputer, 8 Jul 2025",
+    "Infosecurity Magazine, 9 Jul 2025",
+    "Insurance Journal, 10 Jul 2025"
+  ]
+}

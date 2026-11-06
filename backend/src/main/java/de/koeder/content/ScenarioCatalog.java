@@ -18,4 +18,10 @@ public interface ScenarioCatalog {
     List<Scenario> orgScenarios(UUID orgId, boolean includeDrafts);
 
     void publish(UUID orgId, String scenarioId);
+
+    /** The difficulty a manager pinned for the company, for a demonstration or to check a level. */
+    Optional<String> forcedDifficulty(UUID orgId);
+
+    /** @param difficulty a level, or null to go back to normal play */
+    void setForcedDifficulty(UUID orgId, String difficulty);
 }

@@ -21,7 +21,7 @@ class OfflineRepo implements GameRepo {
   final Map<String, List<Map<String, dynamic>>> _cases = {};
   LocalDuelClient? _duel;
 
-  static const firstShift = ['mail-team-lunch', 'sms-parcel', 'mail-invoice-exe', 'call-ceo-fraud', 'mail-supplier-legit', 'url-subdomain', 'push-mfa-fatigue', 'mail-it-maintenance'];
+  static const firstShift = ['mail-pdf-invoice-legit', 'sms-parcel', 'mail-invoice-exe', 'call-ceo-fraud', 'mail-supplier-legit', 'mail-pdf-qr-payroll', 'push-mfa-fatigue', 'mail-it-maintenance'];
 
   Future<List<Map<String, dynamic>>> _load() async {
     return _pool[_locale] ??= (jsonDecode(await rootBundle.loadString('assets/content/scenarios_$_locale.json')) as List)
@@ -61,8 +61,16 @@ class OfflineRepo implements GameRepo {
     final shift = (s['shift'] as Map?) ?? const {};
     final isToday = shift['date'] == _today;
     final done = isToday && shift['completed'] == true;
-    final swipes = s['swipeDate'] == _today ? (s['swipes'] as int? ?? 0) : 0;
     final due = _dueIds(s).length;
+    final pool = await _load();
+    final solved = List<String>.from((s['solved'] as List?) ?? const []);
+    final progress = <String, int>{};
+    final totals = <String, int>{};
+    for (final x in pool) {
+      final module = '${x['module']}';
+      totals[module] = (totals[module] ?? 0) + 1;
+      if (solved.contains(x['id'])) progress[module] = (progress[module] ?? 0) + 1;
+    }
     return Me.fromJson({
       'id': 'local',
       'displayName': s['name'] ?? (_locale == 'en' ? 'Guest' : 'Gast'),
@@ -92,8 +100,9 @@ class OfflineRepo implements GameRepo {
       'leagueTier': 'bronze',
       'weeklyXp': s['xp'] ?? 0,
       'reviewsDue': due,
-      'energy': {'shiftAvailable': !done, 'shiftCompleted': done, 'swipeRoundsLeft': 3 - swipes, 'swipeRoundsPerDay': 3},
-      'moduleProgress': <String, int>{},
+      'energy': {'shiftCompleted': done, 'shiftsToday': isToday ? (shift['round'] as int? ?? 1) : 0},
+      'moduleProgress': progress,
+      'moduleTotals': totals,
       'badges': List<String>.from((s['badges'] as List?) ?? const []),
     });
   }
@@ -112,7 +121,6 @@ class OfflineRepo implements GameRepo {
   @override
   Future<Me> demoReset() async {
     final s = _state..remove('shift');
-    s['swipes'] = 0;
     final review = Map<String, dynamic>.from((s['review'] as Map?) ?? const {});
     s['review'] = review.map((k, v) => MapEntry(k, 0));
     await _save(s);
@@ -132,21 +140,45 @@ class OfflineRepo implements GameRepo {
     final pool = await _load();
     if (shift == null || shift['date'] != _today) {
       final first = (s['shiftsDone'] as int? ?? 0) == 0 && s['mode'] != 'simple';
-      List<String> ids;
-      if (first) {
-        ids = firstShift;
-      } else {
-        final simple = s['mode'] == 'simple';
-        final rnd = Random(DateTime.now().day * 31 + DateTime.now().month);
-        final eligible = pool.where((x) => !simple || x['consumer'] == true).toList()..shuffle(rnd);
-        final attacks = eligible.where((x) => x['is_attack'] == true).take(4);
-        final legit = eligible.where((x) => x['is_attack'] != true).take(4);
-        ids = [...attacks, ...legit].map((x) => x['id'] as String).toList()..shuffle(rnd);
-      }
-      shift = {'id': 'local-$_today', 'date': _today, 'ids': ids, 'answered': <String>[], 'score': 0, 'completed': false, 'correct': 0};
+      shift = _newShift(s, pool, first ? firstShift : null, 1);
       s['shift'] = shift;
       await _save(s);
     }
+    return _shiftResponse(shift, pool);
+  }
+
+  Map<String, dynamic> _newShift(Map<String, dynamic> s, List<Map<String, dynamic>> pool, List<String>? fixed, int round) {
+    final ids = fixed ?? _batch(s, pool, 8, null);
+    return {'id': 'local-$_today-$round', 'date': _today, 'round': round, 'ids': ids, 'answered': <String>[], 'score': 0, 'completed': false, 'correct': 0};
+  }
+
+  /// Same idea as the server: half attacks, hard messages included, what was seen longest ago first.
+  List<String> _batch(Map<String, dynamic> s, List<Map<String, dynamic>> pool, int count, String? difficulty) {
+    final simple = s['mode'] == 'simple';
+    final seenAt = (s['seenAt'] as Map?) ?? const {};
+    final rnd = Random();
+    bool fits(Map<String, dynamic> x) => difficulty == null || x['difficulty'] == difficulty || (x['is_attack'] != true && difficulty == 'diamond' && x['difficulty'] == 'gold');
+    var eligible = pool.where((x) => (!simple || x['consumer'] == true) && fits(x)).toList();
+    if (eligible.isEmpty) eligible = pool.toList();
+    eligible.shuffle(rnd);
+    eligible.sort((a, b) => ((seenAt[a['id']] as int?) ?? 0).compareTo((seenAt[b['id']] as int?) ?? 0));
+    bool hard(Map<String, dynamic> x) => x['difficulty'] == 'gold' || x['difficulty'] == 'diamond';
+    final picked = <Map<String, dynamic>>[];
+    void take(bool attack, bool onlyHard, int n) {
+      picked.addAll(eligible.where((x) => !picked.contains(x) && (x['is_attack'] == true) == attack && (!onlyHard || hard(x))).take(n));
+    }
+
+    if (difficulty == null) {
+      take(true, true, (count + 3) ~/ 4);
+      take(false, true, count ~/ 4);
+    }
+    take(true, false, count ~/ 2 - picked.where((x) => x['is_attack'] == true).length);
+    take(false, false, count - picked.length);
+    picked.addAll(eligible.where((x) => !picked.contains(x)).take(count - picked.length));
+    return picked.map((x) => x['id'] as String).toList()..shuffle(rnd);
+  }
+
+  TodayShift _shiftResponse(Map<String, dynamic> shift, List<Map<String, dynamic>> pool) {
     final ids = List<String>.from(shift['ids'] as List);
     return TodayShift(
       id: shift['id'] as String,
@@ -155,6 +187,26 @@ class OfflineRepo implements GameRepo {
       scenarios: ids.map((id) => Scenario.fromJson(pool.firstWhere((x) => x['id'] == id))).toList(),
       answered: List<String>.from(shift['answered'] as List),
     );
+  }
+
+  @override
+  Future<TodayShift> nextShift() async {
+    final s = _state;
+    final pool = await _load();
+    final shift = (s['shift'] as Map?)?.cast<String, dynamic>();
+    if (shift == null || shift['date'] != _today) return today();
+    if (shift['completed'] != true) return _shiftResponse(shift, pool);
+    final next = _newShift(s, pool, null, (shift['round'] as int? ?? 1) + 1);
+    s['shift'] = next;
+    await _save(s);
+    return _shiftResponse(next, pool);
+  }
+
+  @override
+  Future<List<Scenario>> endless({String? difficulty}) async {
+    final pool = await _load();
+    final ids = _batch(_state, pool, 10, difficulty);
+    return ids.map((id) => Scenario.fromJson(pool.firstWhere((x) => x['id'] == id))).toList();
   }
 
   Future<Evaluation> judge(String scenarioId, String action, int ms) async => Evaluator.action(await _raw(scenarioId), action, ms);
@@ -206,6 +258,14 @@ class OfflineRepo implements GameRepo {
       _badge(s, 'learned_the_hard_way');
     }
     if (e.outcome == 'FALSE_ALARM') s['falseAlarms'] = (s['falseAlarms'] as int? ?? 0) + 1;
+    final seenAt = Map<String, dynamic>.from((s['seenAt'] as Map?) ?? const {});
+    seenAt[id] = DateTime.now().millisecondsSinceEpoch;
+    s['seenAt'] = seenAt;
+    if (e.correct) {
+      final solved = List<String>.from((s['solved'] as List?) ?? const []);
+      if (!solved.contains(id)) solved.add(id);
+      s['solved'] = solved;
+    }
     // Streak: touched today, compared to the last active day.
     final last = s['lastDay'] as String?;
     if (last != _today) {
@@ -265,14 +325,9 @@ class OfflineRepo implements GameRepo {
 
   @override
   Future<List<Scenario>> swipeDeck() async {
-    final s = _state;
-    final used = s['swipeDate'] == _today ? (s['swipes'] as int? ?? 0) : 0;
-    if (used >= 3) throw LimitReached();
-    s['swipeDate'] = _today;
-    s['swipes'] = used + 1;
-    await _save(s);
-    final pool = (await _load()).where((x) => x['type'] != 'call' && x['type'] != 'scene').toList()..shuffle();
-    return pool.take(20).map(Scenario.fromJson).toList();
+    final pool = (await _load()).where((x) => x['type'] != 'call' && x['type'] != 'scene').toList();
+    final ids = _batch(_state, pool, 20, null);
+    return ids.map((id) => Scenario.fromJson(pool.firstWhere((x) => x['id'] == id))).toList();
   }
 
   @override
@@ -282,7 +337,12 @@ class OfflineRepo implements GameRepo {
   }
 
   @override
-  Future<List<Scenario>> moduleLesson(int module) async => (await _load()).where((x) => x['module'] == module).map(Scenario.fromJson).toList();
+  Future<List<Scenario>> moduleLesson(int module) async {
+    final all = (await _load()).where((x) => x['module'] == module).toList();
+    final solved = List<String>.from((_state['solved'] as List?) ?? const []);
+    final open = all.where((x) => !solved.contains(x['id'])).toList();
+    return (open.isEmpty ? all : open).map(Scenario.fromJson).toList();
+  }
 
   @override
   Future<List<BoardRow>> leaderboard(String scope) async {
@@ -316,7 +376,19 @@ class OfflineRepo implements GameRepo {
   Future<String> createFriendly() async => throw DuelJoinFailed();
 
   @override
-  Future<String> friendlyAgainstBot() async => (duelClient() as LocalDuelClient).newId();
+  Future<String> friendlyAgainstBot({String? level}) async => (duelClient() as LocalDuelClient).newId(level: level);
+
+  @override
+  Future<String> register(String email, String password, String? displayName) async => throw AuthFailed(AuthFailure.needsServer);
+
+  @override
+  Future<String> login(String email, String password) async => throw AuthFailed(AuthFailure.needsServer);
+
+  @override
+  void close() {
+    _duel?.dispose();
+    _duel = null;
+  }
 
   @override
   Future<String> joinFriendly(String code) async => throw DuelJoinFailed();
@@ -357,7 +429,26 @@ class LocalDuelClient implements DuelClient {
   String? _id;
   Timer? _roundTimer;
 
-  String newId() => 'local-${DateTime.now().millisecondsSinceEpoch}';
+  /// The bot's strength: right on the easiest message, characters read per second, base reaction.
+  static const _bots = {
+    'rookie': (skill: 0.74, cps: 70.0, reaction: 2500, name: ('Praktikant Otto', 'Otto the intern'), avatar: 1, elo: 900),
+    'analyst': (skill: 0.88, cps: 100.0, reaction: 1800, name: ('Analystin Grete', 'Grete the analyst'), avatar: 3, elo: 1150),
+    'veteran': (skill: 0.98, cps: 140.0, reaction: 1200, name: ('Veteran Kalle', 'Kalle the veteran'), avatar: 5, elo: 1400),
+    'ciso': (skill: 1.08, cps: 200.0, reaction: 800, name: ('CISO Frieda', 'Frieda the CISO'), avatar: 7, elo: 1700),
+  };
+  String _botLevel = 'analyst';
+
+  static double _hardness(Object? difficulty) => switch (difficulty) {
+        'bronze' => 0,
+        'silver' => 0.06,
+        'gold' => 0.16,
+        _ => 0.28,
+      };
+
+  String newId({String? level}) {
+    _botLevel = _bots.containsKey(level) ? level! : 'analyst';
+    return 'local-${DateTime.now().millisecondsSinceEpoch}';
+  }
 
   void startSoon() {
     _pending = Timer(const Duration(seconds: 2), () => _found.add(newId()));
@@ -400,7 +491,7 @@ class LocalDuelClient implements DuelClient {
       'phase': 'WAITING',
       'mode': 'friendly',
       'a': {'name': (await _repo.me()).displayName, 'avatar': (await _repo.me()).avatar, 'elo': (await _repo.me()).elo, 'bot': false, 'ready': true, 'score': 0, 'userId': 'local'},
-      'b': {'name': 'Bot Otto', 'avatar': 3, 'elo': 1000, 'bot': true, 'ready': true, 'score': 0},
+      'b': {'name': _repo.locale == 'en' ? _bots[_botLevel]!.name.$2 : _bots[_botLevel]!.name.$1, 'avatar': _bots[_botLevel]!.avatar, 'elo': _bots[_botLevel]!.elo, 'bot': true, 'botLevel': _botLevel, 'ready': true, 'score': 0},
     });
     _emit({'type': 'countdown', 'ms': 3000});
     _timers.add(Timer(const Duration(seconds: 3), _next));
@@ -426,22 +517,33 @@ class LocalDuelClient implements DuelClient {
       'seconds': 15,
       'scenarios': {_repo.locale: raw},
     });
-    final botDelay = 2000 + _rnd.nextInt(8000);
+    final bot = _bots[_botLevel]!;
+    final reading = '${raw['content']}'.length / bot.cps * 1000;
+    final botDelay = (((bot.reaction + reading + _hardness(raw['difficulty']) * 6000) * (0.75 + _rnd.nextDouble() * 0.55)).round()).clamp(900, 13800);
     final round = _current;
-    _timers.add(Timer(Duration(milliseconds: botDelay), () {
-      if (_current != round) return;
-      final right = _rnd.nextDouble() < 0.68;
-      final pts = right ? 100 + (50 * (1 - botDelay / 10000)).round().clamp(0, 50) : 0;
-      _apply('b', pts, right, botDelay);
-    }));
+    _timers.add(Timer(Duration(milliseconds: botDelay), () => _botMove(round, false)));
     _roundTimer?.cancel();
     _roundTimer = Timer(const Duration(seconds: 15), () {
       if (_current == round) _closeRound();
     });
   }
 
+  void _botMove(int round, bool rushed) {
+    if (_current != round || _roundPoints == null || _roundPoints!.containsKey('b')) return;
+    final raw = _rounds[round];
+    final ms = DateTime.now().difference(_roundStart).inMilliseconds;
+    final accuracy = (_bots[_botLevel]!.skill - _hardness(raw['difficulty']) - (rushed ? 0.06 : 0)).clamp(0.15, 0.98);
+    final right = _rnd.nextDouble() < accuracy;
+    _apply('b', right ? 100 + (50 * (1 - ms / 10000)).round().clamp(0, 50) : 0, right, ms);
+  }
+
   void _apply(String who, int points, bool correct, int ms) {
     if (_roundPoints == null || _roundPoints!.containsKey(who)) return;
+    // You are done and the clock is ticking: the bot stops reading and decides, a little less carefully.
+    if (who == 'a' && !_roundPoints!.containsKey('b')) {
+      final round = _current;
+      _timers.add(Timer(Duration(milliseconds: 300 + (_bots[_botLevel]!.reaction * (0.4 + _rnd.nextDouble() * 0.5)).round()), () => _botMove(round, true)));
+    }
     _roundPoints![who] = points;
     _roundCorrect![who] = correct;
     _roundMs![who] = ms;
@@ -484,6 +586,9 @@ class LocalDuelClient implements DuelClient {
       'a': {'points': pa, 'correct': _roundCorrect!['a'] ?? false, 'ms': _roundMs!['a'] ?? 15000, 'total': _score['a']},
       'b': {'points': pb, 'correct': _roundCorrect!['b'] ?? false, 'ms': _roundMs!['b'] ?? 15000, 'total': _score['b']},
     });
+    final botRight = _roundCorrect!['b'] ?? false;
+    final youRight = _roundCorrect!['a'] ?? false;
+    if (botRight != youRight && _rnd.nextDouble() < 0.6) _emit({'type': 'reaction', 'player': 'b', 'emoji': botRight ? 'laugh' : 'shock'});
     _timers.add(Timer(const Duration(milliseconds: 3500), _next));
   }
 
@@ -509,6 +614,6 @@ class LocalDuelClient implements DuelClient {
     }
     _roundTimer?.cancel();
     _pending?.cancel();
-    _found.close();
+    if (!_found.isClosed) _found.close();
   }
 }

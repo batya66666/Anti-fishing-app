@@ -4,6 +4,7 @@ import 'package:koeder_api/src/model/board_row.dart';
 import 'package:koeder_api/src/model/check_request.dart';
 import 'package:koeder_api/src/model/check_result.dart';
 import 'package:koeder_api/src/model/code_response.dart';
+import 'package:koeder_api/src/model/difficulty_setting.dart';
 import 'package:koeder_api/src/model/duel_ref.dart';
 import 'package:koeder_api/src/model/energy.dart';
 import 'package:koeder_api/src/model/evaluation.dart';
@@ -15,6 +16,7 @@ import 'package:koeder_api/src/model/join_request.dart';
 import 'package:koeder_api/src/model/login_request.dart';
 import 'package:koeder_api/src/model/me_response.dart';
 import 'package:koeder_api/src/model/practice_request.dart';
+import 'package:koeder_api/src/model/public_info.dart';
 import 'package:koeder_api/src/model/public_scenario.dart';
 import 'package:koeder_api/src/model/red_flag.dart';
 import 'package:koeder_api/src/model/register_request.dart';
@@ -53,6 +55,8 @@ final _regMap = RegExp(r'^Map<String,(.*)>$');
           return CheckResult.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'CodeResponse':
           return CodeResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+        case 'DifficultySetting':
+          return DifficultySetting.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'DuelRef':
           return DuelRef.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'Energy':
@@ -75,6 +79,8 @@ final _regMap = RegExp(r'^Map<String,(.*)>$');
           return MeResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'PracticeRequest':
           return PracticeRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+        case 'PublicInfo':
+          return PublicInfo.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'PublicScenario':
           return PublicScenario.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'RedFlag':

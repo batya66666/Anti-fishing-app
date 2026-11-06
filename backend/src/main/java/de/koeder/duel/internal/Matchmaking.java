@@ -75,13 +75,13 @@ class Matchmaking {
                 if (Math.abs(a.elo - b.elo) <= Math.max(window(a, now), window(b, now))) {
                     matched.add(a);
                     matched.add(b);
-                    announce(engine.create(a.userId, b.userId, "ranked"));
+                    announce(engine.create(a.userId, b.userId, "ranked", null));
                     break;
                 }
             }
             if (!matched.contains(a) && Duration.between(a.joinedAt, now).compareTo(botAfter) >= 0) {
                 matched.add(a);
-                announce(engine.create(a.userId, null, "ranked"));
+                announce(engine.create(a.userId, null, "ranked", null));
             }
         }
         queue.removeAll(matched);
@@ -116,15 +116,15 @@ class Matchmaking {
         if (!friendlyCodes.remove(normalized, host)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "duel already started");
         }
-        DuelState duel = engine.create(host, guestId, "friendly");
+        DuelState duel = engine.create(host, guestId, "friendly", null);
         announce(duel);
         return duel;
     }
 
     /** The host waited long enough: start against a bot rather than stare at an empty stage. */
-    DuelState friendlyWithBot(UUID hostId) {
+    DuelState friendlyWithBot(UUID hostId, DuelBot.Level level) {
         friendlyCodes.values().removeIf(hostId::equals);
-        DuelState duel = engine.create(hostId, null, "friendly");
+        DuelState duel = engine.create(hostId, null, "friendly", level);
         announce(duel);
         return duel;
     }

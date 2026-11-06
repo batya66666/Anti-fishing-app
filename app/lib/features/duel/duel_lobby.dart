@@ -94,7 +94,15 @@ class _DuelLobbyTabState extends ConsumerState<DuelLobbyTab> {
 
   Future<void> _bot() async {
     Sfx.click();
-    final id = await ref.read(repoProvider).friendlyAgainstBot();
+    final level = await showModalBottomSheet<String>(
+      context: context,
+      backgroundColor: K.surface,
+      isScrollControlled: true,
+      builder: (_) => const _BotPicker(),
+    );
+    if (level == null || !mounted) return;
+    Sfx.click();
+    final id = await ref.read(repoProvider).friendlyAgainstBot(level: level == 'auto' ? null : level);
     if (!mounted) return;
     setState(() => _code = null);
     context.push('/duel/match/$id');
@@ -177,6 +185,58 @@ class _DuelLobbyTabState extends ConsumerState<DuelLobbyTab> {
         TextButton.icon(onPressed: _bot, icon: const Icon(Icons.smart_toy_outlined), label: Text(l.duelVsBot)),
       ],
     ]);
+  }
+}
+
+class _BotPicker extends StatelessWidget {
+  const _BotPicker();
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l;
+    final bots = [
+      ('auto', l.botAuto, l.botAutoBody, Icons.tune, K.teal),
+      ('rookie', l.botRookie, l.botRookieBody, Icons.school_outlined, const Color(0xFFD08A52)),
+      ('analyst', l.botAnalyst, l.botAnalystBody, Icons.manage_search, const Color(0xFFB9C6D2)),
+      ('veteran', l.botVeteran, l.botVeteranBody, Icons.military_tech_outlined, const Color(0xFFFFD166)),
+      ('ciso', l.botCiso, l.botCisoBody, Icons.shield_moon_outlined, K.danger),
+    ];
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(16, 18, 16, 12),
+        child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Text(l.botPickTitle, style: Theme.of(context).textTheme.titleLarge),
+          const SizedBox(height: 2),
+          Text(l.botNoElo, style: const TextStyle(color: K.muted, fontSize: 13)),
+          const SizedBox(height: 10),
+          for (final (id, name, body, icon, color) in bots)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Material(
+                color: K.surface2,
+                borderRadius: BorderRadius.circular(14),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(14),
+                  onTap: () => Navigator.pop(context, id),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Row(children: [
+                      Icon(icon, color: color, size: 28),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Text(name, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15.5)),
+                          Text(body, style: const TextStyle(color: K.muted, fontSize: 13, height: 1.3)),
+                        ]),
+                      ),
+                    ]),
+                  ),
+                ),
+              ),
+            ),
+        ]),
+      ),
+    );
   }
 }
 

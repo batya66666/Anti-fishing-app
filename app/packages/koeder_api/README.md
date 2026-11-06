@@ -79,15 +79,20 @@ Class | Method | HTTP request | Description
 [*DuelsApi*](doc/DuelsApi.md) | [**leave**](doc/DuelsApi.md#leave) | **DELETE** /api/duels/queue | 
 [*DuelsApi*](doc/DuelsApi.md) | [**state**](doc/DuelsApi.md#state) | **GET** /api/duels/{id} | 
 [*OrganizationApi*](doc/OrganizationApi.md) | [**addScenario**](doc/OrganizationApi.md#addscenario) | **POST** /api/orgs/{id}/scenarios | 
+[*OrganizationApi*](doc/OrganizationApi.md) | [**catalog**](doc/OrganizationApi.md#catalog) | **GET** /api/orgs/{id}/catalog | 
 [*OrganizationApi*](doc/OrganizationApi.md) | [**compliance**](doc/OrganizationApi.md#compliance) | **GET** /api/orgs/{id}/reports/compliance.pdf | 
 [*OrganizationApi*](doc/OrganizationApi.md) | [**dashboard**](doc/OrganizationApi.md#dashboard) | **GET** /api/orgs/{id}/dashboard | 
+[*OrganizationApi*](doc/OrganizationApi.md) | [**difficulty**](doc/OrganizationApi.md#difficulty) | **GET** /api/orgs/{id}/difficulty | 
 [*OrganizationApi*](doc/OrganizationApi.md) | [**generate**](doc/OrganizationApi.md#generate) | **POST** /api/orgs/{id}/scenarios/generate | 
 [*OrganizationApi*](doc/OrganizationApi.md) | [**join**](doc/OrganizationApi.md#join) | **POST** /api/orgs/join | 
 [*OrganizationApi*](doc/OrganizationApi.md) | [**publish**](doc/OrganizationApi.md#publish) | **POST** /api/orgs/{id}/scenarios/{scenarioId}/publish | 
 [*OrganizationApi*](doc/OrganizationApi.md) | [**scenarios**](doc/OrganizationApi.md#scenarios) | **GET** /api/orgs/{id}/scenarios | 
+[*OrganizationApi*](doc/OrganizationApi.md) | [**setDifficulty**](doc/OrganizationApi.md#setdifficulty) | **PUT** /api/orgs/{id}/difficulty | 
 [*PlayApi*](doc/PlayApi.md) | [**act**](doc/PlayApi.md#act) | **POST** /api/shifts/{id}/actions | 
+[*PlayApi*](doc/PlayApi.md) | [**endless**](doc/PlayApi.md#endless) | **GET** /api/endless/next | 
 [*PlayApi*](doc/PlayApi.md) | [**flagsDeck**](doc/PlayApi.md#flagsdeck) | **GET** /api/flags/deck | 
 [*PlayApi*](doc/PlayApi.md) | [**module**](doc/PlayApi.md#module) | **GET** /api/modules/{module} | 
+[*PlayApi*](doc/PlayApi.md) | [**nextShift**](doc/PlayApi.md#nextshift) | **POST** /api/shifts/next | 
 [*PlayApi*](doc/PlayApi.md) | [**practice**](doc/PlayApi.md#practice) | **POST** /api/practice/actions | 
 [*PlayApi*](doc/PlayApi.md) | [**reviewDue**](doc/PlayApi.md#reviewdue) | **GET** /api/review/due | 
 [*PlayApi*](doc/PlayApi.md) | [**swipeDeck**](doc/PlayApi.md#swipedeck) | **GET** /api/swipe/deck | 
@@ -98,6 +103,7 @@ Class | Method | HTTP request | Description
 [*ProfileApi*](doc/ProfileApi.md) | [**leaderboard**](doc/ProfileApi.md#leaderboard) | **GET** /api/leaderboard | 
 [*ProfileApi*](doc/ProfileApi.md) | [**me**](doc/ProfileApi.md#me) | **GET** /api/me | 
 [*ProfileApi*](doc/ProfileApi.md) | [**update**](doc/ProfileApi.md#update) | **PATCH** /api/me | 
+[*PublicApi*](doc/PublicApi.md) | [**info**](doc/PublicApi.md#info) | **GET** /api/public/info | 
 
 
 ## Documentation For Models
@@ -108,6 +114,7 @@ Class | Method | HTTP request | Description
  - [CheckRequest](doc/CheckRequest.md)
  - [CheckResult](doc/CheckResult.md)
  - [CodeResponse](doc/CodeResponse.md)
+ - [DifficultySetting](doc/DifficultySetting.md)
  - [DuelRef](doc/DuelRef.md)
  - [Energy](doc/Energy.md)
  - [Evaluation](doc/Evaluation.md)
@@ -119,6 +126,7 @@ Class | Method | HTTP request | Description
  - [LoginRequest](doc/LoginRequest.md)
  - [MeResponse](doc/MeResponse.md)
  - [PracticeRequest](doc/PracticeRequest.md)
+ - [PublicInfo](doc/PublicInfo.md)
  - [PublicScenario](doc/PublicScenario.md)
  - [RedFlag](doc/RedFlag.md)
  - [RegisterRequest](doc/RegisterRequest.md)

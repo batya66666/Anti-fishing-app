@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +40,8 @@ import de.koeder.shift.ShiftCompleted;
 @Service
 class ShiftService implements ShiftApi {
 
-    static final int SWIPE_ROUNDS_PER_DAY = 3;
     static final int SWIPE_DECK_SIZE = 20;
+    static final int ENDLESS_BATCH = 10;
 
     private final JdbcClient jdbc;
     private final ScenarioCatalog catalog;
@@ -70,9 +71,41 @@ class ShiftService implements ShiftApi {
         LocalDate date = LocalDate.now(clock);
         UserRef user = identity.require(userId);
         ShiftRow row = findShift(userId, date);
-        if (row == null || row.scenarios.isEmpty()) {
-            row = createShift(user, date, row);
+        if (row == null) {
+            row = createShift(user, date, 1);
+        } else {
+            row = applyForcedDifficulty(user, row);
         }
+        return toResponse(user, date, row);
+    }
+
+    /** As many shifts a day as you like. A running shift is finished first. */
+    @Transactional
+    TodayShift nextShift(UUID userId) {
+        LocalDate date = LocalDate.now(clock);
+        UserRef user = identity.require(userId);
+        ShiftRow row = findShift(userId, date);
+        if (row == null) {
+            return today(userId);
+        }
+        return toResponse(user, date, row.completed ? createShift(user, date, row.round + 1) : row);
+    }
+
+    /** A manager just changed the level for a demonstration: a shift nobody has touched yet follows at once. */
+    private ShiftRow applyForcedDifficulty(UserRef user, ShiftRow row) {
+        String forced = catalog.forcedDifficulty(user.orgId()).orElse(null);
+        if (forced == null || row.completed || !answeredIn(row.id).isEmpty()) {
+            return row;
+        }
+        boolean fits = row.scenarios.stream().map(id -> catalog.find(id, user.locale())).flatMap(java.util.Optional::stream).allMatch(s -> s.fitsDifficulty(forced));
+        if (fits) {
+            return row;
+        }
+        jdbc.sql("UPDATE daily_shifts SET scenarios = :s WHERE id = :id").param("s", String.join(",", planFor(user, LocalDate.now(clock), row.round))).param("id", row.id).update();
+        return findShift(user.id(), LocalDate.now(clock));
+    }
+
+    private TodayShift toResponse(UserRef user, LocalDate date, ShiftRow row) {
         List<PublicScenario> scenarios = row.scenarios.stream()
                 .map(id -> catalog.find(id, user.locale()))
                 .flatMap(java.util.Optional::stream)
@@ -81,7 +114,17 @@ class ShiftService implements ShiftApi {
         return new TodayShift(row.id, date, row.completed, row.score, scenarios, answeredIn(row.id));
     }
 
-    private ShiftRow createShift(UserRef user, LocalDate date, ShiftRow existing) {
+    private ShiftRow createShift(UserRef user, LocalDate date, int round) {
+        String joined = String.join(",", planFor(user, date, round));
+        // Two tabs may open the same shift at once: the unique index decides, the loser reads the winner's row.
+        jdbc.sql("""
+                INSERT INTO daily_shifts (id, user_id, date, round, scenarios) VALUES (:id, :u, :d, :r, :s)
+                ON CONFLICT (user_id, date, round) DO NOTHING
+                """).param("id", UUID.randomUUID()).param("u", user.id()).param("d", Date.valueOf(date)).param("r", round).param("s", joined).update();
+        return findShift(user.id(), date);
+    }
+
+    private List<String> planFor(UserRef user, LocalDate date, int round) {
         Set<String> seen = new HashSet<>(jdbc.sql("""
                 SELECT DISTINCT scenario_id FROM attempts WHERE user_id = :u AND created_at > now() - interval '14 days'
                 """).param("u", user.id()).query(String.class).list());
@@ -89,21 +132,14 @@ class ShiftService implements ShiftApi {
                 .param("u", user.id()).query(Integer.class).optional().isPresent();
         long xp = jdbc.sql("SELECT coalesce(sum(points), 0) / 5 FROM attempts WHERE user_id = :u").param("u", user.id()).query(Long.class).single();
         int level = 1 + (int) (xp / 300);
-        long seed = user.id().getMostSignificantBits() ^ date.toEpochDay();
-        List<String> plan = ShiftPlanner.plan(catalog.pool(user.locale(), user.orgId()), seen, first, "simple".equals(user.mode()), level, seed);
-        String joined = String.join(",", plan);
-        UUID id = existing != null ? existing.id : UUID.randomUUID();
-        // Two tabs may open today's shift at once: the unique index decides, the loser reads the winner's row.
-        jdbc.sql("""
-                INSERT INTO daily_shifts (id, user_id, date, scenarios) VALUES (:id, :u, :d, :s)
-                ON CONFLICT (user_id, date) DO UPDATE SET scenarios = CASE WHEN daily_shifts.scenarios = '' THEN :s ELSE daily_shifts.scenarios END
-                """).param("id", id).param("u", user.id()).param("d", Date.valueOf(date)).param("s", joined).update();
-        return findShift(user.id(), date);
+        long seed = user.id().getMostSignificantBits() ^ date.toEpochDay() ^ (31L * round);
+        String forced = catalog.forcedDifficulty(user.orgId()).orElse(null);
+        return ShiftPlanner.plan(catalog.pool(user.locale(), user.orgId()), seen, first, "simple".equals(user.mode()), level, seed, forced);
     }
 
     @Transactional
     ActionResult act(UUID userId, UUID shiftId, String scenarioId, String action, long ms) {
-        ShiftRow row = jdbc.sql("SELECT id, user_id, scenarios, completed, score, correct FROM daily_shifts WHERE id = :id AND user_id = :u")
+        ShiftRow row = jdbc.sql("SELECT id, user_id, scenarios, completed, score, correct, round FROM daily_shifts WHERE id = :id AND user_id = :u")
                 .param("id", shiftId).param("u", userId).query(ShiftService::mapShift).optional()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (!row.scenarios.contains(scenarioId)) {
@@ -136,7 +172,7 @@ class ShiftService implements ShiftApi {
     private record ShiftTotals(int score, int correct) {
     }
 
-    /** Practice modes (review queue, module lessons) are not limited: base learning stays free. */
+    /** Practice modes are not limited: base learning stays free. */
     @Transactional
     Evaluation practice(UUID userId, String scenarioId, String context, String action, List<String> flags, long ms) {
         UserRef user = identity.require(userId);
@@ -194,31 +230,32 @@ class ShiftService implements ShiftApi {
                 .map(id -> catalog.find(id, user.locale())).flatMap(java.util.Optional::stream).map(Scenario::toPublic).toList();
     }
 
-    /** Swipe deck: consumes one of the free daily rounds. */
-    @Transactional
+    /** A swipe deck. Decks are unlimited; the cards a player saw longest ago come first. */
+    @Transactional(readOnly = true)
     List<PublicScenario> swipeDeck(UUID userId) {
         UserRef user = identity.require(userId);
-        LocalDate date = LocalDate.now(clock);
-        ShiftRow row = findShift(userId, date);
-        if (row == null) {
-            jdbc.sql("INSERT INTO daily_shifts (id, user_id, date, scenarios) VALUES (:id, :u, :d, '') ON CONFLICT DO NOTHING")
-                    .param("id", UUID.randomUUID()).param("u", userId).param("d", Date.valueOf(date)).update();
-        }
-        int used = jdbc.sql("UPDATE daily_shifts SET swipe_rounds = swipe_rounds + 1 WHERE user_id = :u AND date = :d AND swipe_rounds < :max")
-                .param("u", userId).param("d", Date.valueOf(date)).param("max", SWIPE_ROUNDS_PER_DAY).update();
-        if (used == 0) {
-            throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "swipe rounds used up today");
-        }
-        return swipePool(user);
+        List<Scenario> pool = catalog.pool(user.locale(), user.orgId()).stream()
+                .filter(s -> !s.type().equals("call") && !s.type().equals("scene")).toList();
+        return batch(user, pool, null, SWIPE_DECK_SIZE);
     }
 
-    private List<PublicScenario> swipePool(UserRef user) {
-        List<Scenario> pool = new ArrayList<>(catalog.pool(user.locale(), user.orgId()).stream()
-                .filter(s -> !s.type().equals("call") && !s.type().equals("scene"))
-                .filter(s -> !"simple".equals(user.mode()) || s.consumer())
-                .toList());
-        Collections.shuffle(pool, new Random());
-        return pool.stream().limit(SWIPE_DECK_SIZE).map(Scenario::toPublic).toList();
+    /** The next questions of the endless mode. This never runs dry. */
+    @Transactional(readOnly = true)
+    List<PublicScenario> endless(UUID userId, String difficulty) {
+        UserRef user = identity.require(userId);
+        return batch(user, catalog.pool(user.locale(), user.orgId()), difficulty, ENDLESS_BATCH);
+    }
+
+    private List<PublicScenario> batch(UserRef user, List<Scenario> pool, String difficulty, int count) {
+        // A level pinned by the manager outranks the player's own choice.
+        String level = catalog.forcedDifficulty(user.orgId()).orElse(difficulty);
+        Map<String, Long> lastSeen = new HashMap<>();
+        jdbc.sql("SELECT scenario_id, max(created_at) AS at FROM attempts WHERE user_id = :u GROUP BY scenario_id").param("u", user.id())
+                .query(rs -> {
+                    lastSeen.put(rs.getString("scenario_id"), rs.getTimestamp("at").getTime());
+                });
+        List<String> ids = ShiftPlanner.endless(pool, lastSeen, level, "simple".equals(user.mode()), count, new Random().nextLong());
+        return ids.stream().map(id -> catalog.find(id, user.locale())).flatMap(java.util.Optional::stream).map(Scenario::toPublic).toList();
     }
 
     @Transactional(readOnly = true)
@@ -226,34 +263,44 @@ class ShiftService implements ShiftApi {
         UserRef user = identity.require(userId);
         List<Scenario> pool = new ArrayList<>(catalog.pool(user.locale(), user.orgId()).stream()
                 .filter(s -> s.type().equals("email") && s.attack() && s.redFlags().size() >= 2).toList());
+        String forced = catalog.forcedDifficulty(user.orgId()).orElse(null);
+        if (forced != null && pool.stream().anyMatch(s -> s.fitsDifficulty(forced))) {
+            pool.removeIf(s -> !s.fitsDifficulty(forced));
+        }
         Collections.shuffle(pool, new Random());
         return pool.stream().limit(5).map(Scenario::toPublic).toList();
     }
 
+    /** A lesson continues where the player left off: what is solved stays solved. A finished module can be replayed in full. */
     @Transactional(readOnly = true)
     List<PublicScenario> moduleLesson(UUID userId, int module) {
         UserRef user = identity.require(userId);
-        return catalog.pool(user.locale(), user.orgId()).stream()
+        List<Scenario> all = catalog.pool(user.locale(), user.orgId()).stream()
                 .filter(s -> s.module() == module)
                 .sorted((a, b) -> Integer.compare(ShiftPlanner.difficultyRank(a.difficulty()), ShiftPlanner.difficultyRank(b.difficulty())))
-                .map(Scenario::toPublic).toList();
+                .toList();
+        Set<String> solved = solvedBy(userId);
+        List<Scenario> open = all.stream().filter(s -> !solved.contains(s.id())).toList();
+        return (open.isEmpty() ? all : open).stream().map(Scenario::toPublic).toList();
+    }
+
+    private Set<String> solvedBy(UUID userId) {
+        return new HashSet<>(jdbc.sql("SELECT DISTINCT scenario_id FROM attempts WHERE user_id = :u AND is_correct")
+                .param("u", userId).query(String.class).list());
     }
 
     @Override
     @Transactional(readOnly = true)
     public Energy energy(UUID userId) {
         ShiftRow row = findShift(userId, LocalDate.now(clock));
-        int swipes = row == null ? 0 : jdbc.sql("SELECT swipe_rounds FROM daily_shifts WHERE id = :id").param("id", row.id).query(Integer.class).single();
-        boolean done = row != null && row.completed;
-        return new Energy(!done, done, SWIPE_ROUNDS_PER_DAY - swipes, SWIPE_ROUNDS_PER_DAY);
+        return new Energy(row != null && row.completed, row == null ? 0 : row.round);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Map<Integer, Integer> moduleProgress(UUID userId) {
         UserRef user = identity.require(userId);
-        Set<String> solved = new HashSet<>(jdbc.sql("SELECT DISTINCT scenario_id FROM attempts WHERE user_id = :u AND is_correct")
-                .param("u", userId).query(String.class).list());
+        Set<String> solved = solvedBy(userId);
         Map<Integer, Integer> out = new TreeMap<>();
         for (Scenario s : catalog.pool(user.locale(), user.orgId())) {
             if (solved.contains(s.id())) {
@@ -261,6 +308,21 @@ class ShiftService implements ShiftApi {
             }
         }
         return out;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<Integer, Integer> moduleTotals(UUID userId) {
+        UserRef user = identity.require(userId);
+        Map<Integer, Integer> out = new TreeMap<>();
+        catalog.pool(user.locale(), user.orgId()).forEach(s -> out.merge(s.module(), 1, Integer::sum));
+        return out;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public java.util.Optional<String> forcedDifficulty(UUID userId) {
+        return catalog.forcedDifficulty(identity.require(userId).orgId());
     }
 
     @Override
@@ -298,7 +360,7 @@ class ShiftService implements ShiftApi {
     }
 
     private ShiftRow findShift(UUID userId, LocalDate date) {
-        return jdbc.sql("SELECT id, user_id, scenarios, completed, score, correct FROM daily_shifts WHERE user_id = :u AND date = :d")
+        return jdbc.sql("SELECT id, user_id, scenarios, completed, score, correct, round FROM daily_shifts WHERE user_id = :u AND date = :d ORDER BY round DESC LIMIT 1")
                 .param("u", userId).param("d", Date.valueOf(date)).query(ShiftService::mapShift).optional().orElse(null);
     }
 
@@ -309,9 +371,9 @@ class ShiftService implements ShiftApi {
     private static ShiftRow mapShift(java.sql.ResultSet rs, int n) throws java.sql.SQLException {
         String joined = rs.getString("scenarios");
         List<String> ids = joined.isEmpty() ? List.of() : Arrays.asList(joined.split(","));
-        return new ShiftRow(rs.getObject("id", UUID.class), ids, rs.getBoolean("completed"), rs.getInt("score"));
+        return new ShiftRow(rs.getObject("id", UUID.class), ids, rs.getBoolean("completed"), rs.getInt("score"), rs.getInt("round"));
     }
 
-    private record ShiftRow(UUID id, List<String> scenarios, boolean completed, int score) {
+    private record ShiftRow(UUID id, List<String> scenarios, boolean completed, int score, int round) {
     }
 }

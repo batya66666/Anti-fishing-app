@@ -1,0 +1,98 @@
+{
+  "id": "binance-2026",
+  "company": "Binance",
+  "year": 2026,
+  "title": "Das Vorstellungsgespräch für 6 Milliarden",
+  "summary": "Im Oktober 2026 verlor Binance rund 6,3 Milliarden US-Dollar, den größten Krypto-Diebstahl der Geschichte. Am Anfang standen ein gefälschter Download und ein Vorstellungsgespräch, das es nie gab.",
+  "disclaimer": "Interaktive Nachstellung: Die Nachrichten sind beispielhaft, die Fakten der Zeitleiste stammen aus dem Vorfallsbericht von Binance, wie ihn die genannten Medien wiedergeben. Der Betrag wird unterschiedlich angegeben (6,34 bis 6,43 Milliarden US-Dollar). Binance selbst nennt es ausdrücklich keinen \"einfachen Phishing-Vorfall\", sondern eine mehrstufige Kampagne.",
+  "steps": [
+    {
+      "channel": "url",
+      "narration": "Juni 2026. Du arbeitest als DevOps-Ingenieur an den Wallets einer großen Börse. Du willst ein bekanntes KI-Werkzeug ausprobieren und suchst es im Netz. Der Weg führt über einen Paketmanager, und ganz oben steht ein passendes Ergebnis.",
+      "message": "Anzeige · brew-install.test\nHomebrew in einem Schritt installieren\n\"Offizieller Installer für macOS\"",
+      "question": "Was tust du?",
+      "options": [
+        {
+          "label": "Dem ersten Treffer vertrauen und den Installer ausführen",
+          "stops": false,
+          "feedback": "Die Angreifer erfahren so, welche Aufgabe du hast und wer sonst noch die Wallets betreut. Binance entdeckte den Download und entfernte ihn, aber dieses Wissen blieb bei den Angreifern."
+        },
+        {
+          "label": "Software nur über den von der Firma freigegebenen Weg holen",
+          "stops": true,
+          "feedback": "Genau. Suchergebnisse und Anzeigen sind kein Bezugsweg für Werkzeuge auf einem Rechner mit solchen Rechten."
+        }
+      ]
+    },
+    {
+      "channel": "chat",
+      "narration": "September 2026. Du bist Softwareentwickler. Auf einer seriösen Jobplattform schreibt dir jemand als Projektleiter. Dein Profil nennt deinen Arbeitgeber.",
+      "message": "Hallo! Dein Profil passt genau zu einer Rolle bei uns. Sehr gutes Gehalt, voll remote. Hättest du diese Woche Zeit für ein kurzes Gespräch mit unserer Personalabteilung?",
+      "question": "Was tust du?",
+      "options": [
+        {
+          "label": "Zusagen, ein Gespräch schadet ja nicht",
+          "stops": false,
+          "feedback": "Der Köder sitzt. Im ersten Video-Gespräch teilt die angebliche Personalerin sogar ein Konto mit privaten Fotos und Videos, damit du Vertrauen fasst."
+        },
+        {
+          "label": "Dem Sicherheitsteam melden: Wer dich wegen deines Arbeitgebers anspricht, meint vielleicht genau ihn",
+          "stops": true,
+          "feedback": "Stark. Binance meldete 2026 insgesamt 57 abgewehrte Fälle, die mutmaßlich zu Nordkorea gehören. Nur eine Meldung macht solche Muster sichtbar."
+        }
+      ]
+    },
+    {
+      "channel": "file",
+      "narration": "Zweite Runde: Du sprichst über eine bekannte Chat-App mit dem angeblichen Chef einer Firma. Kurz vor Schluss kommt die Aufgabe.",
+      "message": "Zum Abschluss eine kleine Programmieraufgabe. Lade dir das Repository herunter und bring es zum Laufen, wir schauen es uns dann zusammen an.\nrepo.test/hiring/assignment",
+      "question": "Dein Firmenrechner steht direkt vor dir. Was tust du?",
+      "options": [
+        {
+          "label": "Auf dem Firmenrechner herunterladen und einrichten",
+          "stops": false,
+          "feedback": "Das ist der Moment. Schon beim Einrichten läuft Schadcode, den der Virenschutz nicht erkennt. Ab jetzt haben die Angreifer deinen Rechner."
+        },
+        {
+          "label": "Den Code nur lesen und in einer abgeschotteten Umgebung ohne Firmenzugänge ausführen",
+          "stops": true,
+          "feedback": "Gut. Fremder Code darf nie dorthin, wo deine Zugänge liegen. Am besten meldest du den Vorgang auch noch."
+        },
+        {
+          "label": "Abbrechen und den Vorgang dem Sicherheitsteam melden",
+          "stops": true,
+          "feedback": "Richtig. Echte Firmen haben kein Problem damit. Ein Bewerbungsgespräch ist kein Grund für fremden Code auf einem Arbeitsrechner."
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "Juni 2026",
+      "what": "Ein Wallet-DevOps-Ingenieur lädt beim Einrichten eines KI-Werkzeugs einen manipulierten Homebrew-Installer. Binance entdeckt ihn, entfernt ihn und tauscht vorsorglich Zugangsdaten aus. Die Angreifer wissen da aber schon, wer die Wallets betreut."
+    },
+    {
+      "when": "September 2026",
+      "what": "Ein Softwareentwickler wird über eine Jobplattform angeschrieben und durchläuft zwei gefälschte Gespräche. Die \"Aufgabe\" bringt bisher unbekannte Schadsoftware auf seinen Arbeitsrechner."
+    },
+    {
+      "when": "20. Oktober 2026",
+      "what": "Über diesen Rechner und ein internes KI-Werkzeug übernehmen die Angreifer die Rechner von zwei weiteren Mitarbeitenden und finden ein Token mit Rechten für den Betrieb."
+    },
+    {
+      "when": "29. Oktober 2026",
+      "what": "In weniger als drei Stunden nutzen sie die gestohlenen Zugänge und den internen Signierdienst der Wallets: Transaktionen laufen am normalen Auszahlungsprozess vorbei, rund 6,3 Milliarden US-Dollar sind weg."
+    },
+    {
+      "when": "Danach",
+      "what": "Auszahlungen stehen rund 48 Stunden still. Laut Binance sind bis zum 31. Oktober 98 % der betroffenen Token-Bestände aufgefüllt. Bis zum 3. November werden rund 2,85 Milliarden eingefroren oder abgefangen. Das FBI schreibt die Tat Nordkorea zu."
+    }
+  ],
+  "lesson": "Die teuerste Attacke der Kryptogeschichte brauchte zwei Menschen, die etwas Normales taten: ein Werkzeug suchen und sich auf eine Stelle bewerben. Fremde Software und fremder Code gehören nie auf einen Rechner mit Firmenzugängen, und ein verlockendes Jobangebot ist eine Meldung wert.",
+  "sources": [
+    "Binance: Vorfallsbericht, November 2026",
+    "BleepingComputer, 3.11.2026",
+    "The Hacker News, 3.11.2026",
+    "Fortune, 3.11.2026"
+  ]
+}

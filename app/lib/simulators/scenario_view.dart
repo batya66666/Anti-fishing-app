@@ -45,8 +45,11 @@ IconData channelIcon(String type) => switch (type) {
 
 /// Compact, read-only card for swipe mode and duels: everything needed for a verdict at one glance.
 class ScenarioCard extends StatelessWidget {
-  const ScenarioCard({super.key, required this.s});
+  const ScenarioCard({super.key, required this.s, this.scrollable = false});
   final Scenario s;
+
+  /// Off on a card that is dragged: there a vertical scroll would fight with the swipe.
+  final bool scrollable;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +73,7 @@ class ScenarioCard extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: SingleChildScrollView(physics: const NeverScrollableScrollPhysics(), child: _content()),
+            child: SingleChildScrollView(physics: scrollable ? null : const NeverScrollableScrollPhysics(), child: _content()),
           ),
         ),
       ]),
@@ -81,12 +84,30 @@ class ScenarioCard extends StatelessWidget {
 
   Widget _body(String text) => Text.rich(richBody(text, const TextStyle(fontSize: 14.5, color: K.simInk, height: 1.4), const []));
 
+  /// In a verdict round there is no time to open a viewer, so the card shows what is in the PDF.
+  Widget _pdfPreview(Map<String, dynamic> pdf) {
+    final cta = pdf['cta'] == null ? null : Map<String, dynamic>.from(pdf['cta'] as Map);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(color: K.simBg2, borderRadius: BorderRadius.circular(8), border: Border.all(color: K.simLine)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(pdf['title'] as String, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: K.simInk)),
+        for (final line in ((pdf['lines'] as List?) ?? const []).cast<String>())
+          Padding(padding: const EdgeInsets.only(top: 3), child: Text(line, style: const TextStyle(fontSize: 12.5, color: K.simInk, height: 1.3))),
+        if (cta != null) ...[const SizedBox(height: 5), _mono('${cta['text']} → ${cta['href']}')],
+        if (pdf['qr'] != null) ...[const SizedBox(height: 5), _mono('QR → ${pdf['qr']}')],
+      ]),
+    );
+  }
+
   Widget _content() {
     const gap = SizedBox(height: 10);
     switch (s.type) {
       case 'email':
         return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           _mono(s.str('from_email')),
+          if (s.str('reply_to').isNotEmpty) _mono('Reply-To: ${s.str('reply_to')}'),
           gap,
           Text(s.str('subject'), style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: K.simInk, height: 1.25)),
           gap,
@@ -95,6 +116,7 @@ class ScenarioCard extends StatelessWidget {
           for (final a in s.list('attachments')) ...[
             gap,
             Row(children: [const Icon(Icons.attach_file, size: 16, color: K.simMuted), const SizedBox(width: 4), Expanded(child: _mono(a['name'] as String))]),
+            if (a['pdf'] != null) ...[const SizedBox(height: 6), _pdfPreview(Map<String, dynamic>.from(a['pdf'] as Map))],
           ],
         ]);
       case 'sms' || 'chat':

@@ -355,5 +355,79 @@
     "dangerous_actions": [],
     "explanation": "Echt: bekannter Kontakt, nichts verlangt, kein Link, kein Geld.",
     "tags": []
+  },
+  {
+    "id": "chat-it-helpdesk-external",
+    "type": "chat",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "vishing",
+    "module": 9,
+    "consumer": false,
+    "content": {
+      "sender": "IT-Helpdesk",
+      "number": "Extern · helpdesk-it@officecloud-support.test",
+      "links": [],
+      "messages": [
+        {
+          "text": "Hallo, wir sehen zu Ticket INC-48213 eine Störung an deinem Konto.",
+          "time": "13:02"
+        },
+        {
+          "text": "Du bekommst gleich eine SMS mit einem Code. Schick ihn mir bitte hier kurz, dann schalte ich dich wieder frei.",
+          "time": "13:02"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "number",
+        "hint": "Der Chat kommt von außerhalb der Firma. Eure IT schreibt nicht von officecloud-support.test."
+      },
+      {
+        "target": "body:Schick ihn mir bitte",
+        "hint": "Einen Code gibt niemand weiter, auch nicht an die IT. Er ist der letzte Schutz deines Kontos."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "reply",
+      "click_link"
+    ],
+    "explanation": "Angreifer legen externe Chats an, die wie der Helpdesk heißen, und kennen oft sogar eine Ticketnummer. Der Code kommt dann, weil sie sich gerade mit deinem Passwort anmelden.",
+    "tags": []
+  },
+  {
+    "id": "chat-boss-urgent-legit",
+    "type": "chat",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 6,
+    "consumer": false,
+    "content": {
+      "sender": "Thomas Berger",
+      "number": "Kontakt · intern",
+      "links": [],
+      "messages": [
+        {
+          "text": "Bin gleich beim Kunden. Kannst du mir die Folien von gestern schnell in unseren Projektordner legen?",
+          "time": "10:48"
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open",
+      "reply"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: interner Chat, bekannter Kontakt, und du legst die Folien im eigenen Ordner ab. Eilig heißt nicht betrügerisch. Es geht weder um Geld noch um Zugangsdaten, und nichts verlässt die Firma.",
+    "tags": []
   }
 ]

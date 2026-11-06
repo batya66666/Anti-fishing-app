@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.koeder.content.Evaluation;
@@ -35,7 +36,7 @@ class ShiftController {
     }
 
     record PracticeRequest(@NotBlank @Size(max = 80) String scenarioId,
-                           @Pattern(regexp = "review|module|swipe|flags") String context,
+                           @Pattern(regexp = "review|module|swipe|flags|endless") String context,
                            @Size(max = 60) String action,
                            @Size(max = 40) List<@Size(max = 500) String> flags,
                            @PositiveOrZero long ms) {
@@ -44,6 +45,11 @@ class ShiftController {
     @GetMapping("/shifts/today")
     ShiftService.TodayShift today() {
         return shifts.today(CurrentUser.id());
+    }
+
+    @PostMapping("/shifts/next")
+    ShiftService.TodayShift nextShift() {
+        return shifts.nextShift(CurrentUser.id());
     }
 
     @PostMapping("/shifts/{id}/actions")
@@ -64,6 +70,12 @@ class ShiftController {
     @GetMapping("/swipe/deck")
     List<PublicScenario> swipeDeck() {
         return shifts.swipeDeck(CurrentUser.id());
+    }
+
+    /** @param difficulty bronze, silver, gold or diamond; without it a mix in which half is hard */
+    @GetMapping("/endless/next")
+    List<PublicScenario> endless(@RequestParam(required = false) @Pattern(regexp = "bronze|silver|gold|diamond") String difficulty) {
+        return shifts.endless(CurrentUser.id(), difficulty);
     }
 
     @GetMapping("/flags/deck")

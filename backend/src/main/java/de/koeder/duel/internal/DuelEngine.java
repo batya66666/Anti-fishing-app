@@ -49,7 +49,6 @@ class DuelEngine implements DuelApi {
 
     private static final Logger log = LoggerFactory.getLogger(DuelEngine.class);
     private static final int ROUNDS = 5;
-    private static final List<String> BOT_NAMES = List.of("Bot Otto", "Bot Grete", "Bot Kalle", "Bot Frieda");
 
     private final Map<UUID, DuelState> active = new ConcurrentHashMap<>();
     private final SimpMessagingTemplate broker;
@@ -84,24 +83,24 @@ class DuelEngine implements DuelApi {
 
     // ------------------------------------------------------------------ creating matches
 
-    DuelState create(UUID playerA, UUID playerB, String mode) {
+    /** @param botLevel a strength the player picked; null lets the bot match the player */
+    DuelState create(UUID playerA, UUID playerB, String mode, DuelBot.Level botLevel) {
         long seed = ThreadLocalRandom.current().nextLong();
         UserRef ua = identity.require(playerA);
         Seat a = humanSeat("a", ua);
         Seat b;
         String locale2;
         if (playerB == null) {
-            // Bot strength follows the player, so a beginner can win and a veteran cannot farm.
-            double accuracy = Math.clamp(0.6 + (a.elo - 1000) / 1000.0, 0.6, 0.9);
-            String name = BOT_NAMES.get(ThreadLocalRandom.current().nextInt(BOT_NAMES.size()));
-            b = new Seat("b", null, name, ThreadLocalRandom.current().nextInt(8), a.elo + ThreadLocalRandom.current().nextInt(-40, 41), 99, ua.locale(), accuracy);
+            DuelBot.Profile bot = botLevel != null ? DuelBot.picked(botLevel) : DuelBot.forRating(a.elo);
+            int elo = botLevel != null ? bot.elo() : a.elo + ThreadLocalRandom.current().nextInt(-40, 41);
+            b = new Seat("b", null, bot.name(ua.locale()), bot.avatar(), elo, 99, ua.locale(), bot);
             locale2 = ua.locale();
         } else {
             UserRef ub = identity.require(playerB);
             b = humanSeat("b", ub);
             locale2 = ub.locale();
         }
-        List<Round> rounds = pickRounds(seed, ua.locale(), locale2);
+        List<Round> rounds = pickRounds(seed, ua.locale(), locale2, catalog.forcedDifficulty(ua.orgId()).orElse(null));
         UUID id = UUID.randomUUID();
         DuelState duel = new DuelState(id, mode, seed, a, b, rounds);
         active.put(id, duel);
@@ -113,13 +112,17 @@ class DuelEngine implements DuelApi {
 
     private Seat humanSeat(String key, UserRef u) {
         Rating r = rating(u.id());
-        return new Seat(key, u.id(), u.displayName(), u.avatar(), r.elo(), r.wins() + r.losses() + r.draws(), u.locale(), 0);
+        return new Seat(key, u.id(), u.displayName(), u.avatar(), r.elo(), r.wins() + r.losses() + r.draws(), u.locale(), null);
     }
 
     /** Same seed, same scenarios for both players. Each player reads them in their own language. */
-    private List<Round> pickRounds(long seed, String localeA, String localeB) {
+    private List<Round> pickRounds(long seed, String localeA, String localeB, String forced) {
         Random random = new Random(seed);
         List<Scenario> pool = new ArrayList<>(catalog.pool(localeA, null));
+        // A pinned level applies as long as it has enough for a whole match.
+        if (forced != null && pool.stream().filter(s -> s.fitsDifficulty(forced)).filter(s -> fits(s, "swipe")).count() >= ROUNDS) {
+            pool.removeIf(s -> !s.fitsDifficulty(forced));
+        }
         Collections.shuffle(pool, random);
         List<String> kinds = List.of("swipe", "swipe", "url", "flags", "swipe");
         List<Round> rounds = new ArrayList<>();
@@ -241,6 +244,11 @@ class DuelEngine implements DuelApi {
         } else {
             r.answerB = answer;
         }
+        // The player is done and the clock is ticking: the bot stops reading and decides, a little less carefully.
+        if (!seat.isBot() && d.b.isBot() && r.answerB == null) {
+            int index = d.current;
+            scheduler.schedule(() -> botMove(d.id, index, true), clock.instant().plusMillis(d.b.bot.hurryMs(ThreadLocalRandom.current())));
+        }
         // Tell the opponent THAT I answered, not whether I was right.
         publish(d, Map.of("type", "progress", "player", seat.key, "round", r.no, "ms", ms));
         if (r.bothAnswered()) {
@@ -293,6 +301,7 @@ class DuelEngine implements DuelApi {
         m.put("a", seatResult(d.a, r.answerA));
         m.put("b", seatResult(d.b, r.answerB));
         publish(d, m);
+        botReaction(d, r);
         // Schedule first: a database hiccup may lose a round record, but must not freeze the match.
         scheduler.schedule(() -> withDuel(d.id, this::nextRound), clock.instant().plusMillis(resultPauseMs));
         persistRound(d, r);
@@ -307,10 +316,11 @@ class DuelEngine implements DuelApi {
         String winner = d.a.score == d.b.score ? null : (d.a.score > d.b.score ? "a" : "b");
         int deltaA = 0;
         int deltaB = 0;
-        if (!"friendly".equals(d.mode)) {
+        // Only a game against a person counts: a bot's strength is chosen or adapted, so its results say nothing.
+        if (!"friendly".equals(d.mode) && !d.b.isBot()) {
             double scoreA = winner == null ? 0.5 : ("a".equals(winner) ? 1 : 0);
             deltaA = EloCalculator.delta(d.a.elo, d.b.elo, scoreA, d.a.games);
-            deltaB = d.b.isBot() ? 0 : EloCalculator.delta(d.b.elo, d.a.elo, 1 - scoreA, d.b.games);
+            deltaB = EloCalculator.delta(d.b.elo, d.a.elo, 1 - scoreA, d.b.games);
         }
         persistFinish(d, winner, deltaA, deltaB);
 
@@ -322,6 +332,9 @@ class DuelEngine implements DuelApi {
         m.put("a", Map.of("score", d.a.score, "correct", d.a.correct, "eloDelta", deltaA, "elo", d.a.elo + deltaA, "perRound", d.a.perRound));
         m.put("b", Map.of("score", d.b.score, "correct", d.b.correct, "eloDelta", deltaB, "elo", d.b.elo + deltaB, "perRound", d.b.perRound));
         publish(d, m);
+        if (d.b.isBot()) {
+            publish(d, Map.of("type", "reaction", "player", "b", "emoji", "b".equals(winner) ? "fish" : "shield"));
+        }
         // Keep the state around briefly: a reconnecting client can still fetch the final snapshot.
         scheduler.schedule(() -> active.remove(d.id), clock.instant().plus(Duration.ofMinutes(5)));
     }
@@ -329,33 +342,38 @@ class DuelEngine implements DuelApi {
     // ------------------------------------------------------------------ bot
 
     private void scheduleBot(DuelState d, int roundIndex) {
-        var random = ThreadLocalRandom.current();
-        long delay = random.nextLong(1800, Math.max(2000, (roundSeconds - 4) * 1000L));
-        Instant at = clock.instant().plusMillis(delay);
-        scheduler.schedule(() -> withDuel(d.id, x -> {
-            if (x.phase != Phase.ROUND || x.current != roundIndex) {
+        Scenario scenario = d.round().canonical();
+        long delay = d.b.bot.thinkMs(scenario.difficulty(), String.valueOf(scenario.content()).length(), d.round().kind, roundSeconds * 1000L, ThreadLocalRandom.current());
+        scheduler.schedule(() -> botMove(d.id, roundIndex, false), clock.instant().plusMillis(delay));
+    }
+
+    private void botMove(UUID duelId, int roundIndex, boolean rushed) {
+        withDuel(duelId, x -> {
+            if (x.phase != Phase.ROUND || x.current != roundIndex || x.round().answerB != null) {
                 return;
             }
             Round r = x.round();
-            boolean botRight = ThreadLocalRandom.current().nextDouble() < x.b.botAccuracy;
+            Scenario s = r.canonical();
+            var random = ThreadLocalRandom.current();
+            double accuracy = x.b.bot.accuracy(s.difficulty(), r.kind, x.b.score, x.a.score, rushed);
             long ms = Duration.between(x.roundStartedAt, clock.instant()).toMillis();
             if ("flags".equals(r.kind)) {
-                List<String> targets = r.canonical().redFlags().stream().map(Scenario.RedFlag::target).toList();
-                List<String> tapped = new ArrayList<>();
-                for (String t : targets) {
-                    if (ThreadLocalRandom.current().nextDouble() < x.b.botAccuracy) {
-                        tapped.add(t);
-                    }
-                }
-                applyAnswer(x, x.b, null, tapped, ms);
+                List<String> targets = s.redFlags().stream().map(Scenario.RedFlag::target).toList();
+                applyAnswer(x, x.b, null, DuelBot.tapFlags(targets, accuracy, random), ms);
             } else {
-                boolean attack = r.canonical().attack();
-                applyAnswer(x, x.b, (attack == botRight) ? "attack" : "legit", null, ms);
+                boolean right = random.nextDouble() < accuracy;
+                applyAnswer(x, x.b, s.attack() == right ? "attack" : "legit", null, ms);
             }
-            if (ThreadLocalRandom.current().nextInt(4) == 0 && x.phase != Phase.FINISHED) {
-                publish(x, Map.of("type", "reaction", "player", "b", "emoji", botRight ? "bolt" : "shock"));
-            }
-        }), at);
+        });
+    }
+
+    /** The bot reacts to what happened in the round. It runs after the result, so it gives nothing away. */
+    private void botReaction(DuelState d, Round r) {
+        if (!d.b.isBot()) {
+            return;
+        }
+        DuelBot.reaction(r.answerB.correct(), r.answerA.correct(), r.answerB.ms() < r.answerA.ms(), ThreadLocalRandom.current())
+                .ifPresent(emoji -> publish(d, Map.of("type", "reaction", "player", "b", "emoji", emoji)));
     }
 
     // ------------------------------------------------------------------ reactions, snapshots
@@ -395,6 +413,9 @@ class DuelEngine implements DuelApi {
         m.put("avatar", s.avatar);
         m.put("elo", s.elo);
         m.put("bot", s.isBot());
+        if (s.isBot()) {
+            m.put("botLevel", s.bot.level().name().toLowerCase());
+        }
         m.put("ready", s.ready);
         m.put("score", s.score);
         if (s.userId != null) {

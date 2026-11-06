@@ -8,8 +8,15 @@ import '../core/theme.dart';
 import '../data/models.dart';
 
 /// What every simulator gets. After the answer [onAction] is null and [reveal] holds the red flags to mark.
+/// Lets a guided tour point at parts of the mail client.
+class MailTourKeys {
+  final sender = GlobalKey();
+  final content = GlobalKey();
+  final actions = GlobalKey();
+}
+
 class SimProps {
-  const SimProps({this.onAction, this.reveal, this.selected, this.onToggle, this.simple = false});
+  const SimProps({this.onAction, this.reveal, this.selected, this.onToggle, this.simple = false, this.mailTour});
 
   final void Function(String action)? onAction;
   final List<RedFlag>? reveal;
@@ -18,6 +25,7 @@ class SimProps {
   final Set<String>? selected;
   final void Function(String target)? onToggle;
   final bool simple;
+  final MailTourKeys? mailTour;
 
   bool get answered => reveal != null;
   bool get picking => onToggle != null;

@@ -671,5 +671,806 @@
     "dangerous_actions": [],
     "explanation": "Echt: nur eine Information, keine Handlung gefordert.",
     "tags": []
+  },
+  {
+    "id": "mail-pdf-qr-payroll",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "quishing",
+    "module": 8,
+    "consumer": false,
+    "content": {
+      "from_name": "Personalabteilung",
+      "from_email": "personal@muster-automotive-hr.test",
+      "time": "09:14",
+      "subject": "Neue Entgeltabrechnung: Zugang bis Freitag bestätigen",
+      "body_md": "Guten Morgen,\n\nab Dezember stellen wir die Entgeltabrechnungen auf das neue Portal um. Die Anleitung finden Sie im Anhang.\n\nBitte bestätigen Sie Ihren Zugang bis Freitag, damit die nächste Abrechnung pünktlich bei Ihnen ankommt.\n\nFreundliche Grüße\nIhr Personalteam",
+      "links": [],
+      "attachments": [
+        {
+          "name": "Anleitung_Entgeltportal.pdf",
+          "size_kb": 214,
+          "pdf": {
+            "issuer": "Muster Automotive GmbH · Personal",
+            "title": "Umstellung Entgeltportal",
+            "lines": [
+              "Liebe Kolleginnen und Kollegen,",
+              "die Anmeldung am neuen Portal erfolgt aus Sicherheitsgründen nur noch über das Smartphone.",
+              "Scannen Sie dazu den folgenden Code mit Ihrer Handykamera und melden Sie sich mit Ihrem Firmenkonto an."
+            ],
+            "qr": "https://muster-automotive-hr.test/sso"
+          }
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "Die Firma nutzt muster-automotive.example. \"-hr.test\" ist eine fremde Domain, die nur so aussieht, als gehöre sie dazu."
+      },
+      {
+        "target": "attachment:0",
+        "hint": "Ein QR-Code in der PDF führt weg vom gesicherten Firmenrechner: Dort greifen Mailfilter und Linkprüfung nicht mehr."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "scan_open",
+      "click_link"
+    ],
+    "explanation": "Quishing per PDF: Der Code versteckt das Ziel vor Filtern und vor dir. Das Anschreiben ist fehlerfrei und ruhig. Nur die Absenderdomain und der Umweg übers Handy verraten es.",
+    "tags": []
+  },
+  {
+    "id": "mail-pdf-locked-viewer",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "credential_phishing",
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "from_name": "Daniel Roth, Kessler Stahl GmbH",
+      "from_email": "d.roth@kessler-stahl.example",
+      "time": "11:03",
+      "subject": "AW: Rahmenvertrag 2027 – Entwurf zur Durchsicht",
+      "body_md": "Hallo,\n\nwie besprochen anbei der Entwurf des Rahmenvertrags. Schauen Sie bitte vor unserem Termin kurz drüber, besonders Abschnitt 4.\n\nBeste Grüße\nDaniel Roth\nKessler Stahl GmbH",
+      "links": [],
+      "attachments": [
+        {
+          "name": "Rahmenvertrag_2027_Entwurf.pdf",
+          "size_kb": 96,
+          "pdf": {
+            "issuer": "Geschütztes Dokument",
+            "title": "Dieses Dokument ist verschlüsselt",
+            "lines": [
+              "Der Absender hat dieses PDF mit dem Schutz von OfficeCloud versehen.",
+              "Bitte melden Sie sich an, um den Inhalt anzuzeigen."
+            ],
+            "cta": {
+              "text": "In OfficeCloud öffnen",
+              "href": "https://officecloud-viewer.test/d/8f3a2"
+            }
+          }
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "attachment:0",
+        "hint": "Eine PDF, die außer einem Anmeldeknopf nichts enthält, ist kein Vertrag, sondern eine getarnte Anmeldeseite."
+      },
+      {
+        "target": "attachment:0",
+        "hint": "Der Knopf führt zu officecloud-viewer.test. Die echte Anmeldung läuft über officecloud.example."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Der Absender stimmt wirklich: Sein Konto wurde vermutlich übernommen. Darum nützt der Blick auf die Domain hier nichts. Du musst dir ansehen, was die PDF wirklich verlangt. Im Zweifel rufst du Daniel Roth unter der bekannten Nummer an.",
+    "tags": []
+  },
+  {
+    "id": "mail-pdf-iban-change",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "invoice_fraud",
+    "module": 5,
+    "consumer": false,
+    "content": {
+      "from_name": "Kessler Stahl GmbH, Buchhaltung",
+      "from_email": "buchhaltung@kessler-stahl.test",
+      "time": "10:37",
+      "subject": "Rechnung RE-2026-8841 zu Ihrer Bestellung PO-2026-4120",
+      "body_md": "Sehr geehrte Damen und Herren,\n\nanbei erhalten Sie die Rechnung zu Ihrer Bestellung PO-2026-4120. Das Zahlungsziel beträgt wie vereinbart 30 Tage.\n\nBitte beachten Sie unsere neue Bankverbindung, die auf der Rechnung ausgewiesen ist.\n\nMit freundlichen Grüßen\nKessler Stahl GmbH",
+      "links": [],
+      "attachments": [
+        {
+          "name": "RE-2026-8841.pdf",
+          "size_kb": 187,
+          "pdf": {
+            "issuer": "Kessler Stahl GmbH · Hüttenstraße 12 · 08056 Zwickau",
+            "title": "Rechnung RE-2026-8841",
+            "lines": [
+              "Bestellung: PO-2026-4120",
+              "40 t Stahlblech DC04, 1,5 mm",
+              "Gesamtbetrag: 48.760,00 EUR, zahlbar in 30 Tagen",
+              "Neue Bankverbindung: IBAN DE00 7001 0080 0912 4471 22"
+            ]
+          }
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "Der echte Lieferant schreibt von kessler-stahl.example, nicht von kessler-stahl.test. Es ändert sich nur die Endung."
+      },
+      {
+        "target": "body:neue Bankverbindung",
+        "hint": "Neue Kontodaten per E-Mail sind das Kernstück des Rechnungsbetrugs. Immer über die bekannte Telefonnummer prüfen."
+      },
+      {
+        "target": "attachment:0",
+        "hint": "Bestellnummer und Ware können aus einem gestohlenen Postfach stammen. Sie beweisen nichts."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "open",
+      "reply"
+    ],
+    "explanation": "Die schwerste Sorte: echte Bestellnummer, ruhiger Ton, normales Zahlungsziel, kein Link. Wenn du das als \"OK\" durchwinkst, überweist die Buchhaltung an Betrüger. Eine Bankänderung ist immer ein Grund zum Anruf.",
+    "tags": []
+  },
+  {
+    "id": "mail-pdf-password",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "malicious_attachment",
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "from_name": "Sabine Lorenz, Vertrieb Hartmann Logistik",
+      "from_email": "s.lorenz@hartmann-logistik.test",
+      "time": "13:18",
+      "subject": "Angebot Transportrahmen Q1 – vertraulich",
+      "body_md": "Guten Tag,\n\nanbei unser Angebot für den Transportrahmen im ersten Quartal. Da es Preise enthält, ist die Datei passwortgeschützt.\n\nDas Passwort lautet: 4471\n\nViele Grüße\nSabine Lorenz",
+      "links": [],
+      "attachments": [
+        {
+          "name": "Angebot_Q1_geschuetzt.pdf",
+          "size_kb": 1340
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "body:Das Passwort lautet",
+        "hint": "Ein Passwort in derselben Mail schützt nichts. Es hat nur einen Zweck: Virenscanner können die Datei nicht öffnen und nicht prüfen."
+      },
+      {
+        "target": "from_email",
+        "hint": "Ein Absender, mit dem du noch nie zu tun hattest, und ein Angebot, das du nicht angefragt hast."
+      },
+      {
+        "target": "attachment:0",
+        "hint": "Auch PDFs können Schadcode oder Links mitbringen. Die Endung .pdf allein macht eine Datei nicht harmlos."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "open_attachment"
+    ],
+    "explanation": "Verschlüsselte Anhänge umgehen die Prüfung im Mailserver. Echte Partner schicken das Passwort über einen zweiten Kanal, und du weißt, dass ein Angebot kommt.",
+    "tags": []
+  },
+  {
+    "id": "mail-pdf-application",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "malicious_attachment",
+    "module": 4,
+    "consumer": false,
+    "content": {
+      "from_name": "Lena Hartwig",
+      "from_email": "lena.hartwig@mailbox.test",
+      "time": "16:42",
+      "subject": "Bewerbung als Sachbearbeiterin Einkauf (Ref. 2026-117)",
+      "body_md": "Sehr geehrte Damen und Herren,\n\nauf Ihre Stellenanzeige hin bewerbe ich mich als Sachbearbeiterin im Einkauf. Lebenslauf und Zeugnisse finden Sie im Anhang.\n\nÜber eine Einladung zum Gespräch freue ich mich.\n\nMit freundlichen Grüßen\nLena Hartwig",
+      "links": [],
+      "attachments": [
+        {
+          "name": "Bewerbung_Lena_Hartwig.pdf",
+          "size_kb": 412,
+          "pdf": {
+            "issuer": "PDF-Vorschau",
+            "title": "Inhalt kann nicht angezeigt werden",
+            "lines": [
+              "Dieses Dokument wurde mit einer neueren Version erstellt.",
+              "Aktualisieren Sie Ihren PDF-Reader, um Lebenslauf und Zeugnisse zu sehen."
+            ],
+            "cta": {
+              "text": "PDF-Reader aktualisieren",
+              "href": "https://pdf-reader-update.test/reader_setup.exe"
+            }
+          }
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "attachment:0",
+        "hint": "Ein Dokument, das ein Update verlangt, bringt fast immer Schadsoftware. Der Link endet auf .exe."
+      },
+      {
+        "target": "attachment:0",
+        "hint": "Echte Updates kommen über die IT, nie aus einer Bewerbung."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Personalabteilungen müssen Anhänge von Fremden öffnen. Genau deshalb sind sie ein beliebtes Ziel. Das Öffnen der PDF war noch in Ordnung, der Klick auf \"Aktualisieren\" wäre der Fehler gewesen.",
+    "tags": []
+  },
+  {
+    "id": "mail-pdf-tax-notice",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "credential_phishing",
+    "module": 3,
+    "consumer": true,
+    "content": {
+      "from_name": "Steuerportal",
+      "from_email": "bescheid@steuerportal-service.test",
+      "time": "07:55",
+      "subject": "Ihr Bescheid für 2025 steht bereit",
+      "body_md": "Guten Tag,\n\nfür das Steuerjahr 2025 liegt ein neuer Bescheid für Sie vor. Das Dokument finden Sie im Anhang dieser Nachricht.\n\nDies ist eine automatisch erzeugte E-Mail.",
+      "links": [],
+      "attachments": [
+        {
+          "name": "Bescheid_2025.pdf",
+          "size_kb": 133,
+          "pdf": {
+            "issuer": "Steuerportal · Bescheiddaten",
+            "title": "Bescheid für 2025",
+            "lines": [
+              "Erstattungsbetrag: 487,20 EUR",
+              "Damit wir den Betrag auszahlen können, bestätigen Sie bitte Ihre Bankverbindung."
+            ],
+            "cta": {
+              "text": "Bankverbindung bestätigen",
+              "href": "https://steuerportal-service.test/erstattung"
+            }
+          }
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "Das echte Portal heißt steuerportal.example. \"-service.test\" gehört jemand anderem."
+      },
+      {
+        "target": "attachment:0",
+        "hint": "Das Finanzamt kennt dein Konto schon. Niemand muss für eine Erstattung Daten über einen Knopf in einer PDF bestätigen."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Eine echte Benachrichtigung enthält keinen Bescheid als Anhang: Du meldest dich selbst im Portal an, über dein Lesezeichen. Geld, das dir zusteht, macht unvorsichtig.",
+    "tags": []
+  },
+  {
+    "id": "mail-pdf-debt-collection",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "silver",
+    "is_attack": true,
+    "attack_type": "invoice_fraud",
+    "module": 5,
+    "consumer": true,
+    "content": {
+      "from_name": "Kanzlei Weber & Partner",
+      "from_email": "forderung@kanzlei-weber-partner.test",
+      "time": "12:20",
+      "subject": "Letzte außergerichtliche Mahnung, Az. 2026/41873",
+      "body_md": "Sehr geehrte Damen und Herren,\n\nunsere Mandantin hat uns mit der Durchsetzung einer offenen Forderung beauftragt. Die Einzelheiten entnehmen Sie dem beigefügten Schreiben.\n\nZur Vermeidung weiterer Kosten bitten wir um Zahlung innerhalb von 5 Tagen.\n\nMit freundlichen Grüßen\nRA Weber",
+      "links": [],
+      "attachments": [
+        {
+          "name": "Mahnschreiben_41873.pdf",
+          "size_kb": 88,
+          "pdf": {
+            "issuer": "Kanzlei Weber & Partner",
+            "title": "Letzte Mahnung",
+            "lines": [
+              "Hauptforderung aus Vertrag 88213: 214,50 EUR",
+              "Kosten und Zinsen: 96,30 EUR",
+              "Zu zahlen auf: IBAN DE00 2004 1133 0456 7789 01"
+            ]
+          }
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "body:innerhalb von 5 Tagen",
+        "hint": "Kurze Frist und Drohung mit Kosten: Du sollst zahlen, bevor du nachfragst."
+      },
+      {
+        "target": "attachment:0",
+        "hint": "Kein Hinweis, worum es wirklich geht: kein Gläubigername, keine Vertragsart. Eine echte Forderung lässt sich nachvollziehen."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "open",
+      "reply"
+    ],
+    "explanation": "Der Betrag ist bewusst klein: Viele zahlen, um Ärger zu sparen. Prüfe, ob du den Vertrag kennst, und frage die Kanzlei unter einer selbst gesuchten Nummer. Kein Vertrag, kein Geld.",
+    "tags": []
+  },
+  {
+    "id": "mail-pdf-invoice-legit",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 5,
+    "consumer": false,
+    "content": {
+      "from_name": "Bauer Elektrik, Rechnungswesen",
+      "from_email": "rechnung@bauer-elektrik.example",
+      "time": "08:05",
+      "subject": "Rechnung 2026-3391 zu PO-2026-4471",
+      "body_md": "Guten Tag,\n\nanbei die Rechnung zu Ihrer Bestellung PO-2026-4471 vom 14. Oktober. Zahlungsziel und Bankverbindung sind unverändert.\n\nBei Fragen erreichen Sie uns wie gewohnt unter der Ihnen bekannten Nummer.\n\nFreundliche Grüße\nBauer Elektrik",
+      "links": [],
+      "attachments": [
+        {
+          "name": "Rechnung_2026-3391.pdf",
+          "size_kb": 164,
+          "pdf": {
+            "issuer": "Bauer Elektrik GmbH · Lange Straße 4 · 08056 Zwickau",
+            "title": "Rechnung 2026-3391",
+            "lines": [
+              "Bestellung: PO-2026-4471 vom 14.10.2026",
+              "120 Stück Kabelsatz KS-40",
+              "Gesamtbetrag: 3.418,80 EUR, zahlbar in 30 Tagen",
+              "Bankverbindung unverändert laut Rahmenvertrag"
+            ]
+          }
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open",
+      "click_link"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: bekannter Lieferant, richtige Domain, deine Bestellnummer, unveränderte Bankdaten, kein Druck und kein Link. Nicht jede PDF ist Phishing. Falscher Alarm hält hier die Rechnung auf.",
+    "tags": []
+  },
+  {
+    "id": "mail-pdf-payslip-legit",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 2,
+    "consumer": false,
+    "content": {
+      "from_name": "Personalabteilung",
+      "from_email": "personal@muster-automotive.example",
+      "time": "09:30",
+      "subject": "Änderung der Lohnsteuerklasse: Formular",
+      "body_md": "Hallo,\n\nwie gestern am Telefon besprochen, sende ich Ihnen das Formular zur Änderung der Steuerklasse. Bitte ausgefüllt im Personalbüro abgeben oder im Mitarbeiterportal hochladen.\n\nViele Grüße\nJana Seidel",
+      "links": [
+        {
+          "text": "Mitarbeiterportal",
+          "href": "https://portal.muster-automotive.example/personal"
+        }
+      ],
+      "attachments": [
+        {
+          "name": "Formular_Steuerklasse.pdf",
+          "size_kb": 72,
+          "pdf": {
+            "issuer": "Muster Automotive GmbH · Personal",
+            "title": "Änderung der Steuerklasse",
+            "lines": [
+              "Name, Personalnummer, neue Steuerklasse",
+              "Datum und Unterschrift"
+            ]
+          }
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open",
+      "click_link"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: Du hast das Formular selbst besprochen, die Domain ist eure, der Link geht ins eigene Portal, und niemand will ein Passwort per Mail.",
+    "tags": []
+  },
+  {
+    "id": "mail-pdf-travel-legit",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 8,
+    "consumer": true,
+    "content": {
+      "from_name": "RailTix",
+      "from_email": "buchung@railtix.example",
+      "time": "18:11",
+      "subject": "Ihre Fahrkarte Zwickau – Leipzig am 12.11.",
+      "body_md": "Vielen Dank für Ihre Buchung von vorhin. Ihre Fahrkarte finden Sie im Anhang. Zeigen Sie den Code bitte bei der Kontrolle vor.\n\nGute Fahrt wünscht RailTix",
+      "links": [],
+      "attachments": [
+        {
+          "name": "Fahrkarte_RT7741.pdf",
+          "size_kb": 58,
+          "pdf": {
+            "issuer": "RailTix · Fahrkarte",
+            "title": "Zwickau – Leipzig, 12.11., 07:42",
+            "lines": [
+              "Buchung RT7741, 1 Erwachsener, 2. Klasse",
+              "Bezahlt mit Ihrer hinterlegten Karte"
+            ],
+            "qr": "https://railtix.example/ticket/RT7741"
+          }
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open",
+      "scan_open"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: Du hast die Fahrt gerade selbst gebucht, die Domain passt, und der Code wird vorgezeigt. Er fragt dich nichts. Ein QR-Code in einer PDF ist nicht automatisch ein Angriff.",
+    "tags": []
+  },
+  {
+    "id": "mail-pdf-policy-legit",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "diamond",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 13,
+    "consumer": false,
+    "content": {
+      "from_name": "Compliance",
+      "from_email": "compliance@muster-automotive.example",
+      "time": "10:02",
+      "subject": "Pflicht: neue Reiserichtlinie bis Freitag bestätigen",
+      "body_md": "Liebe Kolleginnen und Kollegen,\n\nwie in der Betriebsversammlung angekündigt, gilt ab Dezember die neue Reiserichtlinie. Bitte lest sie und bestätigt sie bis Freitag im Intranet. Eine Anmeldung per Mail ist nicht nötig, du bist dort bereits angemeldet.\n\nViele Grüße\nCompliance",
+      "links": [
+        {
+          "text": "Richtlinie bestätigen",
+          "href": "https://intranet.muster-automotive.example/compliance/reise"
+        }
+      ],
+      "attachments": [
+        {
+          "name": "Reiserichtlinie_2027.pdf",
+          "size_kb": 640,
+          "pdf": {
+            "issuer": "Muster Automotive GmbH · Compliance",
+            "title": "Reiserichtlinie 2027",
+            "lines": [
+              "1. Buchung nur über das Reiseportal",
+              "2. Abrechnung innerhalb von 30 Tagen",
+              "3. Ausnahmen genehmigt die Vorgesetzte oder der Vorgesetzte"
+            ]
+          }
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open",
+      "click_link"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt, obwohl \"Pflicht\" und \"bis Freitag\" nach Druck klingen: Es wurde angekündigt, die Domain ist eure, der Link führt ins eigene Intranet, und es wird kein Passwort verlangt. Auch echte Mails haben Fristen.",
+    "tags": []
+  },
+  {
+    "id": "mail-colleague-shared-link",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "credential_phishing",
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "from_name": "Lena Hoffmann",
+      "from_email": "l.hoffmann@muster-automotive.example",
+      "time": "15:21",
+      "subject": "AW: Kalkulation Projekt Mosel",
+      "body_md": "Hi,\n\nhier wie gestern besprochen die aktualisierte Kalkulation. Kannst du bis morgen früh einen Blick auf die Materialkosten werfen?\n\nDanke dir!\nLena",
+      "links": [
+        {
+          "text": "Kalkulation_Mosel_v3.xlsx",
+          "href": "https://muster-automotive.sharedocs.test/k/9d21"
+        }
+      ],
+      "attachments": []
+    },
+    "red_flags": [
+      {
+        "target": "link:0",
+        "hint": "Von rechts lesen: Die Domain ist sharedocs.test. \"muster-automotive\" davor ist nur ein frei wählbarer Zusatz."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Lenas Konto wurde übernommen und die Mail hängt an einer echten Unterhaltung: Der Absender stimmt, der Ton auch. Das Einzige, was nicht passt, ist das Linkziel. Halte vor dem Klick kurz den Finger auf den Link. Im Zweifel fragst du Lena im Chat oder am Telefon.",
+    "tags": []
+  },
+  {
+    "id": "mail-homoglyph-it",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "lookalike_domain",
+    "module": 2,
+    "consumer": false,
+    "content": {
+      "from_name": "IT-Service",
+      "from_email": "it-service@rnuster-automotive.example",
+      "time": "08:31",
+      "subject": "Postfachumzug am Wochenende: bitte vorab prüfen",
+      "body_md": "Hallo,\n\nam Wochenende ziehen wir die Postfächer auf die neue Plattform um. Bitte prüfe vorab im Portal, ob dein Postfach dabei ist, damit keine Mails verloren gehen.\n\nDein IT-Service",
+      "links": [
+        {
+          "text": "Status im Portal prüfen",
+          "href": "https://portal.rnuster-automotive.example/umzug"
+        }
+      ],
+      "attachments": []
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "Genau hinsehen: \"rnuster\" statt \"muster\". Die Buchstaben r und n sehen zusammen fast aus wie ein m."
+      },
+      {
+        "target": "link:0",
+        "hint": "Auch der Link führt zu rnuster-automotive.example, also nicht zu eurer Firma."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Ein Homoglyphen-Angriff: fehlerfreier Text, plausibler Anlass und eine Domain, die erst beim zweiten Blick falsch ist. Vertippte Domains sind kein Anfängertrick. Sie sind schwer zu sehen. Darum melden im Zweifel.",
+    "tags": []
+  },
+  {
+    "id": "mail-calendar-invite",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "credential_phishing",
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "from_name": "Thomas Berger (Kalender)",
+      "from_email": "kalender@officecloud-meet.test",
+      "time": "14:05",
+      "subject": "Einladung: Jahresgespräch, Do. 15:00–15:30",
+      "body_md": "Thomas Berger hat Sie zu einem Termin eingeladen.\n\nJahresgespräch\nDonnerstag, 15:00–15:30\nOnline-Besprechung\n\nZum Beitreten melden Sie sich bitte mit Ihrem Firmenkonto an.",
+      "links": [
+        {
+          "text": "An Besprechung teilnehmen",
+          "href": "https://officecloud-meet.test/join/88213"
+        }
+      ],
+      "attachments": []
+    },
+    "red_flags": [
+      {
+        "target": "from_email",
+        "hint": "Einladungen eures Kalenders kommen von eurer Firma, nicht von officecloud-meet.test."
+      },
+      {
+        "target": "body:melden Sie sich bitte mit Ihrem Firmenkonto an",
+        "hint": "Eine Besprechung fragt nicht per Mail nach deinem Firmenkonto. Das Jahresgespräch ist nur der Köder, der neugierig macht."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "click_link"
+    ],
+    "explanation": "Das Thema ist genau gewählt: Ein Jahresgespräch mit dem Chef öffnet fast jeder. Schau lieber in deinen Kalender oder frag kurz nach.",
+    "tags": []
+  },
+  {
+    "id": "mail-reply-to-ceo",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "ceo_fraud",
+    "module": 5,
+    "consumer": false,
+    "content": {
+      "from_name": "Thomas Berger",
+      "from_email": "t.berger@muster-automotive.example",
+      "reply_to": "thomas.berger.gf@mailbox.test",
+      "time": "11:46",
+      "subject": "Kurze Frage",
+      "body_md": "Hallo,\n\nsind Sie heute im Haus? Ich hätte eine kleine, vertrauliche Aufgabe für Sie, sitze aber bis Mittag im Termin. Antworten Sie mir einfach kurz hier.\n\nT. Berger\nVon unterwegs gesendet",
+      "links": [],
+      "attachments": []
+    },
+    "red_flags": [
+      {
+        "target": "reply_to",
+        "hint": "Absender eurer Firma, aber die Antwort ginge an ein privates Postfach. Tippe auf den Absender: Das steht dort unter \"Antwort an\"."
+      },
+      {
+        "target": "body:vertrauliche Aufgabe",
+        "hint": "Harmlos, kein Geld, kein Link: Der erste Schritt soll nur ein Gespräch beginnen. Die Überweisung kommt später."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "reply"
+    ],
+    "explanation": "CEO-Fraud beginnt heute meist ohne Forderung, damit kein Filter und kein Bauchgefühl anspringt. Wer antwortet, schreibt schon mit dem Betrüger. Frag den Chef über einen anderen Kanal.",
+    "tags": []
+  },
+  {
+    "id": "mail-it-rollout-legit",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "diamond",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "from_name": "IT-Service",
+      "from_email": "it-service@muster-automotive.example",
+      "time": "09:00",
+      "subject": "Handlungsbedarf: neues Anmeldeverfahren bis 30.11.",
+      "body_md": "Hallo zusammen,\n\nwie im Intranet angekündigt, stellen wir bis zum 30.11. auf das neue Anmeldeverfahren um. Bitte richtet es im Portal ein. Das dauert fünf Minuten, und wir fragen weder per Mail noch per Telefon nach eurem Passwort.\n\nEuer IT-Service",
+      "links": [
+        {
+          "text": "Im Portal einrichten",
+          "href": "https://portal.muster-automotive.example/mfa"
+        }
+      ],
+      "attachments": []
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open",
+      "click_link"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt, auch wenn \"Handlungsbedarf\" und eine Frist alarmierend klingen: Es ist eure Domain, der Link bleibt auf eurer Domain, die Maßnahme wurde angekündigt, und niemand will ein Passwort. Zu viel Misstrauen legt die IT lahm.",
+    "tags": []
+  },
+  {
+    "id": "mail-ceo-townhall-legit",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 2,
+    "consumer": false,
+    "content": {
+      "from_name": "Thomas Berger",
+      "from_email": "t.berger@muster-automotive.example",
+      "time": "08:15",
+      "subject": "Heute 15 Uhr: kurze Betriebsversammlung",
+      "body_md": "Liebe Kolleginnen und Kollegen,\n\nheute um 15 Uhr möchte ich euch in Halle 3 kurz über den neuen Großauftrag informieren. Es dauert etwa zwanzig Minuten.\n\nThomas Berger",
+      "links": [],
+      "attachments": []
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open",
+      "reply"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: Der Chef schreibt kurz und kurzfristig, aber er verlangt nichts außer deiner Anwesenheit. Kein Geld, kein Link, keine Geheimhaltung, keine abweichende Antwortadresse.",
+    "tags": []
+  },
+  {
+    "id": "mail-bank-postbox-legit",
+    "type": "email",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 6,
+    "consumer": true,
+    "content": {
+      "from_name": "Sparkasse Musterstadt",
+      "from_email": "service@sparkasse-musterstadt.example",
+      "time": "19:40",
+      "subject": "Neue Nachricht in Ihrem Postfach",
+      "body_md": "Guten Tag,\n\nin Ihrem Online-Banking liegt eine neue Nachricht für Sie. Bitte melden Sie sich wie gewohnt an, um sie zu lesen.\n\nDiese E-Mail enthält bewusst keinen Link.\n\nIhre Sparkasse Musterstadt",
+      "links": [],
+      "attachments": []
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open",
+      "delete"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: Es gibt keinen Link, keine Frist und keine Datenabfrage. Du meldest dich über deinen eigenen Weg an. Genau so sieht eine saubere Benachrichtigung aus.",
+    "tags": []
   }
 ]

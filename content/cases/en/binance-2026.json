@@ -1,0 +1,98 @@
+{
+  "id": "binance-2026",
+  "company": "Binance",
+  "year": 2026,
+  "title": "The 6 billion dollar job interview",
+  "summary": "In October 2026 Binance lost about 6.3 billion US dollars, the largest crypto theft in history. It began with a tampered download and a job interview that never really existed.",
+  "disclaimer": "Interactive reconstruction: the messages are illustrative, the facts in the timeline come from Binance's incident report as relayed by the media named below. The amount is reported differently (6.34 to 6.43 billion US dollars). Binance itself expressly says this was not \"a simple phishing incident\" but a multi-stage campaign.",
+  "steps": [
+    {
+      "channel": "url",
+      "narration": "June 2026. You are a DevOps engineer working on the wallets of a large exchange. You want to try a well-known AI tool and search for it online. It needs a package manager, and a matching result sits right at the top.",
+      "message": "Ad · brew-install.test\nInstall Homebrew in one step\n\"Official installer for macOS\"",
+      "question": "What do you do?",
+      "options": [
+        {
+          "label": "Trust the first result and run the installer",
+          "stops": false,
+          "feedback": "The attackers learn what you do and who else looks after the wallets. Binance detected the download and removed it, but the attackers kept that knowledge."
+        },
+        {
+          "label": "Get software only through the route your company has approved",
+          "stops": true,
+          "feedback": "Exactly. Search results and ads are no way to obtain tools for a computer with these rights."
+        }
+      ]
+    },
+    {
+      "channel": "chat",
+      "narration": "September 2026. You are a software engineer. On a reputable job platform someone writes to you as a project director. Your profile names your employer.",
+      "message": "Hi! Your profile is a perfect fit for a role with us. Very good salary, fully remote. Would you have time this week for a short talk with our HR team?",
+      "question": "What do you do?",
+      "options": [
+        {
+          "label": "Agree, a conversation cannot hurt",
+          "stops": false,
+          "feedback": "The bait is taken. In the first video call the supposed HR person even shares an account with private photos and videos, to win your trust."
+        },
+        {
+          "label": "Tell the security team: whoever approaches you because of your employer may mean exactly that employer",
+          "stops": true,
+          "feedback": "Strong. Binance reported 57 foiled cases in 2026 that it suspects are linked to North Korea. Only reports make such patterns visible."
+        }
+      ]
+    },
+    {
+      "channel": "file",
+      "narration": "Round two: you talk through a well-known chat app with the supposed CEO of a company. Shortly before the end comes the task.",
+      "message": "One last thing, a small coding assignment. Download the repository and get it running, then we will look at it together.\nrepo.test/hiring/assignment",
+      "question": "Your work computer is right in front of you. What do you do?",
+      "options": [
+        {
+          "label": "Download it to the work computer and set it up",
+          "stops": false,
+          "feedback": "This is the moment. Malicious code already runs during setup, and endpoint protection does not detect it. From now on the attackers have your computer."
+        },
+        {
+          "label": "Only read the code, and run it in an isolated environment without company access",
+          "stops": true,
+          "feedback": "Good. Foreign code must never go where your access lives. Ideally you report the whole thing as well."
+        },
+        {
+          "label": "Stop and report it to the security team",
+          "stops": true,
+          "feedback": "Right. Real companies have no problem with that. A job interview is no reason for foreign code on a work computer."
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "June 2026",
+      "what": "While setting up an AI tool, a wallet DevOps engineer downloads a tampered Homebrew installer. Binance detects and removes it and rotates credentials as a precaution. By then the attackers already know who looks after the wallets."
+    },
+    {
+      "when": "September 2026",
+      "what": "A software engineer is approached through a job platform and goes through two fake interviews. The \"assignment\" puts previously unseen malware on his work computer."
+    },
+    {
+      "when": "20 October 2026",
+      "what": "Through this computer and an internal AI tool, the attackers take over the computers of two more staff members and find a token with deployment rights."
+    },
+    {
+      "when": "29 October 2026",
+      "what": "In under three hours they use the stolen access and the internal wallet signing service: transactions bypass the normal withdrawal process, and about 6.3 billion US dollars are gone."
+    },
+    {
+      "when": "Afterwards",
+      "what": "Withdrawals stop for about 48 hours. According to Binance, 98% of the affected token assets are replenished by 31 October. By 3 November about 2.85 billion has been frozen or intercepted. The FBI attributes the theft to North Korea."
+    }
+  ],
+  "lesson": "The most expensive attack in crypto history needed two people doing something normal: looking for a tool and applying for a job. Foreign software and foreign code never belong on a computer with company access, and a tempting job offer is worth a report.",
+  "sources": [
+    "Binance: incident report, November 2026",
+    "BleepingComputer, 3 Nov 2026",
+    "The Hacker News, 3 Nov 2026",
+    "Fortune, 3 Nov 2026"
+  ]
+}

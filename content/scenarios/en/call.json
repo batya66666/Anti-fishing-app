@@ -298,5 +298,210 @@
     "dangerous_actions": [],
     "explanation": "Genuine: internal extension, your own ticket, and nobody wants passwords or codes. Being careful does not mean distrusting everyone.",
     "tags": []
+  },
+  {
+    "id": "call-helpdesk-knowledge",
+    "type": "call",
+    "locale": "en",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "vishing",
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "IT Helpdesk – Jonas Keller",
+      "number": "Internal: 412",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Hello, Jonas Keller from the helpdesk. Your manager Mr Berger opened ticket 48213 about the fault in the purchasing system. I need to reconnect your account once. A prompt will appear on your phone in a moment, please just tap it.",
+          "options": [
+            {
+              "label": "All right, I will approve the prompt.",
+              "next": "b"
+            },
+            {
+              "label": "I will call the helpdesk straight back on the number from the intranet.",
+              "action": "verify"
+            },
+            {
+              "label": "What is the exact ticket number?",
+              "next": "c"
+            }
+          ]
+        },
+        "b": {
+          "say": "Thanks. It should be there now. Just tap approve and we are done.",
+          "options": [
+            {
+              "label": "Approved.",
+              "action": "comply"
+            },
+            {
+              "label": "Wait, I did not sign in at all. I am reporting this.",
+              "action": "report"
+            }
+          ]
+        },
+        "c": {
+          "say": "INC-48213, as I said. Your department is at a standstill because of this, we really should get it done now.",
+          "options": [
+            {
+              "label": "Fine, I will approve it.",
+              "action": "comply"
+            },
+            {
+              "label": "I would rather call the helpdesk myself.",
+              "action": "verify"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [
+      {
+        "target": "number",
+        "hint": "An internal extension can be spoofed. It does not prove who is calling."
+      },
+      {
+        "target": "note:knowledge",
+        "hint": "Your manager's name and a ticket number sound trustworthy, but often come from LinkedIn or an earlier break-in."
+      },
+      {
+        "target": "note:unasked",
+        "hint": "You did not sign in. Whoever asks you to approve a prompt is signing in themselves right now."
+      }
+    ],
+    "correct_actions": [
+      "verify",
+      "report",
+      "hang_up"
+    ],
+    "dangerous_actions": [
+      "comply"
+    ],
+    "explanation": "This is how major incidents of recent years went: little pressure, plenty of inside knowledge. The real helpdesk never asks you to approve a prompt you did not start yourself. Hanging up and calling back is never rude.",
+    "tags": []
+  },
+  {
+    "id": "call-cfo-voice-clone",
+    "type": "call",
+    "locale": "en",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "ceo_fraud",
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "Claudia Brandt (Finance)",
+      "number": "+49 171 5550187",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Hello, it is me, Claudia. I am at the bank in Stuttgart, my laptop has given up and the battery is nearly dead. The down payment for Bauer has to go out today. Please send the approval to my mobile, I will send the official email afterwards.",
+          "options": [
+            {
+              "label": "Of course, I will send the approval right away.",
+              "action": "comply"
+            },
+            {
+              "label": "I will call you straight back at the office and on your known number.",
+              "next": "b"
+            },
+            {
+              "label": "What was the order number again?",
+              "next": "c"
+            }
+          ]
+        },
+        "b": {
+          "say": "That will not work now, nobody is at the landline and my work phone is at the hotel. Please, you know me. We have no time for this.",
+          "options": [
+            {
+              "label": "Fine, just this once.",
+              "action": "comply"
+            },
+            {
+              "label": "Not without a call back. I will pass this on to the head of finance.",
+              "action": "report"
+            }
+          ]
+        },
+        "c": {
+          "say": "I do not have it to hand, it is in the email you are about to get. This really is urgent.",
+          "options": [
+            {
+              "label": "All right, I will send it.",
+              "action": "comply"
+            },
+            {
+              "label": "Then I will wait for the email and call back.",
+              "action": "verify"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [
+      {
+        "target": "number",
+        "hint": "An unknown mobile number, and the call back gets blocked. Real colleagues have no problem with it."
+      },
+      {
+        "target": "note:voice",
+        "hint": "The voice sounds familiar. That proves nothing today: a few seconds of recording are enough to clone a voice with AI."
+      },
+      {
+        "target": "note:process",
+        "hint": "The four-eyes process is to be bypassed \"just this once\". That is exactly what it exists for."
+      }
+    ],
+    "correct_actions": [
+      "verify",
+      "report",
+      "hang_up"
+    ],
+    "dangerous_actions": [
+      "comply"
+    ],
+    "explanation": "Even a voice clone cannot answer your call back. For payments it never matters how someone sounds, only whether the agreed process is followed.",
+    "tags": []
+  },
+  {
+    "id": "call-supplier-legit",
+    "type": "call",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "Bauer Elektrik – Mr Sommer",
+      "number": "+49 375 5550144",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Hello, Sommer from Bauer Elektrik. About your order PO-2026-4471: the wiring harnesses will arrive on Thursday instead of Wednesday. I just wanted to let you know so you can adjust your planning. There is nothing else you need to do.",
+          "options": [
+            {
+              "label": "Thanks for letting me know, I will tell production.",
+              "action": "cooperate"
+            },
+            {
+              "label": "Hang up and report it as an attack.",
+              "action": "report"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "cooperate"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: the number is the supplier's known landline, and the caller wants nothing from you: no data, no money, no approval. Information is not an attack.",
+    "tags": []
   }
 ]

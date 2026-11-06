@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -62,8 +63,8 @@ class DuelController {
     }
 
     @PostMapping("/friendly/bot")
-    DuelRef friendlyBot() {
-        return new DuelRef(matchmaking.friendlyWithBot(CurrentUser.id()).id.toString());
+    DuelRef friendlyBot(@RequestParam(required = false) String level) {
+        return new DuelRef(matchmaking.friendlyWithBot(CurrentUser.id(), DuelBot.Level.parse(level)).id.toString());
     }
 
     @PostMapping("/join/{code}")

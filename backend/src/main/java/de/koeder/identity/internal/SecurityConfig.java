@@ -35,6 +35,7 @@ class SecurityConfig {
                         .contentSecurityPolicy(c -> c.policyDirectives("default-src 'self'; frame-ancestors 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:")))
                 .authorizeHttpRequests(a -> a
                         .requestMatchers(HttpMethod.POST, "/api/auth/guest", "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/public/info").permitAll()
                         .requestMatchers("/actuator/health/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         // The handshake itself is open; the STOMP CONNECT frame carries and checks the JWT.
                         .requestMatchers("/ws/**").permitAll()

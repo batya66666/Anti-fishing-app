@@ -1,0 +1,69 @@
+{
+  "id": "arup-2024",
+  "company": "Arup",
+  "year": 2024,
+  "title": "Everyone on the video call was fake",
+  "summary": "A finance employee at Arup in Hong Kong was suspicious, until he saw the CFO and colleagues on a video call. All were deepfakes. He transferred 200 million Hong Kong dollars, about 25 million US dollars.",
+  "disclaimer": "Interactive reconstruction: the messages are illustrative, the exact wording is not public. The facts in the timeline come from statements by Hong Kong police and Arup, as relayed by CNN and Insurance Business.",
+  "steps": [
+    {
+      "channel": "email",
+      "narration": "You work in finance at the Hong Kong office. An email arrives from the UK office.",
+      "message": "Subject: Confidential transaction\n\nWe are preparing a confidential transaction. Please treat this as strictly confidential, details will follow on a video call.",
+      "question": "Your gut says: this smells like phishing. What do you do?",
+      "options": [
+        {
+          "label": "Join the video call, then I will know whether it is real",
+          "stops": false,
+          "feedback": "That is what the real employee did too: his doubts were right, but the call was made to dispel them."
+        },
+        {
+          "label": "Call the CFO on the known number before anything happens",
+          "stops": true,
+          "feedback": "Exactly. Your first feeling was right, and a call back through a known route takes two minutes."
+        }
+      ]
+    },
+    {
+      "channel": "call",
+      "narration": "On the video call you see the CFO and several colleagues you know. They look and sound as they always do.",
+      "message": "Thanks for joining so quickly. We need to send the payments to these accounts in Hong Kong today. You know how confidential this is.",
+      "question": "You can see and hear them, after all. What do you do?",
+      "options": [
+        {
+          "label": "They are all here, that is enough for me: I transfer",
+          "stops": false,
+          "feedback": "What you saw and heard was generated. According to the police, every person on the call was fake."
+        },
+        {
+          "label": "Hang up and check through the normal approval route and a known contact",
+          "stops": true,
+          "feedback": "Right. A face and a voice prove nothing today. The agreed process does."
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "January 2024",
+      "what": "A finance employee in Hong Kong first takes an email about a secret transaction for phishing. After a video call with the supposed CFO and colleagues he drops his doubts and makes 15 transfers totalling 200 million Hong Kong dollars."
+    },
+    {
+      "when": "Afterwards",
+      "what": "Only a follow-up with the UK headquarters uncovers the fraud. Arup reports it to the police."
+    },
+    {
+      "when": "February 2024",
+      "what": "Hong Kong police make the case public without naming the company: every person on the call was fake."
+    },
+    {
+      "when": "May 2024",
+      "what": "Arup is revealed as the company and confirms that \"fake voices and images were used\". According to Arup, internal systems were not affected."
+    }
+  ],
+  "lesson": "The employee was right, until the video call convinced him otherwise. When money is involved, it does not matter who you see, only whether you asked through your own, known route.",
+  "sources": [
+    "CNN, 16 May 2024",
+    "Insurance Business UK, 20 May 2024"
+  ]
+}

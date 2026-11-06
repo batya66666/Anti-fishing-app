@@ -355,5 +355,79 @@
     "dangerous_actions": [],
     "explanation": "Genuine: a known contact, nothing asked of you, no link, no money.",
     "tags": []
+  },
+  {
+    "id": "chat-it-helpdesk-external",
+    "type": "chat",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "vishing",
+    "module": 9,
+    "consumer": false,
+    "content": {
+      "sender": "IT Helpdesk",
+      "number": "External · helpdesk-it@officecloud-support.test",
+      "links": [],
+      "messages": [
+        {
+          "text": "Hello, regarding ticket INC-48213 we can see a fault on your account.",
+          "time": "13:02"
+        },
+        {
+          "text": "You will get a text with a code in a moment. Please send it to me here and I will unlock you again.",
+          "time": "13:02"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "number",
+        "hint": "This chat comes from outside the company. Your IT does not write from officecloud-support.test."
+      },
+      {
+        "target": "body:Please send it to me",
+        "hint": "Nobody passes on a code, not even to IT. It is the last protection of your account."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "delete"
+    ],
+    "dangerous_actions": [
+      "reply",
+      "click_link"
+    ],
+    "explanation": "Attackers create external chats named like the helpdesk, and often even know a ticket number. The code arrives because they are signing in with your password at that very moment.",
+    "tags": []
+  },
+  {
+    "id": "chat-boss-urgent-legit",
+    "type": "chat",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 6,
+    "consumer": false,
+    "content": {
+      "sender": "Thomas Berger",
+      "number": "Contact · internal",
+      "links": [],
+      "messages": [
+        {
+          "text": "On my way to a client. Could you quickly put yesterday's slides in our project folder?",
+          "time": "10:48"
+        }
+      ]
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "open",
+      "reply"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: internal chat, a known contact, and you put the slides in your own folder. Urgent does not mean fraudulent. There is no money or login involved, and nothing leaves the company.",
+    "tags": []
   }
 ]

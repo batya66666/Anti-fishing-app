@@ -218,7 +218,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onbPrivacy =>
-      'No account needed. You play anonymously and only you see your mistakes.';
+      'An account is optional. As a guest you play anonymously, and only you see your mistakes.';
 
   @override
   String get tabWork => 'Work';
@@ -253,13 +253,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shiftStart => 'Start shift';
 
   @override
-  String get shiftDoneTitle => 'Shift\'s over!';
-
-  @override
-  String get shiftDoneBody =>
-      'Good work. Your brain needs a break now and tomorrow brings a new case. You can still have a duel today.';
-
-  @override
   String reviewDue(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -274,17 +267,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get modeSwipe => 'Swipe';
 
   @override
-  String swipeLeft(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count rounds left today',
-      one: '1 round left today',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get modeFlags => 'Spot the flags';
 
   @override
@@ -295,12 +277,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modeCasesSub => 'Replay real attacks';
-
-  @override
-  String get modeRedTeam => 'Become the hacker';
-
-  @override
-  String get modeRedTeamSub => 'Build your own bait';
 
   @override
   String get checkTitle => 'Check a message';
@@ -416,7 +392,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get simplePracticeBody => 'Look at a few messages in peace';
 
   @override
-  String get simplePracticeDone => 'Done for today. See you tomorrow!';
+  String get simplePracticeDone => 'Done. Another round?';
 
   @override
   String get simpleReview => 'Review';
@@ -475,10 +451,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get reportRest =>
       'Good shift! Your brain needs a rest now and tomorrow brings a new case.';
-
-  @override
-  String get swipeLimit =>
-      'Your swipe rounds are over for today. Reviewing your mistakes always stays free.';
 
   @override
   String get swipePhishing => 'Phishing';
@@ -618,114 +590,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get caseSources => 'Sources';
-
-  @override
-  String get rtIntro =>
-      'You are a penetration tester for a fictional company. Build an email and find out why bait works. Knowing the levers lets you spot them.';
-
-  @override
-  String get rtSender => 'Sender';
-
-  @override
-  String get rtSenderUnknown => 'Unknown';
-
-  @override
-  String get rtSenderColleague => 'Colleague';
-
-  @override
-  String get rtSenderIt => 'IT department';
-
-  @override
-  String get rtSenderBoss => 'Boss';
-
-  @override
-  String get rtPretext => 'Pretext';
-
-  @override
-  String get rtPretextParcel => 'Parcel';
-
-  @override
-  String get rtPretextPassword => 'Password expires';
-
-  @override
-  String get rtPretextInvoice => 'Invoice';
-
-  @override
-  String get rtPretextBonus => 'Bonus';
-
-  @override
-  String get rtUrgency => 'Urgency';
-
-  @override
-  String get rtUrgencyNone => 'None';
-
-  @override
-  String get rtUrgencyToday => 'Today';
-
-  @override
-  String get rtUrgencyHour => '1 hour';
-
-  @override
-  String get rtPersonal => 'Personalisation';
-
-  @override
-  String get rtPersonalNone => 'Generic';
-
-  @override
-  String get rtPersonalName => 'Name';
-
-  @override
-  String get rtPersonalProject => 'Name + project';
-
-  @override
-  String get rtBait => 'Bait';
-
-  @override
-  String get rtBaitLink => 'Link';
-
-  @override
-  String get rtBaitAttachment => 'Attachment';
-
-  @override
-  String get rtBaitQr => 'QR code';
-
-  @override
-  String get rtEthics =>
-      'Everything stays in the game: fixed blocks, fictional company and domains, no export. This exercise shows how attacks work so that you can spot them.';
-
-  @override
-  String get rtLaunch => 'Send to 100 colleagues';
-
-  @override
-  String get rtRunning => 'Campaign running...';
-
-  @override
-  String get rtDone => 'Campaign result';
-
-  @override
-  String get rtClicked => 'Clicked';
-
-  @override
-  String get rtReported => 'Reported';
-
-  @override
-  String get rtIgnored => 'Ignored';
-
-  @override
-  String get rtVerdictHigh => 'Frighteningly effective.';
-
-  @override
-  String get rtVerdictMid => 'Considerable: this is enough for a breach.';
-
-  @override
-  String get rtVerdictLow => 'Most people see through this.';
-
-  @override
-  String get rtLesson =>
-      'One click is all attackers need. Authority, pressure and personal details make the difference. That is how you will spot bait yourself from now on. And every report helps: IT can warn everybody before the next person clicks.';
-
-  @override
-  String get rtAgain => 'New campaign';
 
   @override
   String get checkIntro =>
@@ -893,7 +757,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingLanguage => 'Language';
 
   @override
-  String get settingSound => 'Sound and voice';
+  String get settingSound => 'Sound';
 
   @override
   String get settingPublicBoard => 'Show on public leaderboards';
@@ -958,18 +822,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get planFree =>
-      '1 shift a day, basics, reviewing mistakes, 1 duel a day, simple mode';
+      'Unlimited play: shifts, endless mode, duels, learning path, simple mode';
 
   @override
   String get planPremium =>
-      'No limits, all modules, case files, red team, unlimited message checks, streak freezes';
+      'Case files, unlimited message checks, streak freezes';
 
   @override
   String get planFamily => 'Up to 6 people: protect your parents';
 
   @override
-  String get planTeam =>
-      'Company league, admin panel, reports by department, no limits';
+  String get planTeam => 'Company league, admin panel, reports by department';
 
   @override
   String get planBusiness =>
@@ -1203,4 +1066,412 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get jurySub =>
       'Scan, and you are in a duel within seconds. No app, no account.';
+
+  @override
+  String get tourSkip => 'Skip';
+
+  @override
+  String get tourDone => 'Let\'s go!';
+
+  @override
+  String get tourAgain => 'Repeat the tour';
+
+  @override
+  String get tourWelcomeTitle => 'Hi, I\'m Baity!';
+
+  @override
+  String get tourWelcomeBody =>
+      'Let me quickly show you where everything is. Don\'t worry, it only takes a minute.';
+
+  @override
+  String get tourLevelTitle => 'Your rank';
+
+  @override
+  String get tourLevelBody =>
+      'This is where you climb from intern to CISO. Every right decision earns XP.';
+
+  @override
+  String get tourShiftTitle => 'Your shift';
+
+  @override
+  String get tourShiftBody =>
+      'The heart of the game: your inbox fills up and you decide what is real. Half of the messages are harmless.';
+
+  @override
+  String get tourEndlessTitle => 'Play endlessly';
+
+  @override
+  String get tourEndlessBody =>
+      'Question after question, no limit, at the difficulty you choose.';
+
+  @override
+  String get tourModesTitle => 'More training';
+
+  @override
+  String get tourModesBody =>
+      'Swipe against the clock, hunt for red flags, replay real cases, or check a message of your own.';
+
+  @override
+  String get tourCheckTitle => 'Check a real message';
+
+  @override
+  String get tourCheckBody =>
+      'Got something suspicious? Paste it here and I will take a look.';
+
+  @override
+  String get tourPathTitle => 'Your learning path';
+
+  @override
+  String get tourPathBody =>
+      '13 topics. Your progress is saved: you always continue exactly where you stopped.';
+
+  @override
+  String get tourDuelTitle => 'Duels';
+
+  @override
+  String get tourDuelBody =>
+      'Play live against others or challenge a bot, from intern to CISO.';
+
+  @override
+  String get tourLeagueTitle => 'League';
+
+  @override
+  String get tourLeagueBody => 'Collect XP during the week and move up.';
+
+  @override
+  String get tourProfileTitle => 'Profile';
+
+  @override
+  String get tourProfileBody =>
+      'Your stats and badges, plus account, language and this tour.';
+
+  @override
+  String get tourInboxTitle => 'Your inbox';
+
+  @override
+  String get tourInboxBody =>
+      'Messages keep arriving on their own. Tap one. Careful: calls can interrupt you at any time.';
+
+  @override
+  String get tourProgressTitle => 'Attacks fended off';
+
+  @override
+  String get tourProgressBody =>
+      'This shows how many messages you handled correctly.';
+
+  @override
+  String get tourSenderTitle => 'Who is really writing?';
+
+  @override
+  String get tourSenderBody =>
+      'The name can claim anything. Tap the sender to see the real address.';
+
+  @override
+  String get tourContentTitle => 'Links and attachments';
+
+  @override
+  String get tourContentBody =>
+      'Hold your finger on a link to see where it goes. A PDF opens in a preview, but PDFs can hold phishing too.';
+
+  @override
+  String get tourActionsTitle => 'Your decision';
+
+  @override
+  String get tourActionsBody =>
+      'Genuine? Tap \"All fine\". An attack? Reporting is the best thing you can do. Fall for it and you get hacked. Report something genuine and you are paranoid.';
+
+  @override
+  String get onbWelcomeLanguage => 'Willkommen! Welcome!';
+
+  @override
+  String get onbChooseLanguage => 'Choose your language';
+
+  @override
+  String get authRegisterTitle => 'Create an account';
+
+  @override
+  String get authLoginTitle => 'Welcome back';
+
+  @override
+  String get authWhy =>
+      'With an account your progress stays with you, even on another device.';
+
+  @override
+  String get authRegister => 'Sign up';
+
+  @override
+  String get authLogin => 'Sign in';
+
+  @override
+  String get authLogout => 'Sign out';
+
+  @override
+  String get authGuest => 'Continue as a guest';
+
+  @override
+  String get authName => 'Your name in the game (optional)';
+
+  @override
+  String get authEmail => 'Email';
+
+  @override
+  String get authPassword => 'Password';
+
+  @override
+  String get authShowPassword => 'Show password';
+
+  @override
+  String authPasswordHint(int count) {
+    return 'At least $count characters';
+  }
+
+  @override
+  String authShortPassword(int count) {
+    return 'The password needs at least $count characters.';
+  }
+
+  @override
+  String get authBadEmail => 'Please enter a valid email address.';
+
+  @override
+  String get authBadLogin => 'Wrong email or password.';
+
+  @override
+  String get authTaken =>
+      'There already is an account for this email. Please sign in.';
+
+  @override
+  String get authNeedsServer =>
+      'Accounts need a connection to the server. You can keep playing offline as a guest.';
+
+  @override
+  String get authInsecure =>
+      'This demo network runs without HTTPS. Do not use a password here that you use anywhere else.';
+
+  @override
+  String get authAccountGuest => 'You are playing as a guest';
+
+  @override
+  String get authAccountGuestSub => 'Create an account to keep your progress';
+
+  @override
+  String get authAccountHave => 'I already have an account';
+
+  @override
+  String get endlessTitle => 'Endless mode';
+
+  @override
+  String get endlessSub => 'No limit';
+
+  @override
+  String get endlessIntro =>
+      'Question after question, as long as you like. New ones first, then what you have not seen for the longest time.';
+
+  @override
+  String get endlessStart => 'Start';
+
+  @override
+  String get endlessNext => 'Next question';
+
+  @override
+  String get retry => 'Try again';
+
+  @override
+  String get difficultyTitle => 'Difficulty';
+
+  @override
+  String get difficultyMix => 'Mixed';
+
+  @override
+  String get difficultyMixBody => 'All levels, half of them hard';
+
+  @override
+  String get difficultyBronze => 'Bronze';
+
+  @override
+  String get difficultySilver => 'Silver';
+
+  @override
+  String get difficultyGold => 'Gold';
+
+  @override
+  String get difficultyDiamond => 'Diamond';
+
+  @override
+  String get difficultyBronzeBody => 'Classics you need to know';
+
+  @override
+  String get difficultySilverBody => 'The usual tricks, well made';
+
+  @override
+  String get difficultyGoldBody => 'Plausible and flawless, often with a PDF';
+
+  @override
+  String get difficultyDiamondBody =>
+      'Real accounts, cloned voices: almost impossible to spot';
+
+  @override
+  String difficultyForced(String level) {
+    return 'The admin has set \"$level\" for everyone.';
+  }
+
+  @override
+  String get pdfScan => 'Scan the code with my phone';
+
+  @override
+  String get pdfHoldHint =>
+      'Hold your finger or right-click to see the destination.';
+
+  @override
+  String get pdfBack => 'Back to the message';
+
+  @override
+  String get simReplyTo => 'Reply to';
+
+  @override
+  String get shiftAgainTitle => 'Shift done!';
+
+  @override
+  String get shiftAgainBody => 'Good work. Want more? There is no daily limit.';
+
+  @override
+  String get shiftAgain => 'Another shift';
+
+  @override
+  String get swipeSub => '60 seconds against the clock';
+
+  @override
+  String get swipeAgain => 'Another round';
+
+  @override
+  String get flagsAgain => 'Another round';
+
+  @override
+  String get moduleContinue => 'Continue learning';
+
+  @override
+  String moduleProgress(int done, int total) {
+    return '$done of $total solved';
+  }
+
+  @override
+  String get moduleDone => 'Done';
+
+  @override
+  String get moduleRetry => 'Repeat my mistakes';
+
+  @override
+  String get pathDone => 'Learning path complete!';
+
+  @override
+  String get hackedFalseAlarmBody =>
+      'But your alarm held up real work. Whoever reports everything soon stops being taken seriously, also at the next real attack.';
+
+  @override
+  String get hackedMissedBody =>
+      'That was not the safe choice. In real life, exactly this could have hit you. See what could have warned you.';
+
+  @override
+  String get botPickTitle => 'Who do you want to play?';
+
+  @override
+  String get botAuto => 'Matched to me';
+
+  @override
+  String get botAutoBody => 'Adapts to your strength and stays exciting';
+
+  @override
+  String get botRookie => 'Otto the intern';
+
+  @override
+  String get botRookieBody => 'Reads slowly, falls for a lot';
+
+  @override
+  String get botAnalyst => 'Grete the analyst';
+
+  @override
+  String get botAnalystBody => 'Solid, but unsure on hard cases';
+
+  @override
+  String get botVeteran => 'Kalle the veteran';
+
+  @override
+  String get botVeteranBody => 'Fast, makes hardly any mistakes';
+
+  @override
+  String get botCiso => 'Frieda the CISO';
+
+  @override
+  String get botCisoBody =>
+      'The final boss. Lightning fast and almost flawless';
+
+  @override
+  String get adminTabDifficulty => 'Difficulty';
+
+  @override
+  String get adminDifficultyTitle => 'Set the difficulty';
+
+  @override
+  String get adminDifficultyIntro =>
+      'To demonstrate and to check: the chosen level applies at once to all players of the company, in shifts, the endless mode, swiping and duels.';
+
+  @override
+  String get adminDifficultyOff => 'Normal';
+
+  @override
+  String get adminDifficultyOffBody =>
+      'Normal play: the difficulty follows the player.';
+
+  @override
+  String get adminDifficultySaved => 'Saved. Applies from the next question.';
+
+  @override
+  String get adminCatalogTitle => 'Review all scenarios';
+
+  @override
+  String adminCatalogSub(int count) {
+    return '$count scenarios with solutions. Tap one to see it as it appears in the game.';
+  }
+
+  @override
+  String get adminCatalogAll => 'All';
+
+  @override
+  String get adminCatalogPdfOnly => 'PDF only';
+
+  @override
+  String get adminWifiTitle => 'Join on the Wi-Fi';
+
+  @override
+  String get adminWifiSub =>
+      'Everyone on the same Wi-Fi just opens this address:';
+
+  @override
+  String get paranoidTitle => 'PARANOID!';
+
+  @override
+  String get paranoidSub =>
+      'That was genuine. Your alarm went off over a harmless message.';
+
+  @override
+  String get paranoidCalmTitle => 'Nobody got hacked.';
+
+  @override
+  String get paranoidButton => 'Show me how I could have told';
+
+  @override
+  String get theoryTitle => 'Theory';
+
+  @override
+  String get theoryRead => 'Read the theory (optional)';
+
+  @override
+  String get theoryOptional => 'Read the theory first (optional)';
+
+  @override
+  String get theoryIntro =>
+      'Entirely optional: you can also start right away and learn as you go.';
+
+  @override
+  String get botNoElo => 'Games against bots do not change your ELO.';
 }

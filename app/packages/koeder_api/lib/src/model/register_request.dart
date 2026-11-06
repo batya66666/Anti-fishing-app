@@ -21,6 +21,8 @@ class RegisterRequest {
     required  this.email,
 
     required  this.password,
+
+     this.displayName,
   });
 
   @JsonKey(
@@ -47,17 +49,31 @@ class RegisterRequest {
 
 
 
+  @JsonKey(
+    
+    name: r'displayName',
+    required: false,
+    includeIfNull: false,
+  )
+
+
+  final String? displayName;
+
+
+
 
 
     @override
     bool operator ==(Object other) => identical(this, other) || other is RegisterRequest &&
       other.email == email &&
-      other.password == password;
+      other.password == password &&
+      other.displayName == displayName;
 
     @override
     int get hashCode =>
         email.hashCode +
-        password.hashCode;
+        password.hashCode +
+        displayName.hashCode;
 
   factory RegisterRequest.fromJson(Map<String, dynamic> json) => _$RegisterRequestFromJson(json);
 

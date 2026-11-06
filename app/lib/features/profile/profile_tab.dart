@@ -34,7 +34,8 @@ const allBadges = [
     };
 
 class ProfileTab extends ConsumerWidget {
-  const ProfileTab({super.key});
+  const ProfileTab({super.key, required this.onTour});
+  final VoidCallback onTour;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,7 +64,9 @@ class ProfileTab extends ConsumerWidget {
           ]),
         ),
       ]),
-      const SizedBox(height: 16),
+      const SizedBox(height: 12),
+      _AccountCard(me: me),
+      const SizedBox(height: 12),
       GridView.count(
         crossAxisCount: 3,
         shrinkWrap: true,
@@ -95,7 +98,7 @@ class ProfileTab extends ConsumerWidget {
       const SizedBox(height: 20),
       Text(l.settings, style: Theme.of(context).textTheme.titleLarge),
       const SizedBox(height: 8),
-      _SettingsCard(me: me),
+      _SettingsCard(me: me, onTour: onTour),
     ]);
   }
 
@@ -143,9 +146,53 @@ class ProfileTab extends ConsumerWidget {
   }
 }
 
-class _SettingsCard extends ConsumerWidget {
-  const _SettingsCard({required this.me});
+/// Near the top: whether your progress is safe is not something to hide under the settings.
+class _AccountCard extends ConsumerWidget {
+  const _AccountCard({required this.me});
   final Me me;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l;
+    final app = ref.read(appProvider.notifier);
+    return Container(
+      decoration: BoxDecoration(color: K.surface, borderRadius: BorderRadius.circular(16), border: Border.all(color: me.registered ? K.line : K.warn.withValues(alpha: 0.5))),
+      child: me.registered
+          ? ListTile(
+              leading: const Icon(Icons.verified_user_outlined, color: K.teal),
+              title: Text(me.email!, maxLines: 1, overflow: TextOverflow.ellipsis),
+              trailing: TextButton(
+                onPressed: () async {
+                  await app.logout();
+                  if (context.mounted) context.go('/onboarding');
+                },
+                child: Text(l.authLogout),
+              ),
+            )
+          : Column(children: [
+              ListTile(
+                leading: const Icon(Icons.person_add_alt_outlined, color: K.warn),
+                title: Text(l.authAccountGuest),
+                subtitle: Text(l.authAccountGuestSub, style: const TextStyle(color: K.muted, fontSize: 12.5)),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.push('/auth'),
+              ),
+              ListTile(
+                dense: true,
+                leading: const Icon(Icons.login, color: K.muted),
+                title: Text(l.authAccountHave),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.push('/auth?login=1'),
+              ),
+            ]),
+    );
+  }
+}
+
+class _SettingsCard extends ConsumerWidget {
+  const _SettingsCard({required this.me, required this.onTour});
+  final Me me;
+  final VoidCallback onTour;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -155,6 +202,12 @@ class _SettingsCard extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(color: K.surface, borderRadius: BorderRadius.circular(16), border: Border.all(color: K.line)),
       child: Column(children: [
+        ListTile(
+          leading: const Icon(Icons.tour_outlined),
+          title: Text(l.tourAgain),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: onTour,
+        ),
         ListTile(
           leading: const Icon(Icons.language),
           title: Text(l.settingLanguage),

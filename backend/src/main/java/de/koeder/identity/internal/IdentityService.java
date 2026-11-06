@@ -46,7 +46,7 @@ class IdentityService implements IdentityApi {
             p.deviceId = deviceId;
             p.displayName = displayName != null && !displayName.isBlank() ? displayName.strip() : randomNick();
             p.avatar = ThreadLocalRandom.current().nextInt(8);
-            p.locale = LOCALES.contains(locale) ? locale : "de";
+            p.locale = locale != null && LOCALES.contains(locale) ? locale : "de";
             profiles.save(p);
             profiles.flush();
             events.publishEvent(new UserRegistered(p.id));
@@ -56,14 +56,22 @@ class IdentityService implements IdentityApi {
 
     /** Turns the current guest into a permanent account, so progress survives a new device. */
     @Transactional
-    Profile register(UUID userId, String email, String password) {
+    Profile register(UUID userId, String email, String password, String displayName) {
         String normalized = email.strip().toLowerCase();
         if (profiles.findByEmail(normalized).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "email already registered");
         }
         Profile p = load(userId);
+        if (p.email != null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "account already registered");
+        }
         p.email = normalized;
         p.passwordHash = encoder.encode(password);
+        // From now on only the password opens this account. A stale device id must not.
+        p.deviceId = null;
+        if (displayName != null && !displayName.isBlank()) {
+            p.displayName = displayName.strip();
+        }
         return p;
     }
 

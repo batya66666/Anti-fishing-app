@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -35,6 +38,11 @@ class GameFlowIntegrationTest extends IntegrationTestBase {
             builder.defaultHeader("Authorization", "Bearer " + token);
         }
         return builder.build();
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> post(String token, String path) {
+        return client(token).post().uri(path).retrieve().body(Map.class);
     }
 
     @SuppressWarnings("unchecked")
@@ -124,12 +132,167 @@ class GameFlowIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    void swipeRoundsAreLimitedPerDay() {
+    void thereIsNoLimitOnSwipeRounds() {
         String token = guest();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 6; i++) {
             assertThat(client(token).get().uri("/api/swipe/deck").retrieve().toBodilessEntity().getStatusCode().value()).isEqualTo(200);
         }
-        assertThat(client(token).get().uri("/api/swipe/deck").retrieve().toBodilessEntity().getStatusCode().value()).isEqualTo(429);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void aFinishedShiftCanBeFollowedByAnother() {
+        String token = guest();
+        Map<String, Object> first = get(token, "/api/shifts/today");
+        // A running shift is finished first: asking early returns the same one.
+        assertThat(post(token, "/api/shifts/next").get("id")).isEqualTo(first.get("id"));
+        for (Map<String, Object> s : (List<Map<String, Object>>) first.get("scenarios")) {
+            act(token, (String) first.get("id"), (String) s.get("id"), "report");
+        }
+        assertThat(((Map<String, Object>) get(token, "/api/me").get("energy")).get("shiftCompleted")).isEqualTo(true);
+
+        Map<String, Object> second = post(token, "/api/shifts/next");
+        assertThat(second.get("id")).isNotEqualTo(first.get("id"));
+        assertThat((List<?>) second.get("scenarios")).hasSize(8);
+        assertThat(second.get("completed")).isEqualTo(false);
+        assertThat(get(token, "/api/shifts/today").get("id")).isEqualTo(second.get("id"));
+        assertThat(((Map<String, Object>) get(token, "/api/me").get("energy")).get("shiftsToday")).isEqualTo(2);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void theEndlessModeKeepsGoingAndNeverLeaksTheSolution() {
+        String token = guest();
+        Set<String> seen = new HashSet<>();
+        for (int round = 0; round < 12; round++) {
+            List<Map<String, Object>> batch = client(token).get().uri("/api/endless/next").retrieve().body(List.class);
+            assertThat(batch).hasSize(10);
+            for (Map<String, Object> s : batch) {
+                seen.add((String) s.get("id"));
+                assertThat(s).doesNotContainKeys("is_attack", "red_flags", "correct_actions", "explanation");
+                client(token).post().uri("/api/practice/actions").contentType(MediaType.APPLICATION_JSON)
+                        .body(Map.of("scenarioId", s.get("id"), "context", "endless", "action", "report", "ms", 1)).retrieve().toBodilessEntity();
+            }
+        }
+        // More questions answered than exist, and it still delivers: the longest unseen come back.
+        assertThat(seen.size()).isGreaterThan(40);
+        List<Map<String, Object>> diamond = client(token).get().uri("/api/endless/next?difficulty=diamond").retrieve().body(List.class);
+        assertThat(diamond).isNotEmpty();
+        assertThat(client(token).get().uri("/api/endless/next?difficulty=impossible").retrieve().toBodilessEntity().getStatusCode().value()).isEqualTo(400);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void aModuleContinuesWhereThePlayerLeftOff() {
+        String token = guest();
+        List<Map<String, Object>> lesson = client(token).get().uri("/api/modules/3").retrieve().body(List.class);
+        Map<String, Object> me = get(token, "/api/me");
+        int total = ((Map<String, Integer>) me.get("moduleTotals")).get("3");
+        assertThat(lesson).hasSize(total);
+        String solved = solveOne(token, lesson);
+        List<Map<String, Object>> after = client(token).get().uri("/api/modules/3").retrieve().body(List.class);
+        assertThat(after).hasSize(total - 1);
+        assertThat(after.stream().map(s -> s.get("id"))).doesNotContain(solved);
+        assertThat(((Map<String, Integer>) get(token, "/api/me").get("moduleProgress")).get("3")).isEqualTo(1);
+    }
+
+    /** Tries the actions a message can take until one counts as correct, and returns its id. */
+    @SuppressWarnings("unchecked")
+    private String solveOne(String token, List<Map<String, Object>> lesson) {
+        for (Map<String, Object> s : lesson) {
+            for (String action : List.of("report", "enter_credentials", "open")) {
+                Map<String, Object> e = client(token).post().uri("/api/practice/actions").contentType(MediaType.APPLICATION_JSON)
+                        .body(Map.of("scenarioId", s.get("id"), "context", "module", "action", action, "ms", 1)).retrieve().body(Map.class);
+                if (Boolean.TRUE.equals(e.get("correct"))) {
+                    return (String) s.get("id");
+                }
+            }
+        }
+        throw new AssertionError("nothing solvable");
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void registeringKeepsProgressAndLoginBringsItBackOnAnotherDevice() {
+        String token = guest();
+        String email = "spieler-" + UUID.randomUUID() + "@koeder.example";
+        Map<String, Object> shift = get(token, "/api/shifts/today");
+        act(token, (String) shift.get("id"), "sms-parcel", "report");
+        int xp = (Integer) get(token, "/api/me").get("xp");
+        assertThat(xp).isPositive();
+
+        Map<String, Object> registered = client(token).post().uri("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("email", email, "password", "ein-langes-passwort", "displayName", "Anna")).retrieve().body(Map.class);
+
+        Map<String, Object> login = client(null).post().uri("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("email", email.toUpperCase(), "password", "ein-langes-passwort")).retrieve().body(Map.class);
+        Map<String, Object> me = get((String) login.get("token"), "/api/me");
+        assertThat(me.get("id")).isEqualTo(registered.get("userId"));
+        assertThat(me.get("xp")).isEqualTo(xp);
+        assertThat(me.get("displayName")).isEqualTo("Anna");
+        assertThat(me.get("email")).isEqualTo(email);
+    }
+
+    @Test
+    void anAccountCannotBeRegisteredTwiceOrWithATakenAddress() {
+        String token = guest();
+        String email = "doppelt-" + UUID.randomUUID() + "@koeder.example";
+        Map<String, String> body = Map.of("email", email, "password", "ein-langes-passwort");
+        assertThat(client(token).post().uri("/api/auth/register").contentType(MediaType.APPLICATION_JSON).body(body).retrieve().toBodilessEntity().getStatusCode().value()).isEqualTo(200);
+        var again = client(token).post().uri("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("email", "anders-" + email, "password", "noch-ein-passwort")).retrieve().toBodilessEntity();
+        assertThat(again.getStatusCode().value()).isEqualTo(409);
+        var taken = client(guest()).post().uri("/api/auth/register").contentType(MediaType.APPLICATION_JSON).body(body).retrieve().toBodilessEntity();
+        assertThat(taken.getStatusCode().value()).isEqualTo(409);
+        var tooShort = client(guest()).post().uri("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("email", "kurz-" + email, "password", "kurz")).retrieve().toBodilessEntity();
+        assertThat(tooShort.getStatusCode().value()).isEqualTo(400);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void theOldDeviceIdNoLongerOpensARegisteredAccount() {
+        String deviceId = UUID.randomUUID().toString();
+        Map<String, Object> first = client(null).post().uri("/api/auth/guest").contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("deviceId", deviceId)).retrieve().body(Map.class);
+        client((String) first.get("token")).post().uri("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("email", "geraet-" + deviceId + "@koeder.example", "password", "ein-langes-passwort")).retrieve().toBodilessEntity();
+        Map<String, Object> again = client(null).post().uri("/api/auth/guest").contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("deviceId", deviceId)).retrieve().body(Map.class);
+        assertThat(again.get("userId")).isNotEqualTo(first.get("userId"));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void aManagerPinsTheDifficultyForTheWholeCompany() {
+        String manager = manager();
+        String org = (String) get(manager, "/api/me").get("orgId");
+        String employee = guest();
+        // A player may never set this or read the solutions.
+        assertThat(client(employee).put().uri("/api/orgs/" + org + "/difficulty").contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("difficulty", "gold")).retrieve().toBodilessEntity().getStatusCode().value()).isEqualTo(403);
+        assertThat(client(employee).get().uri("/api/orgs/" + org + "/catalog").retrieve().toBodilessEntity().getStatusCode().value()).isEqualTo(403);
+
+        List<Map<String, Object>> catalog = client(manager).get().uri("/api/orgs/" + org + "/catalog?locale=de").retrieve().body(List.class);
+        assertThat(catalog.getFirst()).containsKeys("is_attack", "red_flags", "explanation");
+        assertThat(catalog.stream().filter(s -> s.get("content").toString().contains(".pdf")).count()).isGreaterThanOrEqualTo(8);
+
+        try {
+            client(manager).put().uri("/api/orgs/" + org + "/difficulty").contentType(MediaType.APPLICATION_JSON)
+                    .body(Map.of("difficulty", "diamond")).retrieve().toBodilessEntity();
+            assertThat(get(employee, "/api/me").get("forcedDifficulty")).isEqualTo("diamond");
+            // A shift nobody has started yet follows at once, and the level outranks the player's own choice.
+            List<Map<String, Object>> shift = (List<Map<String, Object>>) get(employee, "/api/shifts/today").get("scenarios");
+            assertThat(shift.stream().filter(s -> s.get("difficulty").equals("diamond")).count()).isGreaterThanOrEqualTo(4);
+            assertThat(shift).allMatch(s -> List.of("diamond", "gold").contains(s.get("difficulty")));
+            List<Map<String, Object>> endless = client(employee).get().uri("/api/endless/next?difficulty=bronze").retrieve().body(List.class);
+            assertThat(endless).isNotEmpty().allMatch(s -> List.of("diamond", "gold").contains(s.get("difficulty")));
+        } finally {
+            Map<String, Object> off = new HashMap<>();
+            off.put("difficulty", null);
+            client(manager).put().uri("/api/orgs/" + org + "/difficulty").contentType(MediaType.APPLICATION_JSON).body(off).retrieve().toBodilessEntity();
+        }
+        assertThat(get(employee, "/api/me").get("forcedDifficulty")).isNull();
     }
 
     @Test

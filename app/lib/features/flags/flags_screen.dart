@@ -7,6 +7,7 @@ import '../../core/l10n.dart';
 import '../../core/sfx.dart';
 import '../../core/theme.dart';
 import '../../data/models.dart';
+import '../../effects/hacked_overlay.dart';
 import '../../effects/mascot.dart';
 import '../../simulators/common.dart';
 import '../../simulators/mail_sim.dart';
@@ -31,16 +32,36 @@ class _FlagsScreenState extends ConsumerState<FlagsScreen> {
   @override
   void initState() {
     super.initState();
+    _load();
+  }
+
+  void _load() {
     ref.read(repoProvider).flagsDeck().then((d) {
       if (mounted) setState(() => _deck = d);
     });
+  }
+
+  void _again() {
+    Sfx.click();
+    setState(() {
+      _deck = null;
+      _i = 0;
+      _points = 0;
+      _tapped.clear();
+      _result = null;
+    });
+    _load();
   }
 
   Future<void> _submit() async {
     final s = _deck![_i];
     setState(() => _busy = true);
     final e = await ref.read(repoProvider).practice(scenarioId: s.id, context: 'flags', flags: _tapped.toList(), ms: _watch.elapsedMilliseconds);
-    e.correct ? Sfx.success() : Sfx.error();
+    if (e.correct) {
+      Sfx.success();
+    } else {
+      await ref.read(hackProvider.notifier).play(kind: HackKind.missed, short: true);
+    }
     if (!mounted) return;
     setState(() {
       _busy = false;
@@ -77,7 +98,9 @@ class _FlagsScreenState extends ConsumerState<FlagsScreen> {
               Text('$_points', style: const TextStyle(fontFamily: K.display, fontWeight: FontWeight.w700, fontSize: 56, color: K.teal)),
               Text(l.flagsDone, textAlign: TextAlign.center, style: const TextStyle(color: K.muted, fontSize: 16)),
               const SizedBox(height: 20),
-              FilledButton(onPressed: () => context.pop(), child: Text(l.backHome)),
+              FilledButton.icon(onPressed: _again, icon: const Icon(Icons.replay), label: Text(l.flagsAgain)),
+              const SizedBox(height: 8),
+              OutlinedButton(onPressed: () => context.pop(), child: Text(l.backHome)),
             ]),
           ),
         ),

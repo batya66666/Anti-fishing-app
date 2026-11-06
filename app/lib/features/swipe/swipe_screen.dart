@@ -12,10 +12,11 @@ import '../../core/l10n.dart';
 import '../../core/sfx.dart';
 import '../../core/theme.dart';
 import '../../data/models.dart';
-import '../../data/repository.dart';
 import '../../effects/confetti.dart';
+import '../../effects/hacked_overlay.dart';
 import '../../effects/mascot.dart';
 import '../../simulators/scenario_view.dart';
+import '../play/scenario_player.dart';
 
 /// 20 cards, 60 seconds. Left: phishing. Right: genuine. Made for the queue in the Mensa.
 class SwipeScreen extends ConsumerStatefulWidget {
@@ -27,13 +28,13 @@ class SwipeScreen extends ConsumerStatefulWidget {
 
 class _SwipeScreenState extends ConsumerState<SwipeScreen> with TickerProviderStateMixin {
   List<Scenario>? _deck;
-  bool _limit = false;
   int _i = 0;
   int _seconds = 60;
   int _score = 0;
   int _correct = 0;
   int _combo = 0;
   bool _over = false;
+  bool _hacked = false;
   Timer? _timer;
   Offset _drag = Offset.zero;
   bool _flying = false;
@@ -56,6 +57,7 @@ class _SwipeScreenState extends ConsumerState<SwipeScreen> with TickerProviderSt
       setState(() => _deck = deck);
       _cardWatch.start();
       _timer = Timer.periodic(const Duration(seconds: 1), (t) {
+        if (_hacked) return; // the clock waits while your screen falls apart
         if (_seconds <= 1) {
           _end();
         } else {
@@ -63,11 +65,27 @@ class _SwipeScreenState extends ConsumerState<SwipeScreen> with TickerProviderSt
           if (_seconds <= 5) Sfx.play('tick');
         }
       });
-    } on LimitReached {
-      if (mounted) setState(() => _limit = true);
     } catch (_) {
       if (mounted) setState(() => _deck = const []);
     }
+  }
+
+  void _again() {
+    Sfx.click();
+    _timer?.cancel();
+    setState(() {
+      _deck = null;
+      _i = 0;
+      _seconds = 60;
+      _score = 0;
+      _correct = 0;
+      _combo = 0;
+      _over = false;
+      _lastOk = null;
+      _drag = Offset.zero;
+      _wrong.clear();
+    });
+    _load();
   }
 
   void _end() {
@@ -114,7 +132,8 @@ class _SwipeScreenState extends ConsumerState<SwipeScreen> with TickerProviderSt
         Sfx.play('click', volume: 0.6);
       } else {
         HapticFeedback.heavyImpact();
-        Sfx.play('error', volume: 0.5);
+        _hacked = true;
+        ref.read(hackProvider.notifier).play(kind: hackKindOf(e), short: true).whenComplete(() => _hacked = false);
       }
     });
 
@@ -135,23 +154,6 @@ class _SwipeScreenState extends ConsumerState<SwipeScreen> with TickerProviderSt
   @override
   Widget build(BuildContext context) {
     final l = context.l;
-    if (_limit) {
-      return Scaffold(
-        appBar: AppBar(),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(26),
-            child: Column(mainAxisSize: MainAxisSize.min, children: [
-              const Mascot(mood: MascotMood.neutral, size: 130),
-              const SizedBox(height: 14),
-              Text(l.swipeLimit, textAlign: TextAlign.center, style: const TextStyle(fontSize: 16, height: 1.4)),
-              const SizedBox(height: 18),
-              OutlinedButton(onPressed: () => context.pop(), child: Text(l.back)),
-            ]),
-          ),
-        ),
-      );
-    }
     final deck = _deck;
     if (deck == null) return const Scaffold(body: Center(child: CircularProgressIndicator()));
     if (_over) return _results(context, deck);
@@ -300,7 +302,9 @@ class _SwipeScreenState extends ConsumerState<SwipeScreen> with TickerProviderSt
                 ),
               ),
             const SizedBox(height: 12),
-            FilledButton(onPressed: () => context.pop(), child: Text(l.backHome)),
+            FilledButton.icon(onPressed: _again, icon: const Icon(Icons.replay), label: Text(l.swipeAgain)),
+            const SizedBox(height: 8),
+            OutlinedButton(onPressed: () => context.pop(), child: Text(l.backHome)),
           ]),
         ),
         if (_correct * 4 >= seen * 3) const Positioned.fill(child: Confetti()),

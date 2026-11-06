@@ -9,10 +9,12 @@ import '../features/duel/duel_lobby.dart';
 import '../features/duel/duel_match.dart';
 import '../features/flags/flags_screen.dart';
 import '../features/home/home_screen.dart';
+import '../features/onboarding/auth_form.dart';
 import '../features/onboarding/onboarding_screen.dart';
+import '../features/play/endless_screen.dart';
 import '../features/profile/premium_screen.dart';
 import '../features/practice/practice_screens.dart';
-import '../features/redteam/redteam_screen.dart';
+import '../features/practice/theory_screen.dart';
 import '../features/shift/shift_report.dart';
 import '../features/shift/shift_screen.dart';
 import '../features/swipe/swipe_screen.dart';
@@ -34,13 +36,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       }
       final target = path == '/splash' ? (state.uri.queryParameters['next'] ?? '/') : path;
       // A jury member arriving through a QR code goes straight into the match.
-      if (!app.onboarded && target != '/onboarding' && !target.startsWith('/duel/')) return '/onboarding';
+      if (!app.onboarded && target != '/onboarding' && target != '/theory' && !target.startsWith('/duel/')) return '/onboarding';
       return path == '/splash' ? target : null;
     },
     routes: [
       GoRoute(path: '/splash', builder: (_, _) => const _Splash()),
       GoRoute(path: '/onboarding', builder: (_, _) => const OnboardingScreen()),
       GoRoute(path: '/', builder: (_, _) => const HomeScreen()),
+      GoRoute(path: '/auth', builder: (_, s) => AuthScreen(login: s.uri.queryParameters['login'] == '1')),
+      GoRoute(path: '/endless', builder: (_, _) => const EndlessScreen()),
       GoRoute(path: '/shift', builder: (_, _) => const ShiftScreen()),
       GoRoute(path: '/shift/report', builder: (_, s) => ShiftReportScreen(summary: s.extra as ShiftSummary?)),
       GoRoute(path: '/swipe', builder: (_, _) => const SwipeScreen()),
@@ -49,7 +53,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/module/:n', builder: (_, s) => ModuleScreen(module: int.parse(s.pathParameters['n']!))),
       GoRoute(path: '/cases', builder: (_, _) => const CasesScreen()),
       GoRoute(path: '/cases/:id', builder: (_, s) => CasePlayerScreen(id: s.pathParameters['id']!)),
-      GoRoute(path: '/redteam', builder: (_, _) => const RedTeamScreen()),
+      GoRoute(path: '/theory', builder: (_, _) => const TheoryScreen()),
       GoRoute(path: '/check', builder: (_, _) => const CheckScreen()),
       GoRoute(path: '/premium', builder: (_, _) => const PremiumScreen()),
       GoRoute(path: '/duel/arena', builder: (_, _) => const DuelEntryScreen(arena: true)),

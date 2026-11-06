@@ -1,0 +1,65 @@
+{
+  "id": "mgm-2023",
+  "company": "MGM Resorts",
+  "year": 2023,
+  "title": "When the slot machines went dark",
+  "summary": "In September 2023 a social engineering attack crippled parts of MGM Resorts' casinos in Las Vegas: slot machines, room bookings and card payments. The cost: at least 100 million US dollars.",
+  "disclaimer": "Interactive reconstruction: the conversation is illustrative. MGM speaks of a social engineering attack by criminal third parties, but has not disclosed the exact entry point. The often cited help desk call rests on media and vendor reports and is not officially confirmed.",
+  "steps": [
+    {
+      "channel": "call",
+      "narration": "You work on the IT help desk of a large hotel and casino group. On the phone is someone introducing himself as a colleague. His name can also be found online, on professional networks.",
+      "message": "Hi, I cannot get into my account and the phone with the app is gone. Could you set up new access for me? I am sitting in the hotel and urgently need to get in.",
+      "question": "What do you do?",
+      "options": [
+        {
+          "label": "Set up access and reset the second factor, he knows all the details",
+          "stops": false,
+          "feedback": "Such groups work mainly by phone and text. A reset account is all they need to get in."
+        },
+        {
+          "label": "Verify the identity through the defined route, for instance through the manager or in person",
+          "stops": true,
+          "feedback": "Exactly. A lost phone is the most common story. That is exactly when the full check applies."
+        }
+      ]
+    },
+    {
+      "channel": "chat",
+      "narration": "Somewhat later, an unusual notice reaches you.",
+      "message": "Monitoring: new admin account created. Sign-ins from an unknown location. Ticket automatically rated low.",
+      "question": "What do you do?",
+      "options": [
+        {
+          "label": "Rated low, I will look at it after the weekend",
+          "stops": false,
+          "feedback": "Soon the machines and booking systems stand still. Every hour of head start counts for the attackers."
+        },
+        {
+          "label": "Alert the security team immediately",
+          "stops": true,
+          "feedback": "Right. Better once too often. Reported early means less damage."
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "September 2023",
+      "what": "The attack disrupts casino operations, room bookings and card payments at sites in Las Vegas. The group Scattered Spider, known for phone and text phishing, claims responsibility. MGM does not confirm details about ransomware."
+    },
+    {
+      "when": "October 2023",
+      "what": "MGM reports costs of at least 100 million US dollars to the US securities regulator and expects insurance to cover them. Customers' personal data was stolen, in some cases including Social Security and passport numbers."
+    },
+    {
+      "when": "Afterwards",
+      "what": "Systems are restored. According to its CEO, the group plans up to 40 million US dollars of additional IT investment."
+    }
+  ],
+  "lesson": "A multi-billion group with modern technology was attacked through people. Whoever resets access needs a procedure that also holds when the caller is nice, stressed and well informed.",
+  "sources": [
+    "The Register, 6 Oct 2023",
+    "CFO Dive, 9 Nov 2023"
+  ]
+}

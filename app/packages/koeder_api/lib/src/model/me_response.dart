@@ -85,6 +85,10 @@ class MeResponse {
 
      this.moduleProgress,
 
+     this.moduleTotals,
+
+     this.forcedDifficulty,
+
      this.badges,
   });
 
@@ -486,6 +490,30 @@ class MeResponse {
 
   @JsonKey(
     
+    name: r'moduleTotals',
+    required: false,
+    includeIfNull: false,
+  )
+
+
+  final Map<String, int>? moduleTotals;
+
+
+
+  @JsonKey(
+    
+    name: r'forcedDifficulty',
+    required: false,
+    includeIfNull: false,
+  )
+
+
+  final String? forcedDifficulty;
+
+
+
+  @JsonKey(
+    
     name: r'badges',
     required: false,
     includeIfNull: false,
@@ -533,6 +561,8 @@ class MeResponse {
       other.reviewsDue == reviewsDue &&
       other.energy == energy &&
       other.moduleProgress == moduleProgress &&
+      other.moduleTotals == moduleTotals &&
+      other.forcedDifficulty == forcedDifficulty &&
       other.badges == badges;
 
     @override
@@ -570,6 +600,8 @@ class MeResponse {
         reviewsDue.hashCode +
         energy.hashCode +
         moduleProgress.hashCode +
+        moduleTotals.hashCode +
+        forcedDifficulty.hashCode +
         badges.hashCode;
 
   factory MeResponse.fromJson(Map<String, dynamic> json) => _$MeResponseFromJson(json);

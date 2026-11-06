@@ -344,5 +344,53 @@
     ],
     "explanation": "Social Engineering beginnt oft harmlos. Einzeln wirken diese Infos belanglos, zusammen ergeben sie den Plan für den nächsten Betrug.",
     "tags": []
+  },
+  {
+    "id": "scene-oauth-consent",
+    "type": "scene",
+    "locale": "de",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "credential_phishing",
+    "module": 9,
+    "consumer": false,
+    "content": {
+      "icon": "key",
+      "title": "Eine App bittet um Zugriff",
+      "text": "Du öffnest einen geteilten Link. Es erscheint die echte OfficeCloud-Seite unter login.officecloud.example, ganz ohne Passwortfrage. Nur ein Hinweis: \"PDF Express Reader\" möchte deine E-Mails lesen, in deinem Namen senden und dauerhaft Zugriff behalten.",
+      "options": [
+        {
+          "id": "accept",
+          "label": "Akzeptieren, die Seite ist ja echt"
+        },
+        {
+          "id": "decline",
+          "label": "Ablehnen"
+        },
+        {
+          "id": "report",
+          "label": "Ablehnen und der IT melden"
+        }
+      ]
+    },
+    "red_flags": [
+      {
+        "target": "note:scope",
+        "hint": "Ein PDF-Programm braucht weder deine Mails noch das Recht, in deinem Namen zu senden."
+      },
+      {
+        "target": "note:domain",
+        "hint": "Die Seite ist wirklich echt, darum hilft der Domain-Check hier nicht. Gefährlich ist, was du der fremden App erlaubst."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "decline"
+    ],
+    "dangerous_actions": [
+      "accept"
+    ],
+    "explanation": "Consent-Phishing: Kein Passwort wird gestohlen, und auch MFA hilft nicht, denn du gibst der App den Zugriff selbst. Lies immer, welche Rechte eine App verlangt.",
+    "tags": []
   }
 ]

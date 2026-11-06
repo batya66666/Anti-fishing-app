@@ -17,18 +17,26 @@ final appBoundaryKey = GlobalKey();
 
 final hackProvider = NotifierProvider<HackController, HackRequest?>(HackController.new);
 
+/// What went wrong decides what the calm screen says afterwards.
+enum HackKind { attack, paranoid, missed }
+
 class HackRequest {
-  HackRequest(this.snapshot, this.done);
+  HackRequest(this.snapshot, this.done, this.kind, this.short);
   final ui.Image? snapshot;
   final Completer<void> done;
+  final HackKind kind;
+
+  /// A second of glitch and a stamp, for modes where the clock is running.
+  final bool short;
 }
 
 class HackController extends Notifier<HackRequest?> {
   @override
   HackRequest? build() => null;
 
-  /// Plays the whole sequence. The future completes when the player dismisses it.
-  Future<void> play() async {
+  /// Plays the sequence. The future completes when the player dismisses it, or by itself when [short].
+  Future<void> play({HackKind kind = HackKind.attack, bool short = false}) async {
+    if (state != null) return; // rapid mistakes in swipe mode do not stack up
     ui.Image? image;
     try {
       final boundary = appBoundaryKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
@@ -37,7 +45,7 @@ class HackController extends Notifier<HackRequest?> {
       // Without a snapshot the glitch simply runs over noise.
     }
     final done = Completer<void>();
-    state = HackRequest(image, done);
+    state = HackRequest(image, done, kind, short);
     await done.future;
     state = null;
   }
@@ -53,9 +61,119 @@ class HackedLayer extends ConsumerWidget {
     final request = ref.watch(hackProvider);
     return Stack(children: [
       RepaintBoundary(key: appBoundaryKey, child: child),
-      if (request != null) Positioned.fill(child: _HackedSequence(key: ValueKey(request), request: request)),
+      if (request != null)
+        Positioned.fill(
+          child: request.kind == HackKind.paranoid ? _ParanoidSequence(key: ValueKey(request), request: request) : _HackedSequence(key: ValueKey(request), request: request),
+        ),
     ]);
   }
+}
+
+/// You raised the alarm over a genuine message. Nobody got hacked, so there is no ransom screen:
+/// red flags rain down on a very nervous fish.
+class _ParanoidSequence extends StatefulWidget {
+  const _ParanoidSequence({super.key, required this.request});
+  final HackRequest request;
+
+  @override
+  State<_ParanoidSequence> createState() => _ParanoidSequenceState();
+}
+
+class _ParanoidSequenceState extends State<_ParanoidSequence> with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 2600))..repeat();
+  final List<Timer> _timers = [];
+  bool _calm = false;
+  static const _flags = 34;
+
+  @override
+  void initState() {
+    super.initState();
+    Sfx.play('buzz', volume: 0.8);
+    HapticFeedback.mediumImpact();
+    if (widget.request.short) {
+      _timers.add(Timer(const Duration(milliseconds: 1250), () {
+        if (!widget.request.done.isCompleted) widget.request.done.complete();
+      }));
+    } else {
+      _timers.add(Timer(const Duration(milliseconds: 2600), () {
+        if (mounted) setState(() => _calm = true);
+      }));
+    }
+  }
+
+  @override
+  void dispose() {
+    for (final t in _timers) {
+      t.cancel();
+    }
+    _c.dispose();
+    widget.request.snapshot?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l;
+    if (_calm) return _CalmScreen(kind: HackKind.paranoid, onContinue: () => widget.request.done.complete());
+    return Material(
+      color: const Color(0xF23A2A05),
+      child: AnimatedBuilder(
+        animation: _c,
+        builder: (context, _) => Stack(children: [
+          Positioned.fill(child: CustomPaint(painter: _FlagRainPainter(_c.value, _flags))),
+          Center(
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              Transform.rotate(angle: sin(_c.value * 2 * pi * 14) * 0.07, child: const Mascot(mood: MascotMood.worried, size: 150)),
+              const SizedBox(height: 10),
+              Transform.scale(
+                scale: 1 + sin(_c.value * 2 * pi * 4) * 0.03,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(l.paranoidTitle, style: const TextStyle(fontFamily: K.display, fontWeight: FontWeight.w700, fontSize: 46, color: Color(0xFFFFD166), height: 1)),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Text(l.paranoidSub, textAlign: TextAlign.center, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: Colors.white)),
+              ),
+            ]),
+          ),
+        ]),
+      ),
+    );
+  }
+}
+
+class _FlagRainPainter extends CustomPainter {
+  _FlagRainPainter(this.t, this.count);
+  final double t;
+  final int count;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final icon = Icons.flag;
+    for (var i = 0; i < count; i++) {
+      final r = Random(i);
+      final speed = 0.6 + r.nextDouble();
+      final y = ((t * speed + r.nextDouble()) % 1) * (size.height + 60) - 30;
+      final x = r.nextDouble() * size.width + sin(t * 2 * pi * 2 + i) * 10;
+      final painter = TextPainter(
+        text: TextSpan(
+          text: String.fromCharCode(icon.codePoint),
+          style: TextStyle(fontFamily: icon.fontFamily, package: icon.fontPackage, fontSize: 16 + r.nextDouble() * 18, color: const Color(0xFFFF4D5E).withValues(alpha: 0.35 + r.nextDouble() * 0.4)),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      painter.paint(canvas, Offset(x, y));
+    }
+  }
+
+  @override
+  bool shouldRepaint(_FlagRainPainter old) => old.t != t;
 }
 
 class _HackedSequence extends StatefulWidget {
@@ -66,7 +184,7 @@ class _HackedSequence extends StatefulWidget {
   State<_HackedSequence> createState() => _HackedSequenceState();
 }
 
-enum _Stage { glitch, ransom, calm }
+enum _Stage { glitch, stamp, ransom, calm }
 
 class _HackedSequenceState extends State<_HackedSequence> with TickerProviderStateMixin {
   _Stage _stage = _Stage.glitch;
@@ -81,6 +199,19 @@ class _HackedSequenceState extends State<_HackedSequence> with TickerProviderSta
     _loadShader();
     Sfx.play('glitch', volume: 1);
     HapticFeedback.heavyImpact();
+    if (widget.request.short) {
+      _glitch.duration = const Duration(milliseconds: 600);
+      _glitch.forward();
+      _timers.add(Timer(const Duration(milliseconds: 600), () {
+        if (!mounted) return;
+        setState(() => _stage = _Stage.stamp);
+        Sfx.play('error', volume: 0.7);
+      }));
+      _timers.add(Timer(const Duration(milliseconds: 1250), () {
+        if (!widget.request.done.isCompleted) widget.request.done.complete();
+      }));
+      return;
+    }
     _glitch.forward();
     _timers.add(Timer(const Duration(milliseconds: 1500), () {
       if (!mounted) return;
@@ -140,7 +271,8 @@ class _HackedSequenceState extends State<_HackedSequence> with TickerProviderSta
             child: const _RansomScreen(),
           ),
         ),
-      _Stage.calm => _CalmScreen(onContinue: () => widget.request.done.complete()),
+      _Stage.stamp => const _HackedStamp(),
+      _Stage.calm => _CalmScreen(kind: widget.request.kind, onContinue: () => widget.request.done.complete()),
     };
   }
 }
@@ -281,8 +413,34 @@ class _RansomScreenState extends State<_RansomScreen> {
   }
 }
 
+class _HackedStamp extends StatelessWidget {
+  const _HackedStamp();
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: const Color(0xCC3B0509),
+      child: Center(
+        child: Transform.rotate(
+          angle: -0.14,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+            decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 5), borderRadius: BorderRadius.circular(10)),
+            child: Row(mainAxisSize: MainAxisSize.min, children: [
+              const Icon(Icons.lock, color: Colors.white, size: 42),
+              const SizedBox(width: 12),
+              Text(context.l.hackedTitle, style: const TextStyle(fontFamily: K.display, fontWeight: FontWeight.w700, fontSize: 48, color: Colors.white, height: 1)),
+            ]),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _CalmScreen extends StatelessWidget {
-  const _CalmScreen({required this.onContinue});
+  const _CalmScreen({required this.kind, required this.onContinue});
+  final HackKind kind;
   final VoidCallback onContinue;
 
   @override
@@ -299,11 +457,11 @@ class _CalmScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Mascot(mood: MascotMood.hooked, size: 160),
+                  Mascot(mood: kind == HackKind.paranoid ? MascotMood.worried : MascotMood.hooked, size: 160),
                   const SizedBox(height: 18),
-                  Text(l.calmTitle, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineSmall),
+                  Text(kind == HackKind.paranoid ? l.paranoidCalmTitle : l.calmTitle, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineSmall),
                   const SizedBox(height: 10),
-                  Text(l.calmBody, textAlign: TextAlign.center, style: const TextStyle(color: K.muted, fontSize: 16, height: 1.45)),
+                  Text(switch (kind) { HackKind.attack => l.calmBody, HackKind.paranoid => l.hackedFalseAlarmBody, HackKind.missed => l.hackedMissedBody }, textAlign: TextAlign.center, style: const TextStyle(color: K.muted, fontSize: 16, height: 1.45)),
                   const SizedBox(height: 26),
                   SizedBox(
                     width: double.infinity,
@@ -311,7 +469,7 @@ class _CalmScreen extends StatelessWidget {
                       autofocus: true,
                       onPressed: onContinue,
                       icon: const Icon(Icons.flag),
-                      label: Text(l.calmButton),
+                      label: Text(kind == HackKind.paranoid ? l.paranoidButton : l.calmButton),
                     ),
                   ),
                 ],

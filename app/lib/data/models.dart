@@ -131,17 +131,13 @@ class TodayShift {
 }
 
 class Energy {
-  Energy({required this.shiftAvailable, required this.shiftCompleted, required this.swipeRoundsLeft, required this.swipeRoundsPerDay});
+  Energy({required this.shiftCompleted, required this.shiftsToday});
   factory Energy.fromJson(Map<String, dynamic> j) => Energy(
-        shiftAvailable: j['shiftAvailable'] as bool,
         shiftCompleted: j['shiftCompleted'] as bool,
-        swipeRoundsLeft: (j['swipeRoundsLeft'] as num).toInt(),
-        swipeRoundsPerDay: (j['swipeRoundsPerDay'] as num).toInt(),
+        shiftsToday: (j['shiftsToday'] as num).toInt(),
       );
-  final bool shiftAvailable;
   final bool shiftCompleted;
-  final int swipeRoundsLeft;
-  final int swipeRoundsPerDay;
+  final int shiftsToday;
 }
 
 class Me {
@@ -153,6 +149,8 @@ class Me {
         mode = j['mode'] as String,
         publicBoard = (j['publicBoard'] as bool?) ?? true,
         orgId = j['orgId'] as String?,
+        email = j['email'] as String?,
+        forcedDifficulty = j['forcedDifficulty'] as String?,
         xp = (j['xp'] as num).toInt(),
         level = (j['level'] as num).toInt(),
         title = j['title'] as String,
@@ -177,6 +175,7 @@ class Me {
         reviewsDue = (j['reviewsDue'] as num).toInt(),
         energy = Energy.fromJson(Map<String, dynamic>.from(j['energy'] as Map)),
         moduleProgress = ((j['moduleProgress'] as Map?) ?? const {}).map((k, v) => MapEntry(int.parse(k.toString()), (v as num).toInt())),
+        moduleTotals = ((j['moduleTotals'] as Map?) ?? const {}).map((k, v) => MapEntry(int.parse(k.toString()), (v as num).toInt())),
         badges = List<String>.from((j['badges'] as List?) ?? const []);
 
   final String id;
@@ -186,6 +185,12 @@ class Me {
   final String mode;
   final bool publicBoard;
   final String? orgId;
+
+  /// Null for a guest.
+  final String? email;
+
+  /// A level the company's manager pinned for everyone, or null.
+  final String? forcedDifficulty;
   final int xp;
   final int level;
   final String title;
@@ -210,9 +215,19 @@ class Me {
   final int reviewsDue;
   final Energy energy;
   final Map<int, int> moduleProgress;
+  final Map<int, int> moduleTotals;
   final List<String> badges;
 
   bool get simple => mode == 'simple';
+  bool get registered => email != null;
+
+  /// The first module of the learning path that is not finished yet, or null when all are.
+  int? get nextModule {
+    for (var n = 1; n <= 13; n++) {
+      if ((moduleProgress[n] ?? 0) < (moduleTotals[n] ?? 0)) return n;
+    }
+    return null;
+  }
   double get levelProgress => levelCeil <= levelFloor ? 1 : ((xp - levelFloor) / (levelCeil - levelFloor)).clamp(0, 1);
   int? get reportingRate => attacksSeen == 0 ? null : (100 * attacksReported / attacksSeen).round();
   int? get accuracy => answers == 0 ? null : (100 * answersCorrect / answers).round();

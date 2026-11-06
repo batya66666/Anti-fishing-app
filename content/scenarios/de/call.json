@@ -298,5 +298,210 @@
     "dangerous_actions": [],
     "explanation": "Echt: interne Durchwahl, dein eigenes Ticket und niemand will Passwörter oder Codes. Vorsicht heißt nicht, jedem zu misstrauen.",
     "tags": []
+  },
+  {
+    "id": "call-helpdesk-knowledge",
+    "type": "call",
+    "locale": "de",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "vishing",
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "IT-Helpdesk – Jonas Keller",
+      "number": "Intern: 412",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Guten Tag, Jonas Keller vom Helpdesk. Ihr Vorgesetzter Herr Berger hat wegen der Störung im Einkaufssystem Ticket 48213 eröffnet. Ich müsste Ihr Konto einmal neu verbinden. Gleich kommt eine Anfrage auf Ihr Handy, die tippen Sie bitte an.",
+          "options": [
+            {
+              "label": "Alles klar, ich bestätige die Anfrage.",
+              "next": "b"
+            },
+            {
+              "label": "Ich rufe den Helpdesk gleich über die Nummer im Intranet zurück.",
+              "action": "verify"
+            },
+            {
+              "label": "Wie lautet denn die Ticketnummer genau?",
+              "next": "c"
+            }
+          ]
+        },
+        "b": {
+          "say": "Danke. Sie sollte jetzt da sein. Bitte einfach auf Bestätigen tippen, dann sind wir fertig.",
+          "options": [
+            {
+              "label": "Bestätigt.",
+              "action": "comply"
+            },
+            {
+              "label": "Moment, ich habe mich gar nicht angemeldet. Ich melde das.",
+              "action": "report"
+            }
+          ]
+        },
+        "c": {
+          "say": "INC-48213, wie gesagt. Ihre Abteilung steht deswegen still, wir sollten das jetzt wirklich erledigen.",
+          "options": [
+            {
+              "label": "Na gut, ich bestätige.",
+              "action": "comply"
+            },
+            {
+              "label": "Ich rufe lieber selbst beim Helpdesk an.",
+              "action": "verify"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [
+      {
+        "target": "number",
+        "hint": "Die interne Durchwahl lässt sich fälschen. Sie beweist nicht, wer anruft."
+      },
+      {
+        "target": "note:knowledge",
+        "hint": "Name des Chefs und Ticketnummer klingen vertrauenswürdig, stammen aber oft aus LinkedIn oder einem früheren Einbruch."
+      },
+      {
+        "target": "note:unasked",
+        "hint": "Du hast dich nicht angemeldet. Wer dich bittet, eine Anfrage zu bestätigen, meldet sich gerade selbst an."
+      }
+    ],
+    "correct_actions": [
+      "verify",
+      "report",
+      "hang_up"
+    ],
+    "dangerous_actions": [
+      "comply"
+    ],
+    "explanation": "So liefen große Vorfälle der letzten Jahre: wenig Druck, viel Insiderwissen. Der echte Helpdesk bittet dich nie, eine Anfrage zu bestätigen, die du nicht selbst ausgelöst hast. Aufzulegen und zurückzurufen ist nie unhöflich.",
+    "tags": []
+  },
+  {
+    "id": "call-cfo-voice-clone",
+    "type": "call",
+    "locale": "de",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "ceo_fraud",
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "Claudia Brandt (Finanzen)",
+      "number": "+49 171 5550187",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Hallo, ich bin es, Claudia. Ich sitze in Stuttgart bei der Bank, mein Laptop streikt und der Akku ist gleich leer. Die Anzahlung für Bauer muss heute raus. Schicken Sie mir die Freigabe bitte aufs Handy, die offizielle Mail hole ich nachher nach.",
+          "options": [
+            {
+              "label": "Klar, ich schicke die Freigabe sofort.",
+              "action": "comply"
+            },
+            {
+              "label": "Ich rufe Sie gleich im Büro und auf Ihrer bekannten Nummer zurück.",
+              "next": "b"
+            },
+            {
+              "label": "Wie war noch mal die Bestellnummer dazu?",
+              "next": "c"
+            }
+          ]
+        },
+        "b": {
+          "say": "Das geht jetzt nicht, das Festnetz ist nicht besetzt und mein Diensthandy liegt im Hotel. Bitte, Sie kennen mich doch. Wir haben dafür keine Zeit.",
+          "options": [
+            {
+              "label": "Gut, dann ausnahmsweise.",
+              "action": "comply"
+            },
+            {
+              "label": "Ohne Rückruf geht es nicht. Ich gebe es an die Finanzleitung weiter.",
+              "action": "report"
+            }
+          ]
+        },
+        "c": {
+          "say": "Die habe ich gerade nicht zur Hand, die steht in der Mail, die Sie gleich bekommen. Das ist wirklich dringend.",
+          "options": [
+            {
+              "label": "Na gut, ich schicke es.",
+              "action": "comply"
+            },
+            {
+              "label": "Dann warte ich auf die Mail und rufe zurück.",
+              "action": "verify"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [
+      {
+        "target": "number",
+        "hint": "Eine fremde Handynummer, und der Rückruf wird abgeblockt. Echte Kolleginnen haben damit kein Problem."
+      },
+      {
+        "target": "note:voice",
+        "hint": "Die Stimme klingt vertraut. Das beweist heute nichts mehr: Wenige Sekunden Aufnahme reichen, um eine Stimme mit KI zu klonen."
+      },
+      {
+        "target": "note:process",
+        "hint": "Der Vier-Augen-Prozess soll \"ausnahmsweise\" umgangen werden. Genau dafür gibt es ihn."
+      }
+    ],
+    "correct_actions": [
+      "verify",
+      "report",
+      "hang_up"
+    ],
+    "dangerous_actions": [
+      "comply"
+    ],
+    "explanation": "Auch ein Stimmenklon kann deinen Rückruf nicht annehmen. Für Zahlungen zählt nie, wie jemand klingt, sondern ob der vereinbarte Prozess eingehalten wird.",
+    "tags": []
+  },
+  {
+    "id": "call-supplier-legit",
+    "type": "call",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 7,
+    "consumer": false,
+    "content": {
+      "caller": "Bauer Elektrik – Herr Sommer",
+      "number": "+49 375 5550144",
+      "start": "a",
+      "nodes": {
+        "a": {
+          "say": "Guten Tag, Sommer von Bauer Elektrik. Zu Ihrer Bestellung PO-2026-4471: Die Kabelsätze kommen erst am Donnerstag statt am Mittwoch. Ich wollte nur Bescheid sagen, damit Sie Ihre Planung anpassen können. Sie brauchen nichts weiter zu tun.",
+          "options": [
+            {
+              "label": "Danke für die Info, ich gebe es an die Produktion weiter.",
+              "action": "cooperate"
+            },
+            {
+              "label": "Auflegen und als Angriff melden.",
+              "action": "report"
+            }
+          ]
+        }
+      }
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "cooperate"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: Die Nummer ist die bekannte Festnetznummer des Lieferanten, und der Anrufer will nichts von dir: keine Daten, kein Geld, keine Bestätigung. Eine Information ist kein Angriff.",
+    "tags": []
   }
 ]

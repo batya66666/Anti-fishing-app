@@ -213,5 +213,67 @@
     "dangerous_actions": [],
     "explanation": "Genuine: typing it yourself is the safest way, and the domain is right.",
     "tags": []
+  },
+  {
+    "id": "url-sso-long-subdomain",
+    "type": "url",
+    "locale": "en",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "lookalike_domain",
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "context": "In the intranet newsletter you tapped \"Take the staff survey\" and arrive at the usual sign-in page.",
+      "url": "https://sso.muster-automotive.example.auth-session.test/oauth2/authorize?client_id=hr-survey",
+      "secure": true,
+      "page_title": "Sign in",
+      "page_kind": "login",
+      "brand": "Muster Automotive"
+    },
+    "red_flags": [
+      {
+        "target": "url",
+        "hint": "Too long to read in passing: the real domain sits right before the first slash and it is auth-session.test."
+      },
+      {
+        "target": "secure",
+        "hint": "The padlock only says the connection is encrypted. It says nothing about who runs the site."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "leave"
+    ],
+    "dangerous_actions": [
+      "enter_credentials"
+    ],
+    "explanation": "The page looks exactly like yours because it was copied. A password manager would fill in nothing here: it compares the domain for you.",
+    "tags": []
+  },
+  {
+    "id": "url-legit-long-sso",
+    "type": "url",
+    "locale": "en",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "context": "You open OfficeCloud through your bookmark. The address redirects to the sign-in page and is quite long.",
+      "url": "https://login.officecloud.example/common/oauth2/authorize?client_id=4f2a&response_type=code&state=88213",
+      "secure": true,
+      "page_title": "OfficeCloud",
+      "page_kind": "login",
+      "brand": "OfficeCloud"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "enter_credentials"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Genuine: the long part sits after the first slash and is normal. Only the domain before it matters, officecloud.example, and you arrived through your bookmark.",
+    "tags": []
   }
 ]

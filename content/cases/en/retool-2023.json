@@ -1,0 +1,87 @@
+{
+  "id": "retool-2023",
+  "company": "Retool",
+  "year": 2023,
+  "title": "A text, a call, and all the codes at once",
+  "summary": "In August 2023 a single employee at Retool fell for a text message. A call with a faked voice got the last code, and cloud sync delivered the rest: 27 customers from the crypto industry were affected.",
+  "disclaimer": "Interactive reconstruction: the messages are illustrative. The facts come from Retool's report as relayed by Help Net Security and BleepingComputer. The link to the theft at Fortress Trust rests on media reports and was not confirmed by Retool.",
+  "steps": [
+    {
+      "channel": "sms",
+      "narration": "Your company is moving its logins to Okta, as announced. A text arrives, supposedly from IT.",
+      "message": "IT: A problem with your account is preventing your migration from finishing. Please check here: portal-sso.test/migration",
+      "question": "What do you do?",
+      "options": [
+        {
+          "label": "Open the link and sign in, the migration really is happening",
+          "stops": false,
+          "feedback": "The page looks like your login portal and now has your password. Several colleagues got the text, only one clicked: one was enough."
+        },
+        {
+          "label": "Open the portal myself through my bookmark and report the text to IT",
+          "stops": true,
+          "feedback": "Right. The real migration makes the bait believable, not the link."
+        }
+      ]
+    },
+    {
+      "channel": "call",
+      "narration": "Shortly afterwards someone calls. The person sounds exactly like someone from your team and knows internal procedures.",
+      "message": "Hi, IT here. For your migration I just need one more code from your authenticator app, then you are done.",
+      "question": "What do you do?",
+      "options": [
+        {
+          "label": "Give the code, I know the voice after all",
+          "stops": false,
+          "feedback": "With this code the attacker adds his own device to your Okta account. According to Retool, the voice was a deepfake."
+        },
+        {
+          "label": "Hang up and call IT myself through the known route",
+          "stops": true,
+          "feedback": "Exactly. You pass a code to nobody, not even to a familiar voice."
+        }
+      ]
+    },
+    {
+      "channel": "push",
+      "narration": "Your authenticator app offers to back up all your codes in your Google account.",
+      "message": "Back up codes to your account?\nThat way you never lose them, not even with a new phone.",
+      "question": "What do you do?",
+      "options": [
+        {
+          "label": "Of course, that is practical",
+          "stops": false,
+          "feedback": "At Retool this gave the attacker all codes at once through the Google account. The second factor became the same factor."
+        },
+        {
+          "label": "Rather use a hardware security key or passkey where possible",
+          "stops": true,
+          "feedback": "Strong. These methods tie the sign-in to the real site. A code can be talked out of you by phone, a key cannot."
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "27 August 2023",
+      "what": "Several employees get text messages that look like they come from IT, during the move to Okta. One person falls for the fake login page."
+    },
+    {
+      "when": "The same day",
+      "what": "A caller poses as IT, according to Retool with a faked voice, and gets one more code. The attacker adds his own device and reaches all the account's codes through Google sync."
+    },
+    {
+      "when": "Afterwards",
+      "what": "Through internal tools, 27 cloud customers from the crypto industry are affected, but not customers with their own installation. Media link the incident to a loss of nearly 15 million US dollars at Fortress Trust."
+    },
+    {
+      "when": "September 2023",
+      "what": "Retool makes the incident public. According to Google, users can choose whether codes are synced, and Google recommends FIDO methods."
+    }
+  ],
+  "lesson": "Real occasions make the best bait. Retool's conclusion: even with perfect training, mistakes happen. That is why you need both: people who report, and sign-in methods that cannot be talked out of you by phone.",
+  "sources": [
+    "Help Net Security, 14 Sep 2023",
+    "BleepingComputer, 15 Sep 2023"
+  ]
+}

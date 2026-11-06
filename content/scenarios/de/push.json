@@ -82,5 +82,65 @@
     "dangerous_actions": [],
     "explanation": "Echt: selbst gestartet, Betrag und Empfänger stimmen. Genau das sollst du jedes Mal prüfen.",
     "tags": []
+  },
+  {
+    "id": "push-single-prompt",
+    "type": "push",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": true,
+    "attack_type": "mfa_fatigue",
+    "module": 9,
+    "consumer": true,
+    "content": {
+      "app": "OfficeCloud Authenticator",
+      "title": "Anmeldung bestätigen?",
+      "body": "Anmeldung bei OfficeCloud\nStandort: Leipzig",
+      "context": "Du arbeitest noch am Laptop und bist seit einer Stunde angemeldet. Du bist in Zwickau. Es kommt genau eine Anfrage.",
+      "repeat": 1
+    },
+    "red_flags": [
+      {
+        "target": "note:unasked",
+        "hint": "Nur eine einzige Anfrage, ganz ohne Spam, aber du hast keine neue Anmeldung gestartet. Jemand anders kennt dein Passwort."
+      },
+      {
+        "target": "note:unasked",
+        "hint": "Leipzig statt Zwickau: Der Standort passt nicht zu dir."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "deny"
+    ],
+    "dangerous_actions": [
+      "approve"
+    ],
+    "explanation": "Geschickte Angreifer schicken nur eine Anfrage und hoffen auf einen Reflex. Bestätige nur, was du gerade selbst gestartet hast, und ändere danach dein Passwort.",
+    "tags": []
+  },
+  {
+    "id": "push-new-laptop-legit",
+    "type": "push",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 9,
+    "consumer": true,
+    "content": {
+      "app": "OfficeCloud Authenticator",
+      "title": "Anmeldung bestätigen?",
+      "body": "Anmeldung bei OfficeCloud\nNeues Gerät · Standort: Zwickau",
+      "context": "Du hast gerade deinen neuen Dienstlaptop eingerichtet und dich dort eben zum ersten Mal angemeldet.",
+      "repeat": 1
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "approve"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: \"Neues Gerät\" klingt verdächtig, aber du hast genau das gerade selbst getan: eine Anfrage, richtiger Ort, richtiger Moment.",
+    "tags": []
   }
 ]

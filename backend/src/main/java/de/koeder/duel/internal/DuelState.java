@@ -60,13 +60,14 @@ final class DuelState {
         final int elo;
         final int games;
         final String locale;
-        final double botAccuracy;
+        /** Null for a person. */
+        final DuelBot.Profile bot;
         boolean ready;
         int score;
         int correct;
         final List<Integer> perRound = new ArrayList<>();
 
-        Seat(String key, UUID userId, String name, int avatar, int elo, int games, String locale, double botAccuracy) {
+        Seat(String key, UUID userId, String name, int avatar, int elo, int games, String locale, DuelBot.Profile bot) {
             this.key = key;
             this.userId = userId;
             this.name = name;
@@ -74,7 +75,7 @@ final class DuelState {
             this.elo = elo;
             this.games = games;
             this.locale = locale;
-            this.botAccuracy = botAccuracy;
+            this.bot = bot;
         }
 
         boolean isBot() {

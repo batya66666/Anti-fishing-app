@@ -18,26 +18,10 @@ class Energy {
   /// Returns a new [Energy] instance.
   Energy({
 
-     this.shiftAvailable,
-
      this.shiftCompleted,
 
-     this.swipeRoundsLeft,
-
-     this.swipeRoundsPerDay,
+     this.shiftsToday,
   });
-
-  @JsonKey(
-    
-    name: r'shiftAvailable',
-    required: false,
-    includeIfNull: false,
-  )
-
-
-  final bool? shiftAvailable;
-
-
 
   @JsonKey(
     
@@ -53,25 +37,13 @@ class Energy {
 
   @JsonKey(
     
-    name: r'swipeRoundsLeft',
+    name: r'shiftsToday',
     required: false,
     includeIfNull: false,
   )
 
 
-  final int? swipeRoundsLeft;
-
-
-
-  @JsonKey(
-    
-    name: r'swipeRoundsPerDay',
-    required: false,
-    includeIfNull: false,
-  )
-
-
-  final int? swipeRoundsPerDay;
+  final int? shiftsToday;
 
 
 
@@ -79,17 +51,13 @@ class Energy {
 
     @override
     bool operator ==(Object other) => identical(this, other) || other is Energy &&
-      other.shiftAvailable == shiftAvailable &&
       other.shiftCompleted == shiftCompleted &&
-      other.swipeRoundsLeft == swipeRoundsLeft &&
-      other.swipeRoundsPerDay == swipeRoundsPerDay;
+      other.shiftsToday == shiftsToday;
 
     @override
     int get hashCode =>
-        shiftAvailable.hashCode +
         shiftCompleted.hashCode +
-        swipeRoundsLeft.hashCode +
-        swipeRoundsPerDay.hashCode;
+        shiftsToday.hashCode;
 
   factory Energy.fromJson(Map<String, dynamic> json) => _$EnergyFromJson(json);
 

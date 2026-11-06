@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 
 import '../core/l10n.dart';
 import '../core/sfx.dart';
@@ -11,7 +10,7 @@ import '../core/theme.dart';
 import '../data/models.dart';
 import 'common.dart';
 
-/// Full-screen incoming call. The caller speaks through text-to-speech; the player answers from a dialogue tree.
+/// Full-screen incoming call. The caller's words appear on screen; the player answers from a dialogue tree.
 class CallSim extends StatefulWidget {
   const CallSim({super.key, required this.s, required this.props});
   final Scenario s;
@@ -22,13 +21,11 @@ class CallSim extends StatefulWidget {
 }
 
 class _CallSimState extends State<CallSim> {
-  final FlutterTts _tts = FlutterTts();
   bool _accepted = false;
   String? _node;
   Timer? _vibrate;
   Timer? _clock;
   int _seconds = 0;
-  bool _ttsWorks = true;
 
   @override
   void initState() {
@@ -39,27 +36,6 @@ class _CallSimState extends State<CallSim> {
       _vibrate = Timer.periodic(const Duration(milliseconds: 900), (_) => HapticFeedback.heavyImpact());
     } else {
       _accepted = true;
-    }
-    _setupTts();
-  }
-
-  Future<void> _setupTts() async {
-    try {
-      await _tts.setLanguage(widget.s.locale == 'en' ? 'en-GB' : 'de-DE');
-      await _tts.setSpeechRate(0.5);
-      await _tts.setPitch(0.92);
-    } catch (_) {
-      _ttsWorks = false;
-    }
-  }
-
-  void _say(String text) {
-    if (!_ttsWorks || !Sfx.enabled) return;
-    try {
-      _tts.stop();
-      _tts.speak(text);
-    } catch (_) {
-      // The subtitles carry the call on their own.
     }
   }
 
@@ -72,7 +48,6 @@ class _CallSimState extends State<CallSim> {
   void didUpdateWidget(CallSim old) {
     super.didUpdateWidget(old);
     if (widget.props.answered) {
-      _tts.stop();
       _clock?.cancel();
     }
   }
@@ -81,7 +56,6 @@ class _CallSimState extends State<CallSim> {
   void dispose() {
     _stopRinging();
     _clock?.cancel();
-    _tts.stop();
     super.dispose();
   }
 
@@ -90,7 +64,6 @@ class _CallSimState extends State<CallSim> {
     HapticFeedback.mediumImpact();
     setState(() => _accepted = true);
     _clock = Timer.periodic(const Duration(seconds: 1), (_) => setState(() => _seconds++));
-    _say(_current['say'] as String);
   }
 
   Map<String, dynamic> get _current => Map<String, dynamic>.from((widget.s.content['nodes'] as Map)[_node] as Map);
@@ -100,9 +73,7 @@ class _CallSimState extends State<CallSim> {
     final next = option['next'] as String?;
     if (next != null) {
       setState(() => _node = next);
-      _say(_current['say'] as String);
     } else {
-      _tts.stop();
       widget.props.onAction?.call(option['action'] as String);
     }
   }
@@ -199,10 +170,6 @@ class _CallSimState extends State<CallSim> {
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(14)),
               child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                InkWell(
-                  onTap: () => _say(node['say'] as String),
-                  child: const Padding(padding: EdgeInsets.only(right: 8, top: 1), child: Icon(Icons.volume_up, color: K.teal, size: 20)),
-                ),
                 Expanded(child: Text(node['say'] as String, style: const TextStyle(color: Colors.white, fontSize: 15.5, height: 1.4))),
               ]),
             ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.08, end: 0),

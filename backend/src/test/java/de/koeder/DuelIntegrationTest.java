@@ -155,9 +155,10 @@ class DuelIntegrationTest extends IntegrationTestBase {
         Map<String, Object> state = ofType(solo, "state").get(0);
         assertThat(((Map<String, Object>) state.get("b")).get("bot")).isEqualTo(true);
         Map<String, Object> finished = ofType(solo, "finished").get(0);
-        // Ranked: the rating moved for the human (unless it was an exact draw).
+        // Even from the ranked queue, a game against a bot never moves the rating.
+        assertThat(((Map<String, Object>) finished.get("a")).get("eloDelta")).isEqualTo(0);
         Map<String, Object> me = api(solo).get().uri("/api/me").retrieve().body(Map.class);
-        assertThat(me.get("elo")).isEqualTo(((Map<String, Object>) finished.get("a")).get("elo"));
+        assertThat(me.get("elo")).isEqualTo(1000);
     }
 
     @Test

@@ -220,7 +220,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get onbPrivacy =>
-      'Kein Konto nötig. Du spielst anonym, deine Fehler sieht nur du.';
+      'Ein Konto ist freiwillig. Als Gast spielst du anonym, und nur du siehst deine Fehler.';
 
   @override
   String get tabWork => 'Arbeit';
@@ -255,13 +255,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get shiftStart => 'Schicht starten';
 
   @override
-  String get shiftDoneTitle => 'Feierabend!';
-
-  @override
-  String get shiftDoneBody =>
-      'Gute Arbeit. Dein Kopf braucht jetzt eine Pause, morgen wartet ein neuer Fall. Heute geht noch ein Duell.';
-
-  @override
   String reviewDue(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -276,17 +269,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get modeSwipe => 'Swipe';
 
   @override
-  String swipeLeft(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Heute noch $count Runden',
-      one: 'Heute noch 1 Runde',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get modeFlags => 'Warnzeichen finden';
 
   @override
@@ -297,12 +279,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get modeCasesSub => 'Echte Angriffe nachspielen';
-
-  @override
-  String get modeRedTeam => 'Werde zum Hacker';
-
-  @override
-  String get modeRedTeamSub => 'Baue selbst einen Köder';
 
   @override
   String get checkTitle => 'Nachricht prüfen';
@@ -419,7 +395,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get simplePracticeBody => 'Ein paar Nachrichten in Ruhe ansehen';
 
   @override
-  String get simplePracticeDone => 'Für heute geschafft. Bis morgen!';
+  String get simplePracticeDone => 'Geschafft. Noch eine Runde?';
 
   @override
   String get simpleReview => 'Wiederholen';
@@ -478,10 +454,6 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get reportRest =>
       'Gute Schicht! Dein Kopf braucht jetzt Ruhe, morgen wartet ein neuer Fall.';
-
-  @override
-  String get swipeLimit =>
-      'Für heute sind deine Swipe-Runden vorbei. Das Wiederholen deiner Fehler bleibt immer kostenlos.';
 
   @override
   String get swipePhishing => 'Phishing';
@@ -622,114 +594,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get caseSources => 'Quellen';
-
-  @override
-  String get rtIntro =>
-      'Du bist Pentester für eine fiktive Firma. Baue eine Mail und finde heraus, warum Köder funktionieren. Wer die Hebel kennt, erkennt sie.';
-
-  @override
-  String get rtSender => 'Absender';
-
-  @override
-  String get rtSenderUnknown => 'Unbekannt';
-
-  @override
-  String get rtSenderColleague => 'Kollegin';
-
-  @override
-  String get rtSenderIt => 'IT-Abteilung';
-
-  @override
-  String get rtSenderBoss => 'Chef';
-
-  @override
-  String get rtPretext => 'Anlass';
-
-  @override
-  String get rtPretextParcel => 'Paket';
-
-  @override
-  String get rtPretextPassword => 'Passwort läuft ab';
-
-  @override
-  String get rtPretextInvoice => 'Rechnung';
-
-  @override
-  String get rtPretextBonus => 'Bonus';
-
-  @override
-  String get rtUrgency => 'Dringlichkeit';
-
-  @override
-  String get rtUrgencyNone => 'Keine';
-
-  @override
-  String get rtUrgencyToday => 'Heute';
-
-  @override
-  String get rtUrgencyHour => '1 Stunde';
-
-  @override
-  String get rtPersonal => 'Persönlich';
-
-  @override
-  String get rtPersonalNone => 'Allgemein';
-
-  @override
-  String get rtPersonalName => 'Name';
-
-  @override
-  String get rtPersonalProject => 'Name + Projekt';
-
-  @override
-  String get rtBait => 'Köder';
-
-  @override
-  String get rtBaitLink => 'Link';
-
-  @override
-  String get rtBaitAttachment => 'Anhang';
-
-  @override
-  String get rtBaitQr => 'QR-Code';
-
-  @override
-  String get rtEthics =>
-      'Alles bleibt im Spiel: feste Bausteine, fiktive Firma und Domains, kein Export. Diese Übung zeigt, wie Angriffe funktionieren, damit du sie erkennst.';
-
-  @override
-  String get rtLaunch => 'An 100 Kollegen senden';
-
-  @override
-  String get rtRunning => 'Die Kampagne läuft...';
-
-  @override
-  String get rtDone => 'Ergebnis der Kampagne';
-
-  @override
-  String get rtClicked => 'Geklickt';
-
-  @override
-  String get rtReported => 'Gemeldet';
-
-  @override
-  String get rtIgnored => 'Ignoriert';
-
-  @override
-  String get rtVerdictHigh => 'Erschreckend wirksam.';
-
-  @override
-  String get rtVerdictMid => 'Beachtlich: Das reicht für einen Einbruch.';
-
-  @override
-  String get rtVerdictLow => 'Die meisten durchschauen das.';
-
-  @override
-  String get rtLesson =>
-      'Ein einziger Klick reicht Angreifern. Autorität, Zeitdruck und persönliche Details machen den Unterschied. Genau daran erkennst du Köder ab jetzt selbst. Und jede Meldung hilft: Die IT kann alle warnen, bevor der Nächste klickt.';
-
-  @override
-  String get rtAgain => 'Neue Kampagne';
 
   @override
   String get checkIntro =>
@@ -897,7 +761,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingLanguage => 'Sprache';
 
   @override
-  String get settingSound => 'Ton und Sprache';
+  String get settingSound => 'Ton';
 
   @override
   String get settingPublicBoard => 'In öffentlichen Ranglisten zeigen';
@@ -963,18 +827,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get planFree =>
-      '1 Schicht pro Tag, Grundlagen, Fehler wiederholen, 1 Duell pro Tag, einfacher Modus';
+      'Unbegrenzt spielen: Schichten, Endlos-Modus, Duelle, Lernpfad, einfacher Modus';
 
   @override
   String get planPremium =>
-      'Ohne Limits, alle Module, Case Files, Red Team, Nachrichten-Check ohne Limit, Serien einfrieren';
+      'Case Files, Nachrichten-Check ohne Limit, Serien einfrieren';
 
   @override
   String get planFamily => 'Bis zu 6 Personen: Schütze deine Eltern';
 
   @override
-  String get planTeam =>
-      'Firmenliga, Admin-Panel, Berichte nach Abteilung, keine Limits';
+  String get planTeam => 'Firmenliga, Admin-Panel, Berichte nach Abteilung';
 
   @override
   String get planBusiness =>
@@ -1208,4 +1071,412 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get jurySub =>
       'Scannen, und in Sekunden sind Sie im Duell. Ohne App und ohne Konto.';
+
+  @override
+  String get tourSkip => 'Überspringen';
+
+  @override
+  String get tourDone => 'Los geht’s!';
+
+  @override
+  String get tourAgain => 'Rundgang wiederholen';
+
+  @override
+  String get tourWelcomeTitle => 'Hallo, ich bin Köderchen!';
+
+  @override
+  String get tourWelcomeBody =>
+      'Ich zeige dir kurz, wo alles ist. Keine Sorge, das dauert nur eine Minute.';
+
+  @override
+  String get tourLevelTitle => 'Dein Rang';
+
+  @override
+  String get tourLevelBody =>
+      'Hier steigst du vom Praktikanten bis zum CISO auf. Jede richtige Entscheidung bringt XP.';
+
+  @override
+  String get tourShiftTitle => 'Deine Schicht';
+
+  @override
+  String get tourShiftBody =>
+      'Das Herz des Spiels: Dein Postfach läuft voll, und du entscheidest, was echt ist. Die Hälfte der Nachrichten ist harmlos.';
+
+  @override
+  String get tourEndlessTitle => 'Endlos spielen';
+
+  @override
+  String get tourEndlessBody =>
+      'Frage auf Frage, ohne Limit und in der Schwierigkeit, die du wählst.';
+
+  @override
+  String get tourModesTitle => 'Noch mehr Training';
+
+  @override
+  String get tourModesBody =>
+      'Wischen gegen die Uhr, Warnzeichen suchen, echte Fälle nachspielen oder eine eigene Nachricht prüfen.';
+
+  @override
+  String get tourCheckTitle => 'Echte Nachricht prüfen';
+
+  @override
+  String get tourCheckBody =>
+      'Du hast etwas Verdächtiges bekommen? Füge es hier ein und ich schaue es mir an.';
+
+  @override
+  String get tourPathTitle => 'Dein Lernpfad';
+
+  @override
+  String get tourPathBody =>
+      '13 Themen. Dein Fortschritt wird gespeichert: Du machst immer genau dort weiter, wo du aufgehört hast.';
+
+  @override
+  String get tourDuelTitle => 'Duelle';
+
+  @override
+  String get tourDuelBody =>
+      'Tritt live gegen andere an oder fordere einen Bot heraus. Vom Praktikanten bis zur CISO.';
+
+  @override
+  String get tourLeagueTitle => 'Liga';
+
+  @override
+  String get tourLeagueBody => 'Sammle in der Woche XP und steig auf.';
+
+  @override
+  String get tourProfileTitle => 'Profil';
+
+  @override
+  String get tourProfileBody =>
+      'Deine Statistik und Abzeichen, dazu Konto, Sprache und dieser Rundgang.';
+
+  @override
+  String get tourInboxTitle => 'Dein Postfach';
+
+  @override
+  String get tourInboxBody =>
+      'Nachrichten kommen von selbst rein. Tippe eine an. Vorsicht: Anrufe unterbrechen dich jederzeit.';
+
+  @override
+  String get tourProgressTitle => 'Abgewehrte Angriffe';
+
+  @override
+  String get tourProgressBody =>
+      'Hier siehst du, wie viele Nachrichten du richtig behandelt hast.';
+
+  @override
+  String get tourSenderTitle => 'Wer schreibt wirklich?';
+
+  @override
+  String get tourSenderBody =>
+      'Der Name kann alles behaupten. Tippe auf den Absender, dann siehst du die echte Adresse.';
+
+  @override
+  String get tourContentTitle => 'Links und Anhänge';
+
+  @override
+  String get tourContentBody =>
+      'Halte den Finger auf einen Link, um sein Ziel zu sehen. Eine PDF öffnet sich in der Vorschau, aber auch in PDFs steckt Phishing.';
+
+  @override
+  String get tourActionsTitle => 'Deine Entscheidung';
+
+  @override
+  String get tourActionsBody =>
+      'Echt? Tippe auf „In Ordnung“. Ein Angriff? Melden ist das Beste, was du tun kannst. Fällst du darauf herein, wirst du gehackt. Meldest du Echtes, bist du Paranoiker.';
+
+  @override
+  String get onbWelcomeLanguage => 'Willkommen! Welcome!';
+
+  @override
+  String get onbChooseLanguage => 'Wähle deine Sprache';
+
+  @override
+  String get authRegisterTitle => 'Konto anlegen';
+
+  @override
+  String get authLoginTitle => 'Willkommen zurück';
+
+  @override
+  String get authWhy =>
+      'Mit Konto bleibt dein Fortschritt erhalten, auch auf einem anderen Gerät.';
+
+  @override
+  String get authRegister => 'Registrieren';
+
+  @override
+  String get authLogin => 'Anmelden';
+
+  @override
+  String get authLogout => 'Abmelden';
+
+  @override
+  String get authGuest => 'Ohne Konto als Gast weiter';
+
+  @override
+  String get authName => 'Dein Name im Spiel (optional)';
+
+  @override
+  String get authEmail => 'E-Mail';
+
+  @override
+  String get authPassword => 'Passwort';
+
+  @override
+  String get authShowPassword => 'Passwort anzeigen';
+
+  @override
+  String authPasswordHint(int count) {
+    return 'Mindestens $count Zeichen';
+  }
+
+  @override
+  String authShortPassword(int count) {
+    return 'Das Passwort braucht mindestens $count Zeichen.';
+  }
+
+  @override
+  String get authBadEmail => 'Bitte gib eine gültige E-Mail-Adresse ein.';
+
+  @override
+  String get authBadLogin => 'E-Mail oder Passwort stimmt nicht.';
+
+  @override
+  String get authTaken =>
+      'Für diese E-Mail gibt es schon ein Konto. Melde dich an.';
+
+  @override
+  String get authNeedsServer =>
+      'Konten brauchen eine Verbindung zum Server. Du kannst offline als Gast weiterspielen.';
+
+  @override
+  String get authInsecure =>
+      'Dieses Demo-Netz läuft ohne HTTPS. Nimm hier kein Passwort, das du anderswo benutzt.';
+
+  @override
+  String get authAccountGuest => 'Du spielst als Gast';
+
+  @override
+  String get authAccountGuestSub =>
+      'Konto anlegen, um deinen Fortschritt zu sichern';
+
+  @override
+  String get authAccountHave => 'Ich habe schon ein Konto';
+
+  @override
+  String get endlessTitle => 'Endlos-Modus';
+
+  @override
+  String get endlessSub => 'Ohne Limit';
+
+  @override
+  String get endlessIntro =>
+      'Frage auf Frage, so lange du willst. Zuerst kommt Neues, danach das, was du am längsten nicht gesehen hast.';
+
+  @override
+  String get endlessStart => 'Los geht’s';
+
+  @override
+  String get endlessNext => 'Nächste Frage';
+
+  @override
+  String get retry => 'Nochmal versuchen';
+
+  @override
+  String get difficultyTitle => 'Schwierigkeit';
+
+  @override
+  String get difficultyMix => 'Gemischt';
+
+  @override
+  String get difficultyMixBody => 'Alle Stufen, die Hälfte davon schwer';
+
+  @override
+  String get difficultyBronze => 'Bronze';
+
+  @override
+  String get difficultySilver => 'Silber';
+
+  @override
+  String get difficultyGold => 'Gold';
+
+  @override
+  String get difficultyDiamond => 'Diamant';
+
+  @override
+  String get difficultyBronzeBody => 'Klassiker, die man kennen muss';
+
+  @override
+  String get difficultySilverBody => 'Die üblichen Maschen, gut gemacht';
+
+  @override
+  String get difficultyGoldBody => 'Plausibel und fehlerfrei, oft mit PDF';
+
+  @override
+  String get difficultyDiamondBody =>
+      'Echte Konten, geklonte Stimmen: fast nicht zu erkennen';
+
+  @override
+  String difficultyForced(String level) {
+    return 'Die Admin hat „$level“ für alle festgelegt.';
+  }
+
+  @override
+  String get pdfScan => 'Code mit dem Handy scannen';
+
+  @override
+  String get pdfHoldHint => 'Finger halten oder Rechtsklick zeigt das Ziel.';
+
+  @override
+  String get pdfBack => 'Zurück zur Nachricht';
+
+  @override
+  String get simReplyTo => 'Antwort an';
+
+  @override
+  String get shiftAgainTitle => 'Schicht geschafft!';
+
+  @override
+  String get shiftAgainBody =>
+      'Gute Arbeit. Lust auf mehr? Es gibt kein Tageslimit.';
+
+  @override
+  String get shiftAgain => 'Noch eine Schicht';
+
+  @override
+  String get swipeSub => '60 Sekunden gegen die Uhr';
+
+  @override
+  String get swipeAgain => 'Noch eine Runde';
+
+  @override
+  String get flagsAgain => 'Noch eine Runde';
+
+  @override
+  String get moduleContinue => 'Weiterlernen';
+
+  @override
+  String moduleProgress(int done, int total) {
+    return '$done von $total gelöst';
+  }
+
+  @override
+  String get moduleDone => 'Geschafft';
+
+  @override
+  String get moduleRetry => 'Fehler wiederholen';
+
+  @override
+  String get pathDone => 'Lernpfad abgeschlossen!';
+
+  @override
+  String get hackedFalseAlarmBody =>
+      'Aber dein Alarm hat echte Arbeit aufgehalten. Wer alles meldet, wird bald nicht mehr ernst genommen, auch beim nächsten echten Angriff.';
+
+  @override
+  String get hackedMissedBody =>
+      'Das war nicht die sichere Wahl. In echt hätte dich genau das treffen können. Schau dir an, was dich hätte warnen können.';
+
+  @override
+  String get botPickTitle => 'Gegen wen spielst du?';
+
+  @override
+  String get botAuto => 'Passend zu mir';
+
+  @override
+  String get botAutoBody => 'Passt sich deiner Stärke an und bleibt spannend';
+
+  @override
+  String get botRookie => 'Praktikant Otto';
+
+  @override
+  String get botRookieBody => 'Liest langsam, fällt auf vieles herein';
+
+  @override
+  String get botAnalyst => 'Analystin Grete';
+
+  @override
+  String get botAnalystBody => 'Solide, aber bei schweren Fällen unsicher';
+
+  @override
+  String get botVeteran => 'Veteran Kalle';
+
+  @override
+  String get botVeteranBody => 'Schnell, macht kaum noch Fehler';
+
+  @override
+  String get botCiso => 'CISO Frieda';
+
+  @override
+  String get botCisoBody => 'Die Endgegnerin. Blitzschnell und fast fehlerfrei';
+
+  @override
+  String get adminTabDifficulty => 'Schwierigkeit';
+
+  @override
+  String get adminDifficultyTitle => 'Schwierigkeit festlegen';
+
+  @override
+  String get adminDifficultyIntro =>
+      'Zum Vorführen und Prüfen: Die gewählte Stufe gilt sofort für alle Spielerinnen und Spieler der Firma, in Schichten, im Endlos-Modus, beim Wischen und in Duellen.';
+
+  @override
+  String get adminDifficultyOff => 'Normal';
+
+  @override
+  String get adminDifficultyOffBody =>
+      'Normales Spiel: Die Schwierigkeit richtet sich nach dem Spieler.';
+
+  @override
+  String get adminDifficultySaved => 'Gespeichert. Gilt ab der nächsten Frage.';
+
+  @override
+  String get adminCatalogTitle => 'Alle Szenarien prüfen';
+
+  @override
+  String adminCatalogSub(int count) {
+    return '$count Szenarien mit Lösung. Antippen, um sie so zu sehen, wie sie im Spiel erscheinen.';
+  }
+
+  @override
+  String get adminCatalogAll => 'Alle';
+
+  @override
+  String get adminCatalogPdfOnly => 'Nur mit PDF';
+
+  @override
+  String get adminWifiTitle => 'Mitspielen im WLAN';
+
+  @override
+  String get adminWifiSub =>
+      'Alle im selben WLAN öffnen einfach diese Adresse:';
+
+  @override
+  String get paranoidTitle => 'PARANOIKER!';
+
+  @override
+  String get paranoidSub =>
+      'Das war echt. Dein Alarm galt einer harmlosen Nachricht.';
+
+  @override
+  String get paranoidCalmTitle => 'Gehackt wurde niemand.';
+
+  @override
+  String get paranoidButton => 'Zeig mir, woran ich es erkannt hätte';
+
+  @override
+  String get theoryTitle => 'Theorie';
+
+  @override
+  String get theoryRead => 'Theorie lesen (freiwillig)';
+
+  @override
+  String get theoryOptional => 'Vorher die Theorie lesen (freiwillig)';
+
+  @override
+  String get theoryIntro =>
+      'Ganz freiwillig: Du kannst auch direkt loslegen und unterwegs lernen.';
+
+  @override
+  String get botNoElo => 'Spiele gegen Bots verändern dein ELO nicht.';
 }

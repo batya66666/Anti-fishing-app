@@ -12,7 +12,11 @@ import '../../effects/hacked_overlay.dart';
 import '../../effects/mascot.dart';
 import '../../simulators/scenario_view.dart';
 
-final _casesProvider = FutureProvider.autoDispose<List<Map<String, dynamic>>>((ref) => ref.watch(repoProvider).cases());
+final _casesProvider = FutureProvider.autoDispose<List<Map<String, dynamic>>>((ref) async {
+  final list = [...await ref.watch(repoProvider).cases()];
+  list.sort((a, b) => (b['year'] as num).compareTo(a['year'] as num));
+  return list;
+});
 
 class CasesScreen extends ConsumerWidget {
   const CasesScreen({super.key});
@@ -88,6 +92,7 @@ class _CasePlayerScreenState extends ConsumerState<CasePlayerScreen> {
       _chosen = option;
       if (stops) _stopped = true;
     });
+    if (!stops) await ref.read(hackProvider.notifier).play(short: true);
   }
 
   Future<void> _continue(int steps) async {

@@ -1,0 +1,87 @@
+{
+  "id": "retool-2023",
+  "company": "Retool",
+  "year": 2023,
+  "title": "SMS, Anruf, und alle Codes auf einmal",
+  "summary": "Im August 2023 fiel bei Retool ein einziger Mitarbeiter auf eine SMS herein. Ein Anruf mit gefälschter Stimme holte den letzten Code, die Cloud-Synchronisierung lieferte den Rest: 27 Kunden aus der Kryptobranche waren betroffen.",
+  "disclaimer": "Interaktive Nachstellung: Die Nachrichten sind beispielhaft. Die Fakten stammen aus Retools Bericht, wie ihn Help Net Security und BleepingComputer wiedergeben. Der Zusammenhang mit dem Diebstahl bei Fortress Trust beruht auf Medienberichten und wurde von Retool nicht bestätigt.",
+  "steps": [
+    {
+      "channel": "sms",
+      "narration": "Deine Firma stellt gerade die Anmeldung auf Okta um, das wurde angekündigt. Eine SMS kommt, angeblich von der IT.",
+      "message": "IT: Wegen eines Problems mit deinem Konto kann deine Umstellung nicht abgeschlossen werden. Bitte hier prüfen: portal-sso.test/migration",
+      "question": "Was tust du?",
+      "options": [
+        {
+          "label": "Den Link öffnen und mich anmelden, die Umstellung läuft ja wirklich",
+          "stops": false,
+          "feedback": "Die Seite sieht aus wie euer Anmeldeportal und hat jetzt dein Passwort. Mehrere Kollegen bekamen die SMS, nur einer klickte: Einer genügte."
+        },
+        {
+          "label": "Das Portal selbst über das Lesezeichen öffnen und die SMS der IT melden",
+          "stops": true,
+          "feedback": "Richtig. Dass die Umstellung echt ist, macht den Köder glaubwürdig, aber nicht den Link."
+        }
+      ]
+    },
+    {
+      "channel": "call",
+      "narration": "Kurz darauf ruft jemand an. Die Person klingt genau wie jemand aus eurem Team und kennt interne Abläufe.",
+      "message": "Hi, hier ist die IT. Wegen deiner Umstellung brauche ich noch einmal kurz einen Code aus deiner Authenticator-App, dann bist du durch.",
+      "question": "Was tust du?",
+      "options": [
+        {
+          "label": "Den Code durchgeben, ich kenne die Stimme ja",
+          "stops": false,
+          "feedback": "Mit diesem Code fügt der Angreifer sein eigenes Gerät zu deinem Okta-Konto hinzu. Die Stimme war laut Retool ein Deepfake."
+        },
+        {
+          "label": "Auflegen und die IT selbst über den bekannten Weg anrufen",
+          "stops": true,
+          "feedback": "Genau. Einen Code gibt man niemandem weiter, auch nicht einer vertrauten Stimme."
+        }
+      ]
+    },
+    {
+      "channel": "push",
+      "narration": "Deine Authenticator-App bietet an, alle Codes bequem in deinem Google-Konto zu sichern.",
+      "message": "Codes in deinem Konto sichern?\nSo verlierst du sie nie, auch nicht bei einem neuen Handy.",
+      "question": "Was tust du?",
+      "options": [
+        {
+          "label": "Natürlich, das ist doch praktisch",
+          "stops": false,
+          "feedback": "Bei Retool hatte der Angreifer damit über das Google-Konto auf einen Schlag alle Codes. Aus dem zweiten Faktor wurde derselbe Faktor."
+        },
+        {
+          "label": "Lieber einen Hardware-Sicherheitsschlüssel oder Passkey nutzen, soweit möglich",
+          "stops": true,
+          "feedback": "Stark. Solche Verfahren binden die Anmeldung an die echte Seite. Ein Code lässt sich am Telefon erfragen, ein Schlüssel nicht."
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "27. August 2023",
+      "what": "Mehrere Beschäftigte bekommen SMS, die wie eine Nachricht der IT aussehen, während die Umstellung auf Okta läuft. Eine Person fällt auf die falsche Anmeldeseite herein."
+    },
+    {
+      "when": "Am selben Tag",
+      "what": "Ein Anrufer gibt sich als IT aus, laut Retool mit gefälschter Stimme, und erhält einen weiteren Code. Der Angreifer fügt ein eigenes Gerät hinzu und kommt über die Google-Synchronisierung an alle Codes des Kontos."
+    },
+    {
+      "when": "Danach",
+      "what": "Über interne Werkzeuge werden 27 Cloud-Kunden aus der Kryptobranche betroffen. Kunden mit eigener Installation nicht. Medien bringen den Vorfall mit fast 15 Millionen US-Dollar Verlust bei Fortress Trust in Verbindung."
+    },
+    {
+      "when": "September 2023",
+      "what": "Retool macht den Vorfall öffentlich. Laut Google können Nutzer selbst wählen, ob Codes synchronisiert werden, und Google empfiehlt FIDO-Verfahren."
+    }
+  ],
+  "lesson": "Echte Anlässe machen die besten Köder. Retools Fazit: Auch mit perfektem Training passieren Fehler. Darum brauchst du beides: Menschen, die melden, und Anmeldeverfahren, die sich nicht am Telefon erfragen lassen.",
+  "sources": [
+    "Help Net Security, 14.9.2023",
+    "BleepingComputer, 15.9.2023"
+  ]
+}

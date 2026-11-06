@@ -213,5 +213,67 @@
     "dangerous_actions": [],
     "explanation": "Echt: selbst eingetippt ist der sicherste Weg, und die Domain stimmt.",
     "tags": []
+  },
+  {
+    "id": "url-sso-long-subdomain",
+    "type": "url",
+    "locale": "de",
+    "difficulty": "diamond",
+    "is_attack": true,
+    "attack_type": "lookalike_domain",
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "context": "Du hast im Intranet-Newsletter auf \"Zur Mitarbeiterbefragung\" getippt und landest auf der gewohnten Anmeldeseite.",
+      "url": "https://sso.muster-automotive.example.auth-session.test/oauth2/authorize?client_id=hr-survey",
+      "secure": true,
+      "page_title": "Anmelden",
+      "page_kind": "login",
+      "brand": "Muster Automotive"
+    },
+    "red_flags": [
+      {
+        "target": "url",
+        "hint": "Zu lang, um es im Vorbeigehen zu lesen: Die echte Domain steht direkt vor dem ersten Schrägstrich und lautet auth-session.test."
+      },
+      {
+        "target": "secure",
+        "hint": "Das Schloss sagt nur, dass die Verbindung verschlüsselt ist. Es sagt nichts über den Betreiber."
+      }
+    ],
+    "correct_actions": [
+      "report",
+      "leave"
+    ],
+    "dangerous_actions": [
+      "enter_credentials"
+    ],
+    "explanation": "Die Seite sieht genauso aus wie eure, weil sie kopiert wurde. Der Passwortmanager würde hier nichts eintragen: Er vergleicht die Domain für dich.",
+    "tags": []
+  },
+  {
+    "id": "url-legit-long-sso",
+    "type": "url",
+    "locale": "de",
+    "difficulty": "gold",
+    "is_attack": false,
+    "attack_type": null,
+    "module": 3,
+    "consumer": false,
+    "content": {
+      "context": "Du öffnest OfficeCloud über dein Lesezeichen. Die Adresse wird dabei auf die Anmeldeseite umgeleitet und ist ziemlich lang.",
+      "url": "https://login.officecloud.example/common/oauth2/authorize?client_id=4f2a&response_type=code&state=88213",
+      "secure": true,
+      "page_title": "OfficeCloud",
+      "page_kind": "login",
+      "brand": "OfficeCloud"
+    },
+    "red_flags": [],
+    "correct_actions": [
+      "enter_credentials"
+    ],
+    "dangerous_actions": [],
+    "explanation": "Echt: Der lange Teil steht hinter dem ersten Schrägstrich und ist normal. Entscheidend ist nur die Domain davor, officecloud.example, und du bist über dein Lesezeichen gekommen.",
+    "tags": []
   }
 ]

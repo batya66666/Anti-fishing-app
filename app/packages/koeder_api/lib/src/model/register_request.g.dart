@@ -12,9 +12,14 @@ RegisterRequest _$RegisterRequestFromJson(Map<String, dynamic> json) =>
       final val = RegisterRequest(
         email: $checkedConvert('email', (v) => v as String),
         password: $checkedConvert('password', (v) => v as String),
+        displayName: $checkedConvert('displayName', (v) => v as String?),
       );
       return val;
     });
 
 Map<String, dynamic> _$RegisterRequestToJson(RegisterRequest instance) =>
-    <String, dynamic>{'email': instance.email, 'password': instance.password};
+    <String, dynamic>{
+      'email': instance.email,
+      'password': instance.password,
+      'displayName': ?instance.displayName,
+    };

@@ -14,15 +14,22 @@ import '../../effects/mascot.dart';
 import '../../simulators/common.dart';
 import '../../simulators/scenario_view.dart';
 
+/// A genuine message cannot hack anybody: being wrong about one means seeing attacks that are not there.
+HackKind hackKindOf(Evaluation e) {
+  if (!e.attack) return HackKind.paranoid;
+  return e.outcome == 'HACKED' ? HackKind.attack : HackKind.missed;
+}
+
 /// One scenario from first look to debrief: decide first, then learn. Used by shifts, reviews and lessons.
 class ScenarioPlayer extends ConsumerStatefulWidget {
-  const ScenarioPlayer({super.key, required this.scenario, required this.submit, required this.onNext, required this.nextLabel, this.simple = false});
+  const ScenarioPlayer({super.key, required this.scenario, required this.submit, required this.onNext, required this.nextLabel, this.simple = false, this.mailTour});
 
   final Scenario scenario;
   final Future<Evaluation> Function(String action, int ms) submit;
   final VoidCallback onNext;
   final String nextLabel;
   final bool simple;
+  final MailTourKeys? mailTour;
 
   @override
   ConsumerState<ScenarioPlayer> createState() => _ScenarioPlayerState();
@@ -49,12 +56,11 @@ class _ScenarioPlayerState extends ConsumerState<ScenarioPlayer> {
       }
       return;
     }
-    if (e.hacked) {
-      await ref.read(hackProvider.notifier).play();
-    } else if (e.correct) {
+    if (e.correct) {
       Sfx.success();
     } else {
-      Sfx.error();
+      // Every mistake gets a reaction, so that it sticks. Simple mode keeps it short: no fake ransom screen for someone's grandmother.
+      await ref.read(hackProvider.notifier).play(kind: hackKindOf(e), short: widget.simple);
     }
     if (!mounted) return;
     setState(() {
@@ -72,7 +78,7 @@ class _ScenarioPlayerState extends ConsumerState<ScenarioPlayer> {
         child: ScenarioView(
           key: ValueKey(widget.scenario.id),
           s: widget.scenario,
-          props: SimProps(onAction: r == null ? _act : null, reveal: r?.redFlags, simple: widget.simple),
+          props: SimProps(onAction: r == null ? _act : null, reveal: r?.redFlags, simple: widget.simple, mailTour: widget.mailTour),
         ),
       ),
       if (_busy && r == null) const Positioned.fill(child: ColoredBox(color: Color(0x33000000), child: Center(child: CircularProgressIndicator()))),
@@ -97,7 +103,7 @@ class _Debrief extends StatelessWidget {
       'SAFE' => (l.resultSafe, K.warn, Icons.shield_outlined, MascotMood.happy),
       'HACKED' => (l.resultHacked, K.danger, Icons.gpp_bad, MascotMood.hooked),
       'FALSE_ALARM' => (l.resultFalseAlarm, K.warn, Icons.notifications_off_outlined, MascotMood.worried),
-      _ => (l.resultMissed, K.warn, Icons.help_outline, MascotMood.worried),
+      _ => r.attack ? (l.resultMissed, K.warn, Icons.help_outline, MascotMood.worried) : (l.resultFalseAlarm, K.warn, Icons.notifications_off_outlined, MascotMood.worried),
     };
     final flags = r.redFlags;
     return ConstrainedBox(
@@ -166,7 +172,7 @@ class _Debrief extends StatelessWidget {
 
 /// A sequence of scenarios with its own frame. Reviews and module lessons use this.
 class ScenarioRun extends ConsumerStatefulWidget {
-  const ScenarioRun({super.key, required this.title, required this.load, required this.context, required this.submit, this.onFinished, this.intro});
+  const ScenarioRun({super.key, required this.title, required this.load, required this.context, required this.submit, this.onFinished, this.intro, this.theory, this.solvedBefore = 0, this.total});
 
   final String title;
   final Future<List<Scenario>> Function() load;
@@ -174,6 +180,13 @@ class ScenarioRun extends ConsumerStatefulWidget {
   final Future<Evaluation> Function(String scenarioId, String action, int ms) submit;
   final FutureOr<void> Function()? onFinished;
   final Widget? intro;
+
+  /// Background reading, only for whoever asks for it: before the first question, or at any point from the app bar.
+  final String? theory;
+
+  /// For a lesson: how much of it was already solved, so the bar continues where the player left off.
+  final int solvedBefore;
+  final int? total;
 
   @override
   ConsumerState<ScenarioRun> createState() => _ScenarioRunState();
@@ -184,12 +197,37 @@ class _ScenarioRunState extends ConsumerState<ScenarioRun> {
   int _i = 0;
   int _correct = 0;
   bool _introDone = false;
+  bool _theoryOpen = false;
   Object? _error;
 
   @override
   void initState() {
     super.initState();
-    widget.load().then((v) => setState(() => _list = v), onError: (Object e) => setState(() => _error = e));
+    _load();
+  }
+
+  void _load() {
+    widget.load().then((v) {
+      if (mounted) setState(() => _list = v);
+    }, onError: (Object e) {
+      if (mounted) setState(() => _error = e);
+    });
+  }
+
+  /// Plays what is still unsolved once more.
+  void _retry() {
+    setState(() {
+      _list = null;
+      _i = 0;
+      _correct = 0;
+    });
+    _load();
+  }
+
+  double _progress(int listLength) {
+    final total = widget.total;
+    if (total == null || total == 0 || widget.solvedBefore >= total) return _i / listLength;
+    return ((widget.solvedBefore + _correct) / total).clamp(0.0, 1.0);
   }
 
   @override
@@ -205,25 +243,46 @@ class _ScenarioRunState extends ConsumerState<ScenarioRun> {
       body = _Empty();
     } else if (widget.intro != null && !_introDone) {
       body = Column(children: [
-        Expanded(child: SingleChildScrollView(padding: const EdgeInsets.all(20), child: widget.intro!)),
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              widget.intro!,
+              if (widget.theory != null) ...[
+                const SizedBox(height: 14),
+                if (_theoryOpen)
+                  Text(widget.theory!, style: const TextStyle(fontSize: 16, height: 1.5)).animate().fadeIn(duration: 220.ms)
+                else
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: OutlinedButton.icon(
+                      onPressed: () => setState(() => _theoryOpen = true),
+                      icon: const Icon(Icons.menu_book_outlined, size: 18),
+                      label: Text(l.theoryRead),
+                    ),
+                  ),
+              ],
+            ]),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.all(18),
           child: SizedBox(width: double.infinity, child: FilledButton(onPressed: () => setState(() => _introDone = true), child: Text(l.lessonStart))),
         ),
       ]);
     } else if (_i >= list.length) {
-      body = _Done(correct: _correct, total: list.length);
+      body = _Done(correct: _correct, total: list.length, onRetry: widget.total != null && _correct < list.length ? _retry : null);
     } else {
       final s = list[_i];
       body = Column(children: [
-        LinearProgressIndicator(value: _i / list.length, minHeight: 3, backgroundColor: K.surface2),
+        LinearProgressIndicator(value: _progress(list.length), minHeight: 4, backgroundColor: K.surface2),
         Expanded(
           child: ScenarioPlayer(
             key: ValueKey('${s.id}-$_i'),
             scenario: s,
             submit: (a, ms) async {
               final e = await widget.submit(s.id, a, ms);
-              if (e.correct) _correct++;
+              if (e.correct) setState(() => _correct++);
               return e;
             },
             onNext: () {
@@ -235,7 +294,22 @@ class _ScenarioRunState extends ConsumerState<ScenarioRun> {
         ),
       ]);
     }
-    return Scaffold(appBar: AppBar(title: Text(widget.title)), body: body);
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.title), actions: [
+        if (widget.theory != null && (widget.intro == null || _introDone))
+          IconButton(
+            tooltip: l.theoryTitle,
+            icon: const Icon(Icons.menu_book_outlined),
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              backgroundColor: K.surface,
+              isScrollControlled: true,
+              builder: (_) => SafeArea(child: SingleChildScrollView(padding: const EdgeInsets.all(20), child: Text(widget.theory!, style: const TextStyle(fontSize: 16, height: 1.5)))),
+            ),
+          ),
+      ]),
+      body: body,
+    );
   }
 }
 
@@ -259,9 +333,10 @@ class _Empty extends StatelessWidget {
 }
 
 class _Done extends StatelessWidget {
-  const _Done({required this.correct, required this.total});
+  const _Done({required this.correct, required this.total, this.onRetry});
   final int correct;
   final int total;
+  final VoidCallback? onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -275,7 +350,12 @@ class _Done extends StatelessWidget {
             const SizedBox(height: 12),
             Text(l.runDone(correct, total), textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 22),
-            FilledButton(onPressed: () => Navigator.of(context).maybePop(), child: Text(l.back)),
+            if (onRetry != null) ...[
+              FilledButton.icon(onPressed: onRetry, icon: const Icon(Icons.replay), label: Text(l.moduleRetry)),
+              const SizedBox(height: 8),
+              OutlinedButton(onPressed: () => Navigator.of(context).maybePop(), child: Text(l.back)),
+            ] else
+              FilledButton(onPressed: () => Navigator.of(context).maybePop(), child: Text(l.back)),
           ]),
         ),
       ),

@@ -34,6 +34,14 @@ public record Scenario(
         return new PublicScenario(id, type, locale, difficulty, module, content);
     }
 
+    /**
+     * Does this scenario belong to a difficulty level? There are few genuine Diamond messages by nature,
+     * so that level also takes genuine Gold ones: otherwise "report everything" would win it.
+     */
+    public boolean fitsDifficulty(String level) {
+        return difficulty.equals(level) || (!attack && "diamond".equals(level) && "gold".equals(difficulty));
+    }
+
     /** Analytics bucket: legitimate messages count under their own category. */
     public String statsBucket() {
         return attack ? attackType : "legit";

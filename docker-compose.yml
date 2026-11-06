@@ -30,6 +30,7 @@ services:
       KOEDER_DEMO_AUTO_JOIN: ${KOEDER_DEMO_AUTO_JOIN:-true}
       KOEDER_CORS_ORIGINS: ${KOEDER_CORS_ORIGINS:-http://localhost:*,http://127.0.0.1:*,http://192.168.*:*,http://172.*:*,http://10.*:*}
       KOEDER_BOT_FALLBACK_SECONDS: ${KOEDER_BOT_FALLBACK_SECONDS:-8}
+      KOEDER_PUBLIC_URL: ${KOEDER_PUBLIC_URL:-}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
     depends_on:
       postgres:

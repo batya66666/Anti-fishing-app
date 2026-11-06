@@ -34,7 +34,7 @@ class AuthController {
     record LoginRequest(@NotBlank @Email String email, @NotBlank @Size(max = 200) String password) {
     }
 
-    record RegisterRequest(@NotBlank @Email String email, @NotBlank @Size(min = 10, max = 200) String password) {
+    record RegisterRequest(@NotBlank @Email String email, @NotBlank @Size(min = 10, max = 200) String password, @Size(max = 40) String displayName) {
     }
 
     record TokenResponse(String token, String userId, String role) {
@@ -52,7 +52,7 @@ class AuthController {
 
     @PostMapping("/register")
     TokenResponse register(@Valid @RequestBody RegisterRequest r) {
-        return token(identity.register(CurrentUser.id(), r.email(), r.password()));
+        return token(identity.register(CurrentUser.id(), r.email(), r.password(), r.displayName()));
     }
 
     private TokenResponse token(Profile p) {

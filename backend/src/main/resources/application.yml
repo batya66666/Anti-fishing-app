@@ -46,10 +46,13 @@ springdoc:
     path: /v3/api-docs
 
 koeder:
+  # The address phones use, for QR codes on a laptop that opens the game through localhost. scripts/start_wifi.ps1 sets it.
+  public-url: ${KOEDER_PUBLIC_URL:}
   jwt:
     # Must be at least 32 bytes. Set a real secret in production (.env → KOEDER_JWT_SECRET).
     secret: ${KOEDER_JWT_SECRET:dev-only-secret-change-me-dev-only-secret-change-me}
-    ttl-hours: 24
+    # Long enough that a registered player stays signed in through the event.
+    ttl-hours: 720
   cors:
     allowed-origins: ${KOEDER_CORS_ORIGINS:http://localhost:*,http://127.0.0.1:*}
   ai:
