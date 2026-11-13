@@ -23,7 +23,7 @@
     <anthropic.version>3.6.0</anthropic.version>
     <bucket4j.version>8.22.0</bucket4j.version>
     <openpdf.version>3.0.5</openpdf.version>
-    <json-schema-validator.version>1.5.9</json-schema-validator.version>
+    <json-schema-validator.version>3.0.9</json-schema-validator.version>
   </properties>
 
   <dependencyManagement>
