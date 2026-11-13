@@ -20,7 +20,7 @@
     <java.version>25</java.version>
     <spring-modulith.version>2.1.2</spring-modulith.version>
     <springdoc.version>3.2.0</springdoc.version>
-    <anthropic.version>3.6.0</anthropic.version>
+    <anthropic.version>3.7.0</anthropic.version>
     <bucket4j.version>8.22.0</bucket4j.version>
     <openpdf.version>3.0.5</openpdf.version>
     <json-schema-validator.version>1.5.9</json-schema-validator.version>
