@@ -18,7 +18,7 @@
 
   <properties>
     <java.version>25</java.version>
-    <spring-modulith.version>2.1.2</spring-modulith.version>
+    <spring-modulith.version>2.2.0</spring-modulith.version>
     <springdoc.version>3.2.0</springdoc.version>
     <anthropic.version>3.6.0</anthropic.version>
     <bucket4j.version>8.22.0</bucket4j.version>
